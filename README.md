@@ -5,6 +5,4 @@ Repository for official discord development for [Deparment of Computer Science](
 ## TODO:
 
 - [ ] Bot
-	- [ ]
 - [ ] Web api
-	- [ ] 
