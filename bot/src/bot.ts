@@ -1,22 +1,43 @@
 import { Client, Intents } from 'discord.js';
 
+import { Event, EventArgs } from "./event";
 import { Command } from "./command";
 
 export default class Bot {
   token: string;
   client: Client;
+  commands: Map<string, Command>;
 
-  constructor(token: string, commands: Command[]) {
+  constructor(token: string, events: Events[], commands: Command[]) {
     this.client = new Client({
-      intents: []
+      intents: [Intents.FLAGS.GUILDS]
     });
+
+    this.commands = new Map<string, Command>();
 
     this.token = token;
+    this.initEvenst(events);
+    this.initCommands(commands);
+  }
 
-    commands.forEach(command => {
-      this.client.on(command.event, command.listener);
+  private initEvents(events: Events[]) {
+    events.forEach((event) => {
+      this.client.on(event.name, async (interaction) => {
+        const args: EventArgs = {
+          client: this.client,
+          interaction: interaction,
+          commands: this.commands,
+        }
+
+        await event.action(args)
+      });
     });
+  }
 
+  private initCommands(commands: Command[]) {
+    commands.forEach((command) => {
+      this.commands.set(command.name, command);
+    });
   }
 
   public async login() {

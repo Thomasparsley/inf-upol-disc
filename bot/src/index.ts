@@ -1,11 +1,9 @@
-import { Client } from 'discord.js';
+import { Bot } from "./bot";
 
-import { Command } from "./command";
+import onReady from "./events/onReady";
+import onInteractionCreate from "./events/onInteractionCreate";
 
-
-const onReady = new Command(
-    'ready',
-    (client: Client) => {
-        console.log(`Logged in as ${client.user.tag}!`);
-    },
+const bot = new Bot(
+    'token',
+    [onReady, onInteractionCreate],
 );

@@ -1,14 +1,17 @@
-import { Awaitable } from "discord.js";
+import { EventAction } from "./event";
 
 export class Command {
-    eventName: string;
-    event: (...args: any[]) => Awaitable<void>;
+    name: string
+    description: string
+    action: EventAction
 
     constructor(
-        eventName: string,
-        event: (...args: any[]) => Awaitable<void>
+        name: string,
+        description: string,
+        action: EventAction,
     ) {
-        this.eventName = eventName;
-        this.event = event;
+        this.name = name;
+        this.description = description;
+        this.action = action;
     }
 }
