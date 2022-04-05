@@ -1,6 +1,14 @@
 import { Awaitable } from "discord.js";
 
-export interface Command {
-    event: string,
-    listener: (...args: any[]) => Awaitable<void>
+export class Command {
+    eventName: string;
+    event: (...args: any[]) => Awaitable<void>;
+
+    constructor(
+        eventName: string,
+        event: (...args: any[]) => Awaitable<void>
+    ) {
+        this.eventName = eventName;
+        this.event = event;
+    }
 }
