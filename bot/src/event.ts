@@ -3,16 +3,16 @@ import { Client, Awaitable } from 'discord.js';
 import { Command } from './command';
 
 export interface EventArgs {
-    client: Client
-    interaction: any
-    commands: Map<string, Command>
+    client: Client;
+    interaction: any;
+    commands: Map<string, Command>;
 }
 
 export type EventAction = (args: EventArgs) => Awaitable<void>
 
 export class Event {
-    name: string;
-    action: EventAction;
+    private name: string;
+    readonly action: EventAction;
 
     constructor(
         name: string,
@@ -20,5 +20,9 @@ export class Event {
     ) {
         this.name = name;
         this.action = action;
+    }
+
+    public getName(): string {
+        return this.name;
     }
 }

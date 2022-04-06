@@ -18,7 +18,7 @@ export default new Event(
                     ephemeral: true,
                 });
             } catch (err) {
-                console.error(err)                
+                console.error(err);
             }
 
             return
@@ -27,7 +27,7 @@ export default new Event(
         try {
             await command.action(args);
         } catch (err) {
-            console.error(err)                
+            console.error(err);
             await interaction.reply({
                 content: 'There was an error while executing this command!',
                 ephemeral: true,

@@ -1,9 +1,11 @@
+import { SlashCommandBuilder } from "@discordjs/builders";
+
 import { EventAction } from "./event";
 
 export class Command {
-    name: string
-    description: string
-    action: EventAction
+    private name: string;
+    private description: string;
+    readonly action: EventAction;
 
     constructor(
         name: string,
@@ -14,4 +16,27 @@ export class Command {
         this.description = description;
         this.action = action;
     }
+
+    public getName(): string {
+        return this.name;
+    }
+
+    public getDescription(): string {
+        return this.description;
+    }
+}
+
+
+export function buildSlashCommand(commands: Command[]): SlashCommandBuilder[] {
+    const slashCommands: SlashCommandBuilder[] = [];
+
+    commands.forEach((command) => {
+        slashCommands.push(
+            new SlashCommandBuilder()
+                .setName(command.getName())
+                .setDescription(command.getDescription())
+        );
+    });
+
+    return slashCommands;
 }
