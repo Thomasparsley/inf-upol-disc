@@ -1,10 +1,9 @@
-import { EventArgs } from '../event';
-import { Command } from '../command';
+import { Command } from "../command";
 
-export default new Command(
-    'ping',
-    'Na každý `ping` odpoví `pong.',
+export const pingCommand = new Command(
+    "ping",
+    "Na každý `ping` odpoví `pong`.",
     async ({ interaction }) => {
-        await interaction.reply('pong');
+        await interaction.reply("pong");
     },
-) 
+);

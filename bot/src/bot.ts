@@ -1,27 +1,23 @@
+import { Awaitable, CacheType, Client, Intents, Interaction } from "discord.js";
 import { Routes } from 'discord-api-types/v9';
-import { Client, Intents } from "discord.js";
 import { REST } from "@discordjs/rest";
 
-import { buildSlashCommand, Command } from "./command";
-import { Event, EventArgs } from "./event";
+import { buildSlashCommands, Command } from "./command";
 
 const REST_VERSION = '9';
 
-interface BotConfig {
-    token: string;
-    applicationId: string;
-    guildId: string;
-    events?: Event[];
-    commands?: Command[]
-}
-
-export default class Bot {
+export class Bot {
     client: Client;
     rest: REST;
     commands: Map<string, Command>;
     private applicationId: string;
     private guildId: string;
     private token: string;
+    private onReady: OnReadyAction
+        = async (args: OnReadyArgs) => {}
+    private onInteractionCreate: OnInteractionCreateAction
+        = async (args: OnInteractionCreateArgs) => {}
+
     
     constructor(config: BotConfig) {
         this.commands = new Map<string, Command>();
@@ -36,26 +32,42 @@ export default class Bot {
         this.rest = new REST({ version: REST_VERSION })
             .setToken(this.token);
 
-        if (config.events) {
-            this.initEvents(config.events);
-        }
-
         if (config.commands) {
             this.initCommands(config.commands);
         }
+
+        if (config.onReady) {
+            this.onReady = config.onReady;
+        }
+
+        if (config.onInteractionCreate) {
+            this.onInteractionCreate = config.onInteractionCreate;
+        }
+
+        this.initOnReady();
+        this.initOnInteractionCreate();
     }
 
-    private initEvents(events: Event[]) {
-        events.forEach((event) => {
-            this.client.on(event.getName(), async (interaction) => {
-                const args: EventArgs = {
-                    client: this.client,
-                    interaction,
-                    commands: this.commands,
-                };
+    private initOnReady() {
+        this.client.on('ready', () => {
+            const args: OnReadyArgs = {
+                client: this.client,
+                commands: this.commands,
+            };
 
-                await event.action(args);
-            });
+            this.onReady(args);
+        });
+    }
+
+    private initOnInteractionCreate() {
+        this.client.on('interactionCreate', (interaction) => {
+            const args: OnInteractionCreateArgs = {
+                client: this.client,
+                interaction,
+                commands: this.commands,
+            };
+
+            this.onInteractionCreate(args);
         });
     }
 
@@ -69,8 +81,8 @@ export default class Bot {
         await this.client.login(this.token);
     }
 
-    public async registerSlashCommands() {
-        const slashCommands = buildSlashCommand(Array.from(this.commands.values()))
+    public async registerSlashCommands(commands: Command[]) {
+        const slashCommands = buildSlashCommands(commands)
             .map(command => command.toJSON());
 
         const path = Routes.applicationGuildCommands(this.applicationId, this.guildId);
@@ -82,3 +94,25 @@ export default class Bot {
         }
     }
 }
+
+interface BotConfig {
+    token: string;
+    applicationId: string;
+    guildId: string;
+    commands?: Command[];
+    onReady?: OnReadyAction;
+    onInteractionCreate?: OnInteractionCreateAction;
+}
+
+export interface OnReadyArgs {
+    client: Client;
+    commands: Map<string, Command>;
+}
+export type OnReadyAction = (args: OnReadyArgs) => Awaitable<void>
+
+export interface OnInteractionCreateArgs {
+    client: Client;
+    interaction: Interaction<CacheType>;
+    commands: Map<string, Command>;
+}
+export type OnInteractionCreateAction = (args: OnInteractionCreateArgs) => Awaitable<void>

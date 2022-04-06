@@ -1,12 +1,11 @@
-import { Event } from "../event";
+import { OnReadyAction } from "../bot";
 
-export default new Event(
-    'ready',
-    ({ client }) => {
-        if (!client.user) {
-            return;
-        }
+const event: OnReadyAction = async ({ client }) => {
+    if (!client.user) {
+        return;
+    }
 
-        console.log(`Logged in as ${client.user.tag}!`);
-    },
-);
+    console.log(`Logged in as ${client.user.tag}!`);
+}
+
+export default event

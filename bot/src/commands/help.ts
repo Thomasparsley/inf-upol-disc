@@ -1,5 +1,9 @@
-import { EventArgs } from '../event';
+import { Command } from "../command";
 
-export default async function (args: EventArgs) {
-    
-} 
+export const helpCommand = new Command(
+    "help",
+    "Na každý `help` odpoví `pong`.",
+    async ({ interaction }) => {
+        await interaction.reply("pong");
+    },
+);
