@@ -1,4 +1,4 @@
-import { EventArgs } from '../command';
+import { EventArgs } from '../event';
 
 export default async function (args: EventArgs) {
     

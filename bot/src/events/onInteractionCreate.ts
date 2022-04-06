@@ -1,6 +1,6 @@
-import { Event } from "./event";
+import { Event } from "../event";
 
-export default Event(
+export default new Event(
     'interactionCreate',
     async (args) => {
         const { interaction, commands } = args;

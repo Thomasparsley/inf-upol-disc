@@ -1,4 +1,6 @@
-import { Client, Awaitable } from "discord.js";
+import { Client, Awaitable } from 'discord.js';
+
+import { Command } from './command';
 
 export interface EventArgs {
     client: Client
@@ -14,7 +16,7 @@ export class Event {
 
     constructor(
         name: string,
-        action: EventAction
+        action: EventAction,
     ) {
         this.name = name;
         this.action = action;
