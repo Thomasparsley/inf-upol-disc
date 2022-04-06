@@ -11,16 +11,22 @@ export type CommandAction = (args: CommandArgs) => Awaitable<void>
 export class Command {
     private name: string;
     private description: string;
+    private builder: SlashCommandBuilder;
     readonly execute: CommandAction;
 
     constructor(
         name: string,
         description: string,
+        builder: SlashCommandBuilder,
         action: CommandAction,
     ) {
         this.name = name;
         this.description = description;
+        this.builder = builder;
         this.execute = action;
+
+        this.builder.setName(this.name);
+        this.builder.setDescription(this.description);
     }
 
     public getName(): string {
@@ -31,20 +37,7 @@ export class Command {
         return this.description;
     }
 
-    public buildSlashCommand(): SlashCommandBuilder {
-        return new SlashCommandBuilder()
-            .setName(this.getName())
-            .setDescription(this.getDescription());
+    public getBuilder(): SlashCommandBuilder {
+        return this.builder;
     }
-}
-
-
-export function buildSlashCommands(commands: Command[]): SlashCommandBuilder[] {
-    const slashCommands: SlashCommandBuilder[] = [];
-
-    commands.forEach((command) => {
-        slashCommands.push(command.buildSlashCommand());
-    });
-
-    return slashCommands;
 }

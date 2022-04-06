@@ -2,7 +2,7 @@ import { Awaitable, CacheType, Client, Intents, Interaction } from "discord.js";
 import { Routes } from 'discord-api-types/v9';
 import { REST } from "@discordjs/rest";
 
-import { buildSlashCommands, Command } from "./command";
+import { Command } from "./command";
 
 const REST_VERSION = '9';
 
@@ -82,8 +82,9 @@ export class Bot {
     }
 
     public async registerSlashCommands(commands: Command[]) {
-        const slashCommands = buildSlashCommands(commands)
-            .map(command => command.toJSON());
+        const slashCommands = commands.map((command) => {
+            return command.getBuilder().toJSON()
+        });
 
         const path = Routes.applicationGuildCommands(this.applicationId, this.guildId);
 
