@@ -3,6 +3,7 @@ import { Routes } from "discord-api-types/v9";
 import { REST } from "@discordjs/rest";
 
 import { Command } from "./command";
+import { SlashCommandBuilder } from "@discordjs/builders";
 
 const REST_VERSION = '9';
 
@@ -83,7 +84,7 @@ export class Bot {
 
     public async registerSlashCommands(commands: Command[]) {
         const slashCommands = commands.map((command) => {
-            return command.getBuilder().toJSON()
+            return (command.getBuilder() as SlashCommandBuilder).toJSON()
         });
 
         const path = Routes.applicationGuildCommands(this.applicationId, this.guildId);

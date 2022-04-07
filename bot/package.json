@@ -2,7 +2,10 @@
   "name": "s2a2",
   "description": "S2A2 Discord bot writen with typescript.",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "run:dev": "ts-node ./src/index.ts",
+    "build": "tsc --build"
+  },
   "author": "Marek Brodacký <brodackym@gmail.com>; Tomáš Petržela <email@thomasparsley.cz>",
   "dependencies": {
     "@discordjs/builders": "^0.12.0",

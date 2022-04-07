@@ -4,9 +4,9 @@ import { GuildMemberRoleManager } from "discord.js";
 import { Command } from "../command";
 
 const StudentID = 960478701684936734;
-const RequiredRoleOptionName = "roleName";
+const RequiredRoleOptionName = "rolename";
 
-export const validationCommand = new Command(
+export const roleCommand = new Command(
     "role",
     "Přidělí (odebere) požadovanou roli.",
     new SlashCommandBuilder()
