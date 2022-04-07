@@ -6,7 +6,7 @@ import {
     validationCommand,
     pingCommand,
     helpCommand,
-} from './commands'
+} from "./commands";
 
 const bot = new Bot({
     token: "token",

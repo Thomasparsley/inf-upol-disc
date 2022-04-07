@@ -1,5 +1,5 @@
 import { Awaitable, CacheType, Client, Intents, Interaction } from "discord.js";
-import { Routes } from 'discord-api-types/v9';
+import { Routes } from "discord-api-types/v9";
 import { REST } from "@discordjs/rest";
 
 import { Command } from "./command";
