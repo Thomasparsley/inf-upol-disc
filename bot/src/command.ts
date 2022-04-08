@@ -5,6 +5,8 @@ export interface CommandArgs {
     client: Client;
     interaction: CommandInteraction<CacheType>;
     commands: Map<string, Command>;
+    reply: (content: string) => Promise<void>;
+    replySilent: (content: string) => Promise<void>;
 }
 export type CommandAction = (args: CommandArgs) => Awaitable<void>
 

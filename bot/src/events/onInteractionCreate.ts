@@ -28,6 +28,17 @@ const event: OnInteractionCreateAction = async (args) => {
             client,
             interaction,
             commands,
+            reply: async (content: string): Promise<void> => {
+                return await interaction.reply({
+                    content,
+                });
+            },
+            replySilent: async (content: string): Promise<void> => {
+                return await interaction.reply({
+                    content,
+                    ephemeral: true,
+                });
+            }
         }
 
         await command.execute(commandArgs);
