@@ -37,7 +37,7 @@ export const everyRequest = new Command(
                 ephemeral: true,
             });
         } else {
-            channel.send(`Uživatel ${sender} zažádal v ${senderRoom} s popiskem: \n ${requestText}`);
+            channel.send(`Uživatel ${sender} zažádal v ${senderRoom} o everyone. Důvod žádost: ${requestText}`);
         }
 
         await interaction.reply({
