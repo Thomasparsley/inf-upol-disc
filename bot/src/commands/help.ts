@@ -7,6 +7,6 @@ export const helpCommand = new Command(
     "Na každý `help` odpoví `pong`.",
     new SlashCommandBuilder(),
     async ({ interaction }) => {
-        await interaction.reply("pong");
+        await interaction.reply("WIP");
     },
 );
