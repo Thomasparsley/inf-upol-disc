@@ -8,6 +8,8 @@ import {
     helpCommand,
     roleCommand,
     everyRequest,
+    commandCmdreg,
+    commandRegister
 } from "./commands";
 
 const { token, ApplicationID, GuildID  } = require('./token.json');
@@ -24,6 +26,8 @@ const bot = new Bot({
         helpCommand,
         roleCommand,
         everyRequest,
+        commandCmdreg,
+        commandRegister
     ],
 });
 

@@ -3,6 +3,7 @@ import crypto from "crypto";
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 import { Command } from "../command";
+import { GuildMemberRoleManager } from "discord.js";
 
 const RequiredOptionEmail = "email";
 const VerificationCodeLength = 6;
@@ -40,11 +41,30 @@ export const commandRegister = new Command(
                 content: `Email není ve správném tvaru ${email}.`,
                 ephemeral: true,
             });
+
+            return
         } else if (!isUpolEmail(email)) {
             await interaction.reply({
                 content: `Email nenáleží Univerzitě Palackého.`,
                 ephemeral: true,
             });
+
+            return
+        }
+
+        const roles = (interaction.member?.roles as GuildMemberRoleManager)
+        if (!roles) {
+            await interaction.reply({
+                content: 'Error: regiter#1',
+                ephemeral: true,
+            });
+            return;
+        } else if (roles.cache.size === 0) {
+            await interaction.reply({
+                content: 'Nemáš oprávnění pro tento příkaz!',
+                ephemeral: true,
+            });
+            return;
         }
 
         const verificationCode = crypto
