@@ -1,10 +1,11 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { GuildMemberRoleManager } from "discord.js";
+import { GuildMemberRoleManager, Role } from "discord.js";
 
 import { Command } from "../command";
 
 const StudentID = "960478701684936734";
-const RequiredRoleOptionName = "rolename";
+const RequiredRoleOptionName = "nazev_role";
+const permittedRoleColors = ["#9b59b6", "#607d8b", "#1abc9c"]
 
 export const roleCommand = new Command(
     "role",
@@ -35,8 +36,8 @@ export const roleCommand = new Command(
             return;
         }
         
-        const argRole = interaction.options.getRole(RequiredRoleOptionName);
-        if (!argRole) {
+        const role = (interaction.options.getRole(RequiredRoleOptionName) as Role);
+        if (!role) {
             await interaction.reply({
                 content: 'Error: Role#2',
                 ephemeral: true,
@@ -44,17 +45,26 @@ export const roleCommand = new Command(
             return;
         }
 
-        let content;
-        if (!roles.cache.has(argRole.id)) {
-            roles.add(argRole.id);
-            content = "přidána";
+        if (!permittedRoleColors
+                .includes(role.hexColor)) {
+            await interaction.reply({
+                content: 'Tuto roli si zvolit nemůžeš.',
+                ephemeral: true,
+            });
+            return;
+        }
+
+        let text;
+        if (!roles.cache.has(role.id)) {
+            roles.add(role.id);
+            text = "přidána";
         } else {
-            roles.remove(argRole.id);
-            content = "odebrána";
+            roles.remove(role.id);
+            text = "odebrána";
         }
 
         await interaction.reply({
-            content: `Role @${argRole.name} byla ${content}.`,
+            content: `Role ${role} byla ${text}.`,
             ephemeral: true,
         });
     },

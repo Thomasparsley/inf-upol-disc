@@ -7,6 +7,7 @@ import {
     pingCommand,
     helpCommand,
     roleCommand,
+    everyRequest,
 } from "./commands";
 
 const { token, ApplicationID, GuildID  } = require('./token.json');
@@ -22,12 +23,13 @@ const bot = new Bot({
         pingCommand,
         helpCommand,
         roleCommand,
+        everyRequest,
     ],
 });
 
 (async () => {
 
-    //await bot.registerSlashCommands(Array.from(bot.commands.values()))
+    await bot.registerSlashCommands(Array.from(bot.commands.values()))
     await bot.login()
 
 })()

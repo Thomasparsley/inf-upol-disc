@@ -4,7 +4,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 
 import { Command } from "../command";
 
-const RequiredOptionEmail = "optionalemail";
+const RequiredOptionEmail = "email";
 const VerificationCodeLength = 6;
 
 function isValidateEmail(email: string): boolean {
@@ -25,12 +25,12 @@ export const commandRegister = new Command(
     "registrace",
     "Zaregistruj se na náš discord a pokud jsi student tak obdrž roli @Studnet",
     new SlashCommandBuilder()
-    .addStringOption(option => {
-        return option
-            .setName(RequiredOptionEmail)
-            .setDescription("Zadejte validní email.")
-            .setRequired(true);
-    }),
+        .addStringOption(option => {
+            return option
+                .setName(RequiredOptionEmail)
+                .setDescription("Zadejte validní email.")
+                .setRequired(true);
+        }),
     async ({ interaction }) => {
 
         const email = interaction.options.getString(RequiredOptionEmail);

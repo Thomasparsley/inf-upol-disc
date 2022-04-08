@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 
 import { Command } from "../command";
 
-const RequiredKeyOptionName = "validkey";
+const RequiredKeyOptionName = "key";
 
 export const validationCommand = new Command(
     "validation",
