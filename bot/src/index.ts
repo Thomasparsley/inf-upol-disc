@@ -1,5 +1,7 @@
 import onInteractionCreate from "./events/onInteractionCreate";
 import onReady from "./events/onReady";
+import onReactionAdd from "./events/onReactionAdd"
+import onReactionRemove from "./events/onReactionRemove"
 import { Bot } from "./bot";
 
 import {
@@ -20,6 +22,8 @@ const bot = new Bot({
     applicationId: ApplicationID,
     guildId: GuildID,
     onReady: onReady,
+    onReactionAdd: onReactionAdd,
+    onReactionRemove: onReactionRemove,
     onInteractionCreate: onInteractionCreate,
     commands: [
         validationCommand,

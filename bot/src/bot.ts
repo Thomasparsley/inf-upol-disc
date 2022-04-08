@@ -1,4 +1,4 @@
-import { Awaitable, CacheType, Client, Intents, Interaction, MessageReaction, User } from "discord.js";
+import { Awaitable, CacheType, Client, Intents, Interaction, MessageReaction, PartialMessageReaction, PartialUser, User } from "discord.js";
 import { Routes } from "discord-api-types/v9";
 import { REST } from "@discordjs/rest";
 
@@ -69,26 +69,29 @@ export class Bot {
                 client: this.client,
                 commands: this.commands,
             };
+            console.log("x")
 
             this.onReady(args);
         });
     }
 
     private initOnReactionAdd() {
-        this.client.on('messsageReactionAdd', (messageReaction, user) => {
+        this.client.on('messageReactionAdd', (messageReaction, user) => {
             const args: OnReactionAddArgs = {
                 client: this.client,
                 reaction: messageReaction,
                 user: user,
                 commands: this.commands,
             };
+            
+            console.log("y")
         
             this.onReactionAdd(args);
         });
     }
 
     private initOnReactionRemove() {
-        this.client.on('messsageReactionRemove', (messageReaction, user) => {
+        this.client.on('messageReactionRemove', (messageReaction, user) => {
             const args: OnReactionRemoveArgs = {
                 client: this.client,
                 reaction: messageReaction,
@@ -157,8 +160,8 @@ export type OnReadyAction = (args: OnReadyArgs) => Awaitable<void>
 
 export interface OnReactionAddArgs {
     client: Client;
-    reaction: MessageReaction; 
-    user: User;
+    reaction: MessageReaction | PartialMessageReaction; 
+    user: User | PartialUser;
     commands: Map<string, Command>;
 }
 
@@ -166,8 +169,8 @@ export type onReactionAddAction = (args: OnReactionAddArgs) => Awaitable<void>
 
 export interface OnReactionRemoveArgs {
     client: Client;
-    reaction: MessageReaction; 
-    user: User;
+    reaction: MessageReaction | PartialMessageReaction; 
+    user: User | PartialUser;
     commands: Map<string, Command>;
 }
 
