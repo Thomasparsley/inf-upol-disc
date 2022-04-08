@@ -3,7 +3,7 @@ import { GuildMemberRoleManager } from "discord.js";
 
 import { Command } from "../command";
 
-const StudentID = 960478701684936734;
+const StudentID = "960478701684936734";
 const RequiredRoleOptionName = "rolename";
 
 export const roleCommand = new Command(
@@ -27,8 +27,7 @@ export const roleCommand = new Command(
         }
            
         const roles = (interaction.member.roles as GuildMemberRoleManager)
-        const hasPermissionRole = roles.cache.has;
-        if (!hasPermissionRole((StudentID.toString()))) {
+        if (!roles.cache.has(StudentID)) {
             await interaction.reply({
                 content: 'Nemáš oprávnění pro tento příkaz!',
                 ephemeral: true,
@@ -45,14 +44,17 @@ export const roleCommand = new Command(
             return;
         }
 
-        if (!hasPermissionRole(argRole.id)) {
+        let content;
+        if (!roles.cache.has(argRole.id)) {
             roles.add(argRole.id);
+            content = "přidána";
         } else {
             roles.remove(argRole.id);
+            content = "odebrána";
         }
 
         await interaction.reply({
-            content: `Role @${argRole.name} byla přidána.`,
+            content: `Role @${argRole.name} byla ${content}.`,
             ephemeral: true,
         });
     },

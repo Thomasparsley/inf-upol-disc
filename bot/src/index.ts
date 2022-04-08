@@ -27,19 +27,7 @@ const bot = new Bot({
 
 (async () => {
 
-    // await bot.registerSlashCommands(Array.from(bot.commands.values()))
+    //await bot.registerSlashCommands(Array.from(bot.commands.values()))
     await bot.login()
 
 })()
-
-// TypeError: Method Map.prototype.has called on incompatible receiver undefined
-//     at has (<anonymous>)
-//     at /Users/hradzpisku/Documents/GitHub/inf-upol-disc/bot/src/commands/role.ts:31:14
-//     at Generator.next (<anonymous>)
-//     at /Users/hradzpisku/Documents/GitHub/inf-upol-disc/bot/src/commands/role.ts:8:71
-//     at new Promise (<anonymous>)
-//     at __awaiter (/Users/hradzpisku/Documents/GitHub/inf-upol-disc/bot/src/commands/role.ts:4:12)
-//     at Command.execute (/Users/hradzpisku/Documents/GitHub/inf-upol-disc/bot/src/commands/role.ts:19:31)
-//     at /Users/hradzpisku/Documents/GitHub/inf-upol-disc/bot/src/events/onInteractionCreate.ts:33:23
-//     at Generator.next (<anonymous>)
-//     at /Users/hradzpisku/Documents/GitHub/inf-upol-disc/bot/src/events/onInteractionCreate.ts:8:71
