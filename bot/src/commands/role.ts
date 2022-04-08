@@ -4,7 +4,7 @@ import { GuildMemberRoleManager, Role } from "discord.js";
 import { Command } from "../command";
 
 const StudentID = "960478701684936734";
-const RequiredRoleOptionName = "rolename";
+const RequiredRoleOptionName = "nazev_role";
 const permittedRoleColors = ["#9b59b6", "#607d8b", "#1abc9c"]
 
 export const roleCommand = new Command(
@@ -45,8 +45,6 @@ export const roleCommand = new Command(
             return;
         }
 
-        console.log(role.hexColor)
-
         if (!permittedRoleColors
                 .includes(role.hexColor)) {
             await interaction.reply({
@@ -66,7 +64,7 @@ export const roleCommand = new Command(
         }
 
         await interaction.reply({
-            content: `Role @${role.name} byla ${text}.`,
+            content: `Role ${role} byla ${text}.`,
             ephemeral: true,
         });
     },
