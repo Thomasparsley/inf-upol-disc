@@ -32,8 +32,14 @@ export const commandRegister = new Command(
                 .setDescription("Zadejte validní email.")
                 .setRequired(true);
         }),
-    async ({ interaction, replySilent }) => {
+    async ({ interaction, replySilent, permissionRolesCount }) => {
 
+        if (!(await permissionRolesCount(
+                interaction,
+                function isNotZero(size: Number){return size !== 0}))) {
+            return
+        }
+        
         const email = interaction.options.getString(RequiredOptionEmail);
 
         if (email === null || !isValidateEmail(email)) {
@@ -44,17 +50,6 @@ export const commandRegister = new Command(
             replySilent(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`)
 
             return
-        }
-
-        const roles = (interaction.member?.roles as GuildMemberRoleManager)
-        if (!roles) {
-            replySilent("Error: regiter#1")
-
-            return;
-        } else if (roles.cache.size === 0) {
-            replySilent("Nemáš oprávnění pro tento příkaz!")
-            
-            return;
         }
 
         const verificationCode = crypto

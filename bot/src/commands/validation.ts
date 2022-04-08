@@ -6,7 +6,7 @@ import { Command } from "../command";
 const RequiredKeyOptionName = "key";
 
 export const validationCommand = new Command(
-    "validation",
+    "validace",
     "Na každý `validation` odpoví `pong`.",
     new SlashCommandBuilder()
         .addStringOption(option => {
@@ -15,18 +15,12 @@ export const validationCommand = new Command(
                 .setDescription("Zadejte validační klíč.")
                 .setRequired(true);
         }),
-    async ({ interaction, replySilent }) => {
-
-        const roles = (interaction.member?.roles as GuildMemberRoleManager)
+    async ({ interaction, replySilent, permissionRolesCount }) => {
         
-        if (!roles) {
-            replySilent("Error: validation#1")
-
-            return;
-        } else if (roles.cache.size !== 0) {
-            replySilent("Nemáš oprávnění pro tento příkaz!")
-
-            return;
+        if (!(await permissionRolesCount(
+                interaction,
+                function isNotZero(size: Number){return size !== 0}))) {
+            return
         }
 
         const key = interaction.options.getString(RequiredKeyOptionName);

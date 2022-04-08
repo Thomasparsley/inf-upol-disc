@@ -7,6 +7,7 @@ export interface CommandArgs {
     commands: Map<string, Command>;
     reply: (content: string) => Promise<void>;
     replySilent: (content: string) => Promise<void>;
+    permissionRolesCount: (interaction: CommandInteraction, predicate: Function) => Promise<Boolean>;
 }
 export type CommandAction = (args: CommandArgs) => Awaitable<void>
 

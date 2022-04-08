@@ -16,7 +16,13 @@ export const everyRequest = new Command(
                 .setDescription("Zadej popisek žádosti o everyone.")
                 .setRequired(true);
         }),
-    async ({ interaction, client,replySilent }) => {
+    async ({ interaction, client, replySilent, permissionRolesCount }) => {
+
+        if (!(await permissionRolesCount(
+                interaction,
+                function isZero(size: Number){return size === 0}))) {
+            return
+        }
         
         const sender = interaction.member
         const senderRoom = interaction.channel

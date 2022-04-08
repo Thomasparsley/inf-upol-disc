@@ -11,18 +11,14 @@ export const commandHost = new Command(
     "host",
     "Po odeslání obdržíš roli @Návštěvník.",
     new SlashCommandBuilder(),
-    async ({ interaction, client, replySilent }) => {
+    async ({ interaction, client, replySilent, permissionRolesCount }) => {
 
         const roles = (interaction.member?.roles as GuildMemberRoleManager)
         
-        if (!roles) {
-            replySilent("Error: host#1")
-
-            return;
-        } else if (roles.cache.size !== 0) {
-            replySilent("Nemáš oprávnění pro tento příkaz!")
-
-            return;
+        if (!(await permissionRolesCount(
+                interaction,
+                function isNotZero(size: Number){return size !== 0}))) {
+            return
         }
 
         if (!roles.cache.has(HostRoleID)) {
