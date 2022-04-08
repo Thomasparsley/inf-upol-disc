@@ -17,55 +17,40 @@ export const roleCommand = new Command(
                 .setDescription("Napiš jméno role.")
                 .setRequired(true);
         }),
-    async ({ interaction }) => {
+    async ({ interaction, replySilent }) => {
 
         if (!interaction.member || !interaction.member.roles) {
-            await interaction.reply({
-                content: 'Error: Role#1',
-                ephemeral: true,
-            });
+            replySilent("Error: Role#1")
+
             return;
         }
            
         const roles = (interaction.member.roles as GuildMemberRoleManager)
         if (!roles.cache.has(StudentID)) {
-            await interaction.reply({
-                content: 'Nemáš oprávnění pro tento příkaz!',
-                ephemeral: true,
-            });
+            replySilent("Nemáš oprávnění pro tento příkaz!")
+            
             return;
         }
         
         const role = (interaction.options.getRole(RequiredRoleOptionName) as Role);
         if (!role) {
-            await interaction.reply({
-                content: 'Error: Role#2',
-                ephemeral: true,
-            });
+            replySilent("Error: Role#2")
+
             return;
         }
 
-        if (!permittedRoleColors
-                .includes(role.hexColor)) {
-            await interaction.reply({
-                content: 'Tuto roli si zvolit nemůžeš.',
-                ephemeral: true,
-            });
+        if (!permittedRoleColors.includes(role.hexColor)) {
+            replySilent("Tuto roli si zvolit nemůžeš.")
+
             return;
         }
 
-        let text;
         if (!roles.cache.has(role.id)) {
             roles.add(role.id);
-            text = "přidána";
+            replySilent(`Role ${role} byla "přidána".`)
         } else {
             roles.remove(role.id);
-            text = "odebrána";
+            replySilent(`Role ${role} byla "odebrána".`)
         }
-
-        await interaction.reply({
-            content: `Role ${role} byla ${text}.`,
-            ephemeral: true,
-        });
     },
 );

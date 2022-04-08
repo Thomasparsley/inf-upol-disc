@@ -16,33 +16,26 @@ export const everyRequest = new Command(
                 .setDescription("Zadej popisek žádosti o everyone.")
                 .setRequired(true);
         }),
-    async ({ interaction, client }) => {
+    async ({ interaction, client,replySilent }) => {
         
         const sender = interaction.member
         const senderRoom = interaction.channel
         const requestText = interaction.options.getString(RequiredOptionRequest);
 
         if (!requestText) {
-            await interaction.reply({
-                content: `Popisek žádosti nemůže být prázdný.`,
-                ephemeral: true,
-            });
+            replySilent("Popisek žádosti nemůže být prázdný.")
+            
             return;
         }
 
         const channel = (client.channels.cache.get(RequestChannelID) as TextChannel);
         if (!channel) {
-            await interaction.reply({
-                content: 'Error: everyoneRequest#1',
-                ephemeral: true,
-            });
-        } else {
-            channel.send(`Uživatel ${sender} zažádal v ${senderRoom} o everyone. Důvod žádost: ${requestText}`);
-        }
+            replySilent("Error: everyoneRequest#1")
 
-        await interaction.reply({
-            content: "Žádost byla odeslána.",
-            ephemeral: true,
-        });
+            return
+        } 
+
+        channel.send(`Uživatel ${sender} zažádal v ${senderRoom} o everyone. Důvod žádost: ${requestText}`);
+        replySilent("Žádost byla odeslána.")
     },
 );

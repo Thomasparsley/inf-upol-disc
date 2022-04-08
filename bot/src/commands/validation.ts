@@ -15,22 +15,16 @@ export const validationCommand = new Command(
                 .setDescription("Zadejte validační klíč.")
                 .setRequired(true);
         }),
-    async ({ interaction }) => {
+    async ({ interaction, replySilent }) => {
 
         const roles = (interaction.member?.roles as GuildMemberRoleManager)
         
         if (!roles) {
-            await interaction.reply({
-                content: 'Error: validation#1',
-                ephemeral: true,
-            });
+            replySilent("Error: validation#1")
 
             return;
         } else if (roles.cache.size !== 0) {
-            await interaction.reply({
-                content: 'Nemáš oprávnění pro tento příkaz!',
-                ephemeral: true,
-            });
+            replySilent("Nemáš oprávnění pro tento příkaz!")
 
             return;
         }
@@ -38,17 +32,11 @@ export const validationCommand = new Command(
         const key = interaction.options.getString(RequiredKeyOptionName);
 
         if (key !== "1234567") {
-            await interaction.reply({
-                content: "Zadali jste invalidní klíč.",
-                ephemeral: true,
-            });
+            replySilent("Zadali jste invalidní klíč.")
+
             return;
         }
 
-        await interaction.reply({
-            content: "Úspěšně jste se ověřil.",
-            ephemeral: true,
-        });
-        
+        replySilent("Úspěšně jste se ověřil.")
     },
 );

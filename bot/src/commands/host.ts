@@ -11,22 +11,16 @@ export const commandHost = new Command(
     "host",
     "Po odeslání obdržíš roli @Návštěvník.",
     new SlashCommandBuilder(),
-    async ({ interaction, client }) => {
+    async ({ interaction, client, replySilent }) => {
 
         const roles = (interaction.member?.roles as GuildMemberRoleManager)
         
         if (!roles) {
-            await interaction.reply({
-                content: 'Error: host#1',
-                ephemeral: true,
-            });
+            replySilent("Error: host#1")
 
             return;
         } else if (roles.cache.size !== 0) {
-            await interaction.reply({
-                content: 'Nemáš oprávnění pro tento příkaz!',
-                ephemeral: true,
-            });
+            replySilent("Nemáš oprávnění pro tento příkaz!")
 
             return;
         }
@@ -34,26 +28,15 @@ export const commandHost = new Command(
         if (!roles.cache.has(HostRoleID)) {
             roles.add(HostRoleID);
         } else {
-            await interaction.reply({
-                content: `Tuto roli již máš.`,
-                ephemeral: true,
-            });
+            replySilent("Tuto roli již máš.")
         }
 
         const HostRole = interaction.guild?.roles.cache.get(HostRoleID)
         
         if (!HostRole) {
-            await interaction.reply({
-                content: `Byla ti přidělena role ${HostRoleID}`,
-                ephemeral: true,
-            });
-
-            return
+            replySilent(`Byla ti přidělena role ${HostRoleID}`)
+        } else {
+            replySilent("Byla ti přidělena role Návštěvník")
         }
-        
-        await interaction.reply({
-            content: `Byla ti přidělena role Návštěvník`,
-            ephemeral: true,
-        });
     },
 );
