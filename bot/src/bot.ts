@@ -1,4 +1,4 @@
-import { Awaitable, CacheType, Client, Intents, Interaction } from "discord.js";
+import { Awaitable, CacheType, Client, Intents, Interaction, MessageReaction, User } from "discord.js";
 import { Routes } from "discord-api-types/v9";
 import { REST } from "@discordjs/rest";
 
@@ -16,6 +16,10 @@ export class Bot {
     private token: string;
     private onReady: OnReadyAction
         = async (args: OnReadyArgs) => {}
+    private onReactionAdd: onReactionAddAction
+        = async (args: OnReactionAddArgs) => {}
+    private onReactionRemove: onReactionRemoveAction
+        = async (args: OnReactionRemoveArgs) => {}
     private onInteractionCreate: OnInteractionCreateAction
         = async (args: OnInteractionCreateArgs) => {}
 
@@ -41,11 +45,21 @@ export class Bot {
             this.onReady = config.onReady;
         }
 
+        if (config.onReactionAdd) {
+            this.onReactionAdd = config.onReactionAdd;
+        }
+
+        if (config.onReactionRemove) {
+            this.onReactionRemove = config.onReactionRemove;
+        }
+
         if (config.onInteractionCreate) {
             this.onInteractionCreate = config.onInteractionCreate;
         }
 
         this.initOnReady();
+        this.initOnReactionAdd();
+        this.initOnReactionRemove();
         this.initOnInteractionCreate();
     }
 
@@ -57,6 +71,32 @@ export class Bot {
             };
 
             this.onReady(args);
+        });
+    }
+
+    private initOnReactionAdd() {
+        this.client.on('messsageReactionAdd', (messageReaction, user) => {
+            const args: OnReactionAddArgs = {
+                client: this.client,
+                reaction: messageReaction,
+                user: user,
+                commands: this.commands,
+            };
+        
+            this.onReactionAdd(args);
+        });
+    }
+
+    private initOnReactionRemove() {
+        this.client.on('messsageReactionRemove', (messageReaction, user) => {
+            const args: OnReactionRemoveArgs = {
+                client: this.client,
+                reaction: messageReaction,
+                user: user,
+                commands: this.commands,
+            };
+    
+            this.onReactionRemove(args);
         });
     }
 
@@ -103,6 +143,8 @@ interface BotConfig {
     guildId: string;
     commands?: Command[];
     onReady?: OnReadyAction;
+    onReactionAdd?: onReactionAddAction;
+    onReactionRemove?: onReactionRemoveAction;
     onInteractionCreate?: OnInteractionCreateAction;
 }
 
@@ -110,11 +152,31 @@ export interface OnReadyArgs {
     client: Client;
     commands: Map<string, Command>;
 }
+
 export type OnReadyAction = (args: OnReadyArgs) => Awaitable<void>
+
+export interface OnReactionAddArgs {
+    client: Client;
+    reaction: MessageReaction; 
+    user: User;
+    commands: Map<string, Command>;
+}
+
+export type onReactionAddAction = (args: OnReactionAddArgs) => Awaitable<void>
+
+export interface OnReactionRemoveArgs {
+    client: Client;
+    reaction: MessageReaction; 
+    user: User;
+    commands: Map<string, Command>;
+}
+
+export type onReactionRemoveAction = (args: OnReactionRemoveArgs) => Awaitable<void>
 
 export interface OnInteractionCreateArgs {
     client: Client;
     interaction: Interaction<CacheType>;
     commands: Map<string, Command>;
 }
+
 export type OnInteractionCreateAction = (args: OnInteractionCreateArgs) => Awaitable<void>
