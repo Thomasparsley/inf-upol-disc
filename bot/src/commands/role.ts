@@ -17,19 +17,10 @@ export const roleCommand = new Command(
                 .setDescription("Napiš jméno role.")
                 .setRequired(true);
         }),
-    async ({ interaction, replySilent }) => {
+    async ({ interaction, replySilent, permissionRole }) => {
 
-        if (!interaction.member || !interaction.member.roles) {
-            replySilent("Error: Role#1")
-
-            return;
-        }
-           
-        const roles = (interaction.member.roles as GuildMemberRoleManager)
-        if (!roles.cache.has(StudentID)) {
-            replySilent("Nemáš oprávnění pro tento příkaz!")
-            
-            return;
+        if (!(await permissionRole(interaction, StudentID))) {
+            return
         }
         
         const role = (interaction.options.getRole(RequiredRoleOptionName) as Role);
@@ -45,6 +36,7 @@ export const roleCommand = new Command(
             return;
         }
 
+        const roles = (interaction.member?.roles as GuildMemberRoleManager)
         if (!roles.cache.has(role.id)) {
             roles.add(role.id);
             replySilent(`Role ${role} byla "přidána".`)

@@ -60,6 +60,26 @@ const event: OnInteractionCreateAction = async (args) => {
 
                 return true
             },
+            permissionRole: async (interaction: CommandInteraction, roleID: string): Promise<Boolean> => {                 
+                const roles = (interaction.member?.roles as GuildMemberRoleManager)
+                if (!roles) {
+                    await interaction.reply({
+                        content: "Error: permissionRole#1",
+                        ephemeral: true,
+                    });
+        
+                    return false;
+                } else if (!roles.cache.has(roleID)) {
+                    await interaction.reply({
+                        content: "Nemáš oprávnění pro tento příkaz!",
+                        ephemeral: true,
+                    });
+                    
+                    return false;
+                }
+
+                return true
+            },
         }
 
         await command.execute(commandArgs);
