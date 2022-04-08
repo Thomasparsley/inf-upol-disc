@@ -7,6 +7,9 @@ export const pingCommand = new Command(
     "Na každý `ping` odpoví `pong`.",
     new SlashCommandBuilder(),
     async ({ interaction }) => {
-        await interaction.reply("pong");
+        await interaction.reply({
+            content: 'Pong!',
+            ephemeral: true,
+        });
     },
 );

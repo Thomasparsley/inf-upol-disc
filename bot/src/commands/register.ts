@@ -58,12 +58,14 @@ export const commandRegister = new Command(
                 content: 'Error: regiter#1',
                 ephemeral: true,
             });
+
             return;
         } else if (roles.cache.size === 0) {
             await interaction.reply({
                 content: 'Nemáš oprávnění pro tento příkaz!',
                 ephemeral: true,
             });
+            
             return;
         }
 
