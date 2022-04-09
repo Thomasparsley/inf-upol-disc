@@ -14,7 +14,7 @@ export const botMessage = new Command(
         .addSubcommand(subcommand => {
             return subcommand
                 .setName(SubCommandAdd)
-                .setDescription('Pošle zprávu pomocí bota.')
+                .setDescription("Pošle zprávu pomocí bota.")
                 .addStringOption(option => {
                     return option
                         .setName(RequiredOptionText)
@@ -25,7 +25,7 @@ export const botMessage = new Command(
         .addSubcommand(subcommand => {
             return subcommand
                 .setName(SubCommandEdit)
-                .setDescription('Upraví zprávu pomocí bota.')
+                .setDescription("Upraví zprávu pomocí bota.")
                 .addStringOption(option => {
                     return option
                         .setName(RequiredOptionMessageID)
@@ -49,6 +49,8 @@ export const botMessage = new Command(
                 channel.send(text);
             } else {
                 replySilent("Error botmessage#1")
+
+                return
             }
 
         } else if (interaction.options.getSubcommand() === SubCommandEdit) { 
@@ -58,15 +60,25 @@ export const botMessage = new Command(
             
             if (channel && messageID && text) {
                 const message = await channel.messages.fetch(messageID)
+
+                if (!message) {
+                    replySilent("Error botmessage#2")
+
+                    return
+                }
                 
-                if (message) {
+                if (message.author === client.user) {
                     message.edit(text)
                 } else {
-                    replySilent("Error botmessage#2")
+                    replySilent("Bot může upravovat jen svoje zprávy!")
+
+                    return
                 }
 
             } else {
                 replySilent("Error botmessage#3")
+
+                return
             }
         }
         
