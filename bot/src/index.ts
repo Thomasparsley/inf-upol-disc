@@ -13,6 +13,7 @@ import {
     commandCmdreg,
     commandRegister,
     commandHost,
+    reactionMessage,
     botMessage,
 } from "./commands";
 
@@ -36,6 +37,7 @@ const bot = new Bot({
         commandCmdreg,
         commandRegister,
         commandHost,
+        reactionMessage,
         botMessage,
     ],
 });

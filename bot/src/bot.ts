@@ -11,7 +11,7 @@ export class Bot {
     client: Client;
     rest: REST;
     commands: Map<string, Command>;
-    reactionMessages: Map<Message, Map<Emoji, Role>>;
+    reactionMessages: Map<Message, Map<String, Role>>;
     private applicationId: string;
     private guildId: string;
     private token: string;
@@ -158,7 +158,7 @@ interface BotConfig {
     token: string;
     applicationId: string;
     guildId: string;
-    // reactionMessages: Map<Message, Map<Emoji, Role>>;
+    // reactionMessages: Map<Message, Map<String, Role>>;
     commands?: Command[];
     onReady?: OnReadyAction;
     onReactionAdd?: onReactionAddAction;

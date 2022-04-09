@@ -6,4 +6,5 @@ export * from "./ping";
 export * from "./role";
 export * from "./register";
 export * from "./host";
+export * from "./reactionMessage";
 export * from "./botmessage";
