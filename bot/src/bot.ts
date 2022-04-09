@@ -64,19 +64,19 @@ export class Bot {
     }
 
     private initOnReady() {
-        this.client.on('ready', () => {
+        this.client.on('ready', async () => {
             const args: OnReadyArgs = {
                 client: this.client,
                 commands: this.commands,
             };
             console.log("x")
 
-            this.onReady(args);
+            await this.onReady(args);
         });
     }
 
     private initOnReactionAdd() {
-        this.client.on('messageReactionAdd', (messageReaction, user) => {
+        this.client.on('messageReactionAdd', async (messageReaction, user) => {
             const args: OnReactionAddArgs = {
                 client: this.client,
                 reaction: messageReaction,
@@ -86,12 +86,12 @@ export class Bot {
             
             console.log("y")
         
-            this.onReactionAdd(args);
+            await this.onReactionAdd(args);
         });
     }
 
     private initOnReactionRemove() {
-        this.client.on('messageReactionRemove', (messageReaction, user) => {
+        this.client.on('messageReactionRemove', async (messageReaction, user) => {
             const args: OnReactionRemoveArgs = {
                 client: this.client,
                 reaction: messageReaction,
@@ -99,19 +99,19 @@ export class Bot {
                 commands: this.commands,
             };
     
-            this.onReactionRemove(args);
+            await this.onReactionRemove(args);
         });
     }
 
     private initOnInteractionCreate() {
-        this.client.on('interactionCreate', (interaction) => {
+        this.client.on('interactionCreate', async (interaction) => {
             const args: OnInteractionCreateArgs = {
                 client: this.client,
-                interaction,
+                interaction: interaction,
                 commands: this.commands,
             };
 
-            this.onInteractionCreate(args);
+            await this.onInteractionCreate(args);
         });
     }
 
