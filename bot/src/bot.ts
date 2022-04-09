@@ -31,7 +31,11 @@ export class Bot {
         this.token = config.token;
 
         this.client = new Client({
-            intents: [Intents.FLAGS.GUILDS],
+            intents: [
+                Intents.FLAGS.GUILDS,
+                Intents.FLAGS.GUILD_MESSAGES,
+                Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+            ],
         });
 
         this.rest = new REST({ version: REST_VERSION })
