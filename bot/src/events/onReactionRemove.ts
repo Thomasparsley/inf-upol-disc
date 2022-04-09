@@ -1,7 +1,7 @@
 import { onReactionRemoveAction } from "../bot";
 
-const event: onReactionRemoveAction = async ({ client, reaction, user }) => {
-    console.log(`${user} smazal reakci ${reaction}!`);
+const event: onReactionRemoveAction = async ({ reaction, user }) => {
+    console.log(`${user.username} smazal reakci ${reaction.emoji}!`);
 }
 
 export default event

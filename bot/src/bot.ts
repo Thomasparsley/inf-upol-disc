@@ -36,6 +36,11 @@ export class Bot {
                 Intents.FLAGS.GUILD_MESSAGES,
                 Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
             ],
+            partials : [
+                'MESSAGE', 
+                'CHANNEL', 
+                'REACTION'
+            ],
         });
 
         this.rest = new REST({ version: REST_VERSION })
