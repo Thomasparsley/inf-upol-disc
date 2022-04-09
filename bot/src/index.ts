@@ -12,7 +12,8 @@ import {
     everyRequest,
     commandCmdreg,
     commandRegister,
-    commandHost
+    commandHost,
+    botMessage,
 } from "./commands";
 
 const { token, ApplicationID, GuildID  } = require('./token.json');
@@ -20,6 +21,7 @@ const { token, ApplicationID, GuildID  } = require('./token.json');
 const bot = new Bot({
     token: token,
     applicationId: ApplicationID,
+    // reactionMessages: new Map,
     guildId: GuildID,
     onReady: onReady,
     onReactionAdd: onReactionAdd,
@@ -34,6 +36,7 @@ const bot = new Bot({
         commandCmdreg,
         commandRegister,
         commandHost,
+        botMessage,
     ],
 });
 

@@ -1,4 +1,4 @@
-import { Awaitable, CacheType, Client, Intents, Interaction, MessageReaction, PartialMessageReaction, PartialUser, User } from "discord.js";
+import { Awaitable, CacheType, Client, Emoji, Intents, Interaction, Message, MessageReaction, PartialMessageReaction, PartialUser, Role, User } from "discord.js";
 import { Routes } from "discord-api-types/v9";
 import { REST } from "@discordjs/rest";
 
@@ -11,6 +11,7 @@ export class Bot {
     client: Client;
     rest: REST;
     commands: Map<string, Command>;
+    reactionMessages: Map<Message, Map<Emoji, Role>>;
     private applicationId: string;
     private guildId: string;
     private token: string;
@@ -26,6 +27,7 @@ export class Bot {
     
     constructor(config: BotConfig) {
         this.commands = new Map<string, Command>();
+        this.reactionMessages = new Map<Message, Map<Emoji, Role>>();
         this.applicationId = config.applicationId;
         this.guildId = config.guildId;
         this.token = config.token;
@@ -39,7 +41,7 @@ export class Bot {
             partials : [
                 'MESSAGE', 
                 'CHANNEL', 
-                'REACTION'
+                'REACTION',
             ],
         });
 
@@ -49,6 +51,10 @@ export class Bot {
         if (config.commands) {
             this.initCommands(config.commands);
         }
+
+        // if (config.reactionMessages) {
+        //     this.initReactionMessages(config.reactionMessages);
+        // }
 
         if (config.onReady) {
             this.onReady = config.onReady;
@@ -78,7 +84,6 @@ export class Bot {
                 client: this.client,
                 commands: this.commands,
             };
-            console.log("x")
 
             await this.onReady(args);
         });
@@ -92,8 +97,6 @@ export class Bot {
                 user: user,
                 commands: this.commands,
             };
-            
-            console.log("y")
         
             await this.onReactionAdd(args);
         });
@@ -130,6 +133,8 @@ export class Bot {
         });
     }
 
+    // private initReactionMessages() {}
+
     public async login() {
         await this.client.login(this.token);
     }
@@ -153,6 +158,7 @@ interface BotConfig {
     token: string;
     applicationId: string;
     guildId: string;
+    // reactionMessages: Map<Message, Map<Emoji, Role>>;
     commands?: Command[];
     onReady?: OnReadyAction;
     onReactionAdd?: onReactionAddAction;
