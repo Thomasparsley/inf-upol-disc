@@ -84,7 +84,7 @@ export class Bot {
 
     public async registerSlashCommands(commands: Command[]) {
         const slashCommands = commands.map((command) => {
-            return (command.getBuilder() as SlashCommandBuilder).toJSON()
+            return command.getBuilder().toJSON()
         });
 
         const path = Routes.applicationGuildCommands(this.applicationId, this.guildId);
