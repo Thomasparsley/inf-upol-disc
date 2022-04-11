@@ -43,7 +43,7 @@ export const botMessage = new Command(
                         .setDescription("Nový text zprávy.")
                         .setRequired(true);
                 })
-            })
+        })
         .addSubcommand(subcommand => {
             return subcommand
                 .setName(SubCommandFetch)
@@ -60,8 +60,8 @@ export const botMessage = new Command(
                         .setDescription("URL adresa.")
                         .setRequired(true);
                 })
-            }),
-    async (args) => { 
+        }),
+    async (args) => {
         const { interaction, replySilent, permissionRole } = args;
 
         const isRoot = await permissionRole(rootID);
@@ -84,12 +84,12 @@ export const botMessage = new Command(
             case SubCommandFetch:
                 await commandFetch(args);
                 break;
-        
+
             default:
                 await replySilent("Marek.") // WIP <--
                 return;
         }
-        
+
         await replySilent("Akce byla provedena.")
     },
 );
@@ -104,7 +104,7 @@ async function commandAdd(args: CommandArgs): Promise<void> {
         channel.send(text);
         return;
     }
-    
+
     await replySilent("Error botmessage#1");
 }
 
@@ -114,7 +114,7 @@ async function commandEdit(args: CommandArgs): Promise<void> {
     const channel = interaction.channel;
     const messageID = interaction.options.getString(RequiredOptionMessageID)?.trim();
     const text = interaction.options.getString(RequiredOptionText);
-    
+
     if (channel && messageID && text) {
         const message = await channel.messages.fetch(messageID);
 
@@ -122,13 +122,13 @@ async function commandEdit(args: CommandArgs): Promise<void> {
             await replySilent("Error botmessage#2");
             return;
         }
-        
-        if (message.author === client.user) {
-            message.edit(text)
-        } else {
-            await replySilent("Bot může upravovat jen svoje zprávy!");
+
+        if (message.author !== client.user) {
+            await replySilent("Bot může upravovat jen svoje zprávy!"); // <-- Move into VOC
         }
-        
+
+        message.edit(text);
+
         return;
     }
 
@@ -136,22 +136,42 @@ async function commandEdit(args: CommandArgs): Promise<void> {
 }
 
 async function commandFetch(args: CommandArgs): Promise<void> {
-    const { interaction, replySilent } = args;
-    
+    const { client, interaction, replySilent } = args;
+
+    const channel = interaction.channel;
+    const messageID = interaction.options.getString(RequiredOptionMessageID)?.trim();
     const url = interaction.options.getString(RequiredOptionText);
+
+    if (!channel || !messageID || !url) {
+        // Reply with error
+        return;
+    }
+
+    const message = await channel.messages.fetch(messageID);
+
+    if (message.author !== client.user) {
+        await replySilent("Bot může upravovat jen svoje zprávy!"); // <-- Move into VOC
+        return;
+    }
+
+
+    if (!url) {
+        return;
+    }
 
     // valid?
 
+    let data: string = "";
     try {
-        const { data } = await axios.get("URL MAREK");
+        const response = await axios.get(url);
+        data = (response.data as string);
+    } catch (err) {
+        console.error(err);
+        // Reply with error
 
-        if (message.author === client.user) {
-            message.edit(text)
-        } else {
-            await replySilent("Bot může upravovat jen svoje zprávy!");
-        }
-    } catch (error) {
-        
+        return;
     }
+
+    message.edit(data);
 
 }
