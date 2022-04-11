@@ -14,8 +14,8 @@ export const commandCmdreg = new Command(
                 .setDescription("Jméno příkazu k registraci.")
                 .setRequired(true);
         }),
-    async ({ interaction, commands, commandRegistration }) => {
-        
+    async ({ commands, commandRegistration }) => {
+
         const command = commands.get("name of command");
 
         if (!command) {

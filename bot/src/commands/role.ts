@@ -36,7 +36,7 @@ export const roleCommand = new Command(
         const isStudent = await permissionRole(StudentID);
         const isStudentColor = isStudent && studentOnlyRoleColors.includes(role.hexColor);
         const isEveryoneColor = everyoneRoleColors.includes(role.hexColor);
-        
+
         if (!isStudentColor && !isEveryoneColor) {
             await replySilent("Tuto roli si zvolit nemůžeš.");
             return;
@@ -47,14 +47,14 @@ export const roleCommand = new Command(
             await replySilent("Error: role#2");
             return;
         }
-        
+
         if (!roles.cache.has(role.id)) {
             roles.add(role.id);
             await replySilent(`Role ${role} byla **přidána**.`);
 
             return;
         }
-        
+
         roles.remove(role.id);
         await replySilent(`Role ${role} byla **odebrána**.`);
     },

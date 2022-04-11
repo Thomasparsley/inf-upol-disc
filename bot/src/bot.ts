@@ -15,11 +15,11 @@ export class Bot {
     private guildId: string;
     private token: string;
     private onReady: OnReadyAction
-        = async (args: OnReadyArgs) => {}
+        = async (args: OnReadyArgs) => { }
     private onInteractionCreate: OnInteractionCreateAction
-        = async (args: OnInteractionCreateArgs) => {}
+        = async (args: OnInteractionCreateArgs) => { }
 
-    
+
     constructor(config: BotConfig) {
         this.commands = new Map<string, Command>();
         this.applicationId = config.applicationId;
