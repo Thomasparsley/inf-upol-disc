@@ -24,7 +24,7 @@ export const everyRequest = new Command(
             await replySilent(VOC_HasNotPermission);
             return;
         }
-        
+
         const sender = interaction.member;
         const senderRoom = interaction.channel;
         const requestText = interaction.options.getString(RequiredOptionRequest);
@@ -38,7 +38,7 @@ export const everyRequest = new Command(
         if (!channel) {
             await replySilent("Error: everyoneRequest#1");
             return;
-        } 
+        }
 
         channel.send(`Uživatel ${sender} zažádal v ${senderRoom} o everyone. Důvod žádost: ${requestText}`);
         await replySilent("Žádost byla odeslána.");

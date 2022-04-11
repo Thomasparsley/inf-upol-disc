@@ -22,9 +22,9 @@ export class Bot {
     private onReactionRemove: onReactionRemoveAction
         = async (args: OnReactionRemoveArgs) => {}
     private onInteractionCreate: OnInteractionCreateAction
-        = async (args: OnInteractionCreateArgs) => {}
+        = async (args: OnInteractionCreateArgs) => { }
 
-    
+
     constructor(config: BotConfig) {
         this.commands = new Map<string, Command>();
         this.reactionMessages = new Map<Message, Map<Emoji, Role>>();

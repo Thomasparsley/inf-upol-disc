@@ -1,45 +1,42 @@
-import { CommandInteraction, GuildMemberRoleManager } from "discord.js";
+import { GuildMemberRoleManager } from "discord.js";
 import { OnInteractionCreateAction } from "../bot";
 import { CommandArgs } from "../command";
 
 const event: OnInteractionCreateAction = async (args) => {
-    const { client, interaction, commands } = args;
-    
+    const { client, interaction, commands, commandRegistration } = args;
+
     if (!interaction.isCommand()) {
         return;
     }
 
     const command = commands.get(interaction.commandName);
 
-    if (!command) {
-        try {
-            await interaction.reply({
-                content: 'Neznámý příkaz!',
-                ephemeral: true,
-            });
-        } catch (err) {
-            console.error(err);
-        }
+    const reply = async (content: string): Promise<void> => {
+        return await interaction.reply({
+            content,
+        });
+    }
 
-        return
+    const replySilent = async (content: string): Promise<void> => {
+        return await interaction.reply({
+            content,
+            ephemeral: true,
+        });
     }
 
     try {
+        if (!command) {
+            await replySilent("Neznámý příkaz!");
+            return;
+        }
+
         const commandArgs: CommandArgs = {
             client,
             interaction,
             commands,
-            reply: async (content: string): Promise<void> => {
-                return await interaction.reply({
-                    content,
-                });
-            },
-            replySilent: async (content: string): Promise<void> => {
-                return await interaction.reply({
-                    content,
-                    ephemeral: true,
-                });
-            },
+            commandRegistration,
+            reply,
+            replySilent,
             permissionRolesCount: async (predicate: Function): Promise<Boolean> => {
                 const roles = (interaction.member?.roles as GuildMemberRoleManager)
                 if (!roles) {
@@ -47,29 +44,29 @@ const event: OnInteractionCreateAction = async (args) => {
                         content: "Error: permissionRolesCount#1",
                         ephemeral: true,
                     });
-        
+
                     return false;
                 }
 
                 return predicate(roles.cache.size);
             },
-            permissionRole: async (roleID: string): Promise<Boolean> => {                 
+            permissionRole: async (roleID: string): Promise<Boolean> => {
                 const roles = (interaction.member?.roles as GuildMemberRoleManager)
                 if (!roles) {
                     await interaction.reply({
                         content: "Error: permissionRole#1",
                         ephemeral: true,
                     });
-        
+
                     return false;
                 }
-                
+
                 if (!roles.cache.has(roleID)) {
                     await interaction.reply({
                         content: "Nemáš oprávnění pro tento příkaz!",
                         ephemeral: true,
                     });
-                    
+
                     return false;
                 }
 
@@ -81,10 +78,7 @@ const event: OnInteractionCreateAction = async (args) => {
 
     } catch (err) {
         console.error(err);
-        await interaction.reply({
-            content: 'There was an error while executing this command!',
-            ephemeral: true,
-        });
+        await replySilent("There was an error while executing this command!");
     }
 }
 

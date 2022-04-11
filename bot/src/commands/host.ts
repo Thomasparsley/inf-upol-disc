@@ -14,10 +14,10 @@ export const commandHost = new Command(
 
         const roles = (interaction.member?.roles as GuildMemberRoleManager);
         if (roles.cache.has(HostRoleID)) {
-            replySilent("Tuto roli již máš.");
+            await replySilent("Tuto roli již máš.");
             return;
         }
-        
+
         const hasPermission = await permissionRolesCount((size: Number) => size === 0);
         if (!hasPermission) {
             await replySilent(VOC_HasNotPermission);
@@ -26,11 +26,11 @@ export const commandHost = new Command(
 
         roles.add(HostRoleID);
         const HostRole = interaction.guild?.roles.cache.get(HostRoleID);
-        
+
         if (!HostRole) {
-            replySilent(`Byla ti přidělena role ${HostRoleID}`);
+            await replySilent(`Byla ti přidělena role ${HostRoleID}`);
         } else {
-            replySilent("Byla ti přidělena role Návštěvník");
+            await replySilent("Byla ti přidělena role Návštěvník");
         }
     },
 );

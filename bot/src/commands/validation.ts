@@ -16,7 +16,7 @@ export const validationCommand = new Command(
                 .setRequired(true);
         }),
     async ({ interaction, replySilent, permissionRolesCount }) => {
-        
+
         const hasPermission = await permissionRolesCount((size: Number) => size === 0);
         if (!hasPermission) {
             await replySilent(VOC_HasNotPermission);
