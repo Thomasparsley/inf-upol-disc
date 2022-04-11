@@ -4,8 +4,6 @@ import { Bot } from "./bot";
 
 import {
     validationCommand,
-    pingCommand,
-    helpCommand,
     roleCommand,
     everyRequest,
     commandCmdreg,
@@ -23,8 +21,6 @@ const bot = new Bot({
     onInteractionCreate: onInteractionCreate,
     commands: [
         validationCommand,
-        pingCommand,
-        helpCommand,
         roleCommand,
         everyRequest,
         commandCmdreg,

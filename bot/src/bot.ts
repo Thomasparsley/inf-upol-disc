@@ -66,6 +66,7 @@ export class Bot {
                 client: this.client,
                 interaction,
                 commands: this.commands,
+                commandRegistration: this.registerSlashCommands,
             };
 
             this.onInteractionCreate(args);
@@ -116,5 +117,6 @@ export interface OnInteractionCreateArgs {
     client: Client;
     interaction: Interaction<CacheType>;
     commands: Map<string, Command>;
+    commandRegistration: (commands: Command[]) => Promise<void>;
 }
 export type OnInteractionCreateAction = (args: OnInteractionCreateArgs) => Awaitable<void>

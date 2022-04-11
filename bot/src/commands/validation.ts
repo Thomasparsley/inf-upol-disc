@@ -1,36 +1,37 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { GuildMemberRoleManager } from "discord.js";
 
+import { VOC_HasNotPermission } from "../vocabulary";
 import { Command } from "../command";
 
 const RequiredKeyOptionName = "key";
 
 export const validationCommand = new Command(
     "validace",
-    "Na každý `validation` odpoví `pong`.",
+    "Tento příkaz slouží k validaci účtu.",
     new SlashCommandBuilder()
         .addStringOption(option => {
             return option
                 .setName(RequiredKeyOptionName)
-                .setDescription("Zadejte validační klíč.")
+                .setDescription("Zadejte validační klíč. Pokud nemáš klíč tak použí příkaz register.")
                 .setRequired(true);
         }),
     async ({ interaction, replySilent, permissionRolesCount }) => {
         
-        if (!(await permissionRolesCount(
-                interaction,
-                function isNotZero(size: Number){return size !== 0}))) {
-            return
-        }
-
-        const key = interaction.options.getString(RequiredKeyOptionName);
-
-        if (key !== "1234567") {
-            replySilent("Zadali jste invalidní klíč.")
-
+        const hasPermission = await permissionRolesCount((size: Number) => size === 0);
+        if (!hasPermission) {
+            await replySilent(VOC_HasNotPermission);
             return;
         }
 
-        replySilent("Úspěšně jste se ověřil.")
+        const userInput = interaction.options.getString(RequiredKeyOptionName);
+
+        // getKeyFromDatabase
+
+        if (userInput !== "1234567") {
+            replySilent("Zadali jste invalidní klíč.");
+            return;
+        }
+
+        replySilent("Úspěšně jste se ověřil.");
     },
 );
