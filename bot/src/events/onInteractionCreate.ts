@@ -40,7 +40,7 @@ const event: OnInteractionCreateAction = async (args) => {
                     ephemeral: true,
                 });
             },
-            permissionRolesCount: async (interaction: CommandInteraction, predicate: Function): Promise<Boolean> => {
+            permissionRolesCount: async (predicate: Function): Promise<Boolean> => {
                 const roles = (interaction.member?.roles as GuildMemberRoleManager)
                 if (!roles) {
                     await interaction.reply({
@@ -49,18 +49,11 @@ const event: OnInteractionCreateAction = async (args) => {
                     });
         
                     return false;
-                } else if (predicate(roles.cache.size)) {
-                    await interaction.reply({
-                        content: "Nemáš oprávnění pro tento příkaz!",
-                        ephemeral: true,
-                    });
-                    
-                    return false;
                 }
 
-                return true
+                return predicate(roles.cache.size);
             },
-            permissionRole: async (interaction: CommandInteraction, roleID: string): Promise<Boolean> => {                 
+            permissionRole: async (roleID: string): Promise<Boolean> => {                 
                 const roles = (interaction.member?.roles as GuildMemberRoleManager)
                 if (!roles) {
                     await interaction.reply({
@@ -69,7 +62,9 @@ const event: OnInteractionCreateAction = async (args) => {
                     });
         
                     return false;
-                } else if (!roles.cache.has(roleID)) {
+                }
+                
+                if (!roles.cache.has(roleID)) {
                     await interaction.reply({
                         content: "Nemáš oprávnění pro tento příkaz!",
                         ephemeral: true,
@@ -83,6 +78,7 @@ const event: OnInteractionCreateAction = async (args) => {
         }
 
         await command.execute(commandArgs);
+
     } catch (err) {
         console.error(err);
         await interaction.reply({

@@ -121,6 +121,7 @@ export class Bot {
                 client: this.client,
                 interaction: interaction,
                 commands: this.commands,
+                commandRegistration: this.registerSlashCommands,
             };
 
             await this.onInteractionCreate(args);
@@ -141,7 +142,7 @@ export class Bot {
 
     public async registerSlashCommands(commands: Command[]) {
         const slashCommands = commands.map((command) => {
-            return (command.getBuilder() as SlashCommandBuilder).toJSON()
+            return command.getBuilder().toJSON()
         });
 
         const path = Routes.applicationGuildCommands(this.applicationId, this.guildId);
@@ -195,6 +196,7 @@ export interface OnInteractionCreateArgs {
     client: Client;
     interaction: Interaction<CacheType>;
     commands: Map<string, Command>;
+    commandRegistration: (commands: Command[]) => Promise<void>;
 }
 
 export type OnInteractionCreateAction = (args: OnInteractionCreateArgs) => Awaitable<void>

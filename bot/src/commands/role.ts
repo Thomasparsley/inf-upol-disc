@@ -1,11 +1,13 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { GuildMemberRoleManager, Role } from "discord.js";
 
+import { VOC_HasNotPermission } from "../vocabulary";
 import { Command } from "../command";
 
 const StudentID = "960478701684936734";
-const RequiredRoleOptionName = "nazev_role";
-const permittedRoleColors = ["#9b59b6", "#607d8b", "#1abc9c"]
+const RequiredRoleOptionName = "role";
+const everyoneRoleColors = ["#9b59b6", "#1abc9c"] // programovací jazyky (fialová), oznámení (zelená)
+const studentOnlyRoleColors = ["#33aadd", "#95a5a6"] // obory (modrá), předměty (šedá)
 
 export const roleCommand = new Command(
     "role",
@@ -17,32 +19,43 @@ export const roleCommand = new Command(
                 .setDescription("Napiš jméno role.")
                 .setRequired(true);
         }),
-    async ({ interaction, replySilent, permissionRole }) => {
+    async ({ interaction, replySilent, permissionRole, permissionRolesCount }) => {
 
-        if (!(await permissionRole(interaction, StudentID))) {
-            return
-        }
-        
         const role = (interaction.options.getRole(RequiredRoleOptionName) as Role);
         if (!role) {
-            replySilent("Error: Role#2")
-
+            await replySilent("Error: role#1");
             return;
         }
 
-        if (!permittedRoleColors.includes(role.hexColor)) {
-            replySilent("Tuto roli si zvolit nemůžeš.")
-
+        const hasPermission = await permissionRolesCount((size: Number) => size > 0);
+        if (!hasPermission) {
+            await replySilent(VOC_HasNotPermission);
             return;
         }
 
-        const roles = (interaction.member?.roles as GuildMemberRoleManager)
+        const isStudent = await permissionRole(StudentID);
+        const isStudentColor = isStudent && studentOnlyRoleColors.includes(role.hexColor);
+        const isEveryoneColor = everyoneRoleColors.includes(role.hexColor);
+        
+        if (!isStudentColor && !isEveryoneColor) {
+            await replySilent("Tuto roli si zvolit nemůžeš.");
+            return;
+        }
+
+        const roles = (interaction.member?.roles as GuildMemberRoleManager);
+        if (!roles) {
+            await replySilent("Error: role#2");
+            return;
+        }
+        
         if (!roles.cache.has(role.id)) {
             roles.add(role.id);
-            replySilent(`Role ${role} byla "přidána".`)
-        } else {
-            roles.remove(role.id);
-            replySilent(`Role ${role} byla "odebrána".`)
+            await replySilent(`Role ${role} byla **přidána**.`);
+
+            return;
         }
+        
+        roles.remove(role.id);
+        await replySilent(`Role ${role} byla **odebrána**.`);
     },
 );

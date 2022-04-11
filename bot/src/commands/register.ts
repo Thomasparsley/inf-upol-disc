@@ -1,9 +1,8 @@
 import crypto from "crypto";
 
 import { SlashCommandBuilder } from "@discordjs/builders";
-
+import { VOC_HasNotPermission } from "../vocabulary";
 import { Command } from "../command";
-import { GuildMemberRoleManager } from "discord.js";
 
 const RequiredOptionEmail = "email";
 const VerificationCodeLength = 6;
@@ -34,22 +33,21 @@ export const commandRegister = new Command(
         }),
     async ({ interaction, replySilent, permissionRolesCount }) => {
 
-        if (!(await permissionRolesCount(
-                interaction,
-                function isNotZero(size: Number){return size !== 0}))) {
-            return
+        const hasPermission = await permissionRolesCount((size: Number) => size === 0);
+        if (!hasPermission) {
+            await replySilent(VOC_HasNotPermission);
+            return;
         }
         
         const email = interaction.options.getString(RequiredOptionEmail);
-
         if (email === null || !isValidateEmail(email)) {
-            replySilent(`Email není ve správném tvaru ${email}.`)
-
-            return
-        } else if (!isUpolEmail(email)) {
-            replySilent(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`)
-
-            return
+            replySilent(`Email není ve správném tvaru ${email}.`);
+            return;
+        } 
+        
+        if (!isUpolEmail(email)) {
+            replySilent(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`);
+            return;
         }
 
         const verificationCode = crypto
@@ -58,6 +56,6 @@ export const commandRegister = new Command(
 
         // Save verification code to DB and send email.
 
-        replySilent(`Verifikační kod byl zaslán na email: ${email}.`)
+        replySilent(`Verifikační kod byl zaslán na email: ${email}.`);
     },
 );
