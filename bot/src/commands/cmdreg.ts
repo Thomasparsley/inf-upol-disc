@@ -6,7 +6,7 @@ const cmdname = "cmdname";
 
 export const commandCmdreg = new Command(
     "cmdreg",
-    "Zaregistruje command, který je součástí S2A2 botu.",
+    "Zaregistruje command, který je součástí S2A2 botu. WIP.",
     new SlashCommandBuilder()
         .addStringOption(option => {
             return option
@@ -14,8 +14,14 @@ export const commandCmdreg = new Command(
                 .setDescription("Jméno příkazu k registraci.")
                 .setRequired(true);
         }),
-    async ({ interaction, commands }) => {
+    async ({ interaction, commands, commandRegistration }) => {
         
+        const command = commands.get("name of command");
 
+        if (!command) {
+            return;
+        }
+
+        await commandRegistration([command]);
     },
 );
