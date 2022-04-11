@@ -5,3 +5,5 @@ export * from "./botmsg";
 export * from "./cmdreg";
 export * from "./role";
 export * from "./host";
+export * from "./reactionMessage";
+export * from "./botmessage";
