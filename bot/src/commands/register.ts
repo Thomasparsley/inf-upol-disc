@@ -38,15 +38,15 @@ export const commandRegister = new Command(
             await replySilent(VOC_HasNotPermission);
             return;
         }
-        
+
         const email = interaction.options.getString(RequiredOptionEmail);
         if (email === null || !isValidateEmail(email)) {
-            replySilent(`Email není ve správném tvaru ${email}.`);
+            await replySilent(`Email není ve správném tvaru ${email}.`);
             return;
-        } 
-        
+        }
+
         if (!isUpolEmail(email)) {
-            replySilent(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`);
+            await replySilent(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`);
             return;
         }
 
@@ -56,6 +56,6 @@ export const commandRegister = new Command(
 
         // Save verification code to DB and send email.
 
-        replySilent(`Verifikační kod byl zaslán na email: ${email}.`);
+        await replySilent(`Verifikační kod byl zaslán na email: ${email}.`);
     },
 );
