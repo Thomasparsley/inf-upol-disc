@@ -8,10 +8,8 @@ import {
     validationCommand,
     roleCommand,
     everyRequest,
-    commandCmdreg,
     commandRegister,
     commandHost,
-    reactionMessage,
     botMessage,
 } from "./commands";
 
@@ -30,10 +28,8 @@ const bot = new Bot({
         validationCommand,
         roleCommand,
         everyRequest,
-        commandCmdreg,
         commandRegister,
         commandHost,
-        reactionMessage,
         botMessage,
     ],
 });
