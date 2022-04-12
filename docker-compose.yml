@@ -1,15 +1,24 @@
 version: '3.9'
 
 services:
-  #database:
+  database:
+    container_name: bot-database
+    image: postgres:14.2-alpine
+    expose:
+      - "5432"
+    ports:
+      - 5432:5432
+    volumes:
+      - ./database/data:/var/lib/postgres/data
 
-  bot:
-    container_name: inf_discord_bot
-    build:
-      context: ./bot
-    deploy:
-      replicas: 1
-      placement:
-        max_replicas_per_node: 2
-    restart: always
+      
+  # bot:
+  #   container_name: inf_discord_bot
+  #   build:
+  #     context: ./bot
+  #   deploy:
+  #     replicas: 1
+  #     placement:
+  #       max_replicas_per_node: 2
+  #   restart: always
 
