@@ -4,7 +4,7 @@ import { CommandArgs } from "../command";
 import { VOC_HasNotPermission } from "../vocabulary";
 
 const event: OnInteractionCreateAction = async (args) => {
-    const { client, interaction, commands, commandRegistration } = args;
+    const { client, interaction, commands, db, commandRegistration } = args;
 
     if (!interaction.isCommand()) {
         return;
@@ -35,6 +35,7 @@ const event: OnInteractionCreateAction = async (args) => {
             client,
             interaction,
             commands,
+            db,
             commandRegistration,
             reply,
             replySilent,
