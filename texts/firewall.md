@@ -1,4 +1,3 @@
-# firewall
 V této místnosti si ověříš svůj účet. Můžeš zažádat jednu z rolí @Student ,@Návštěva nebo @Katedra. 
 
 **Postup při žádosti o jednotlivé role:** 

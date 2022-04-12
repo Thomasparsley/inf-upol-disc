@@ -1,5 +1,4 @@
-# pravidla
-
+**Pravidla**
 1. Zákaz nesmyslného tagování rolí. 
 2. Není povoleno jakékoliv fake news.
 3. Zákaz sexuálního, explicitního a NSFW obsahu, diskriminace ostatních ras, pohlaví, náboženství nebo sexuální orientace.

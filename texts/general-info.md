@@ -1,5 +1,3 @@
-# Obecné informace
-
 **Vítáme Tě na oficiálním discord serveru Katedry informatiky UP. **
 Dříve, než začneš na serveru fungovat, jdi do #firewall, kde podle návodu ověříš tvůj účet. Bez tohoto kroku ti nebudou zpřístupněny žádné funkce. 
 
@@ -14,6 +12,9 @@ Nejprve navštiv místnost #role a podle návodu si nastav ty svoje tak, aby se 
 **OSTATNÍ** - chceš si pokecat o gamingu, doporučit film, udělat si promo, nebo prostě jen zajít na pivo? Tady k tomu najdeš místnost! 
 **BOT/SPAM** - tato kategorie nesmí chybět na žádném serveru, takže ani tady
 **PROGRAMOVACÍ JAZYKY, ZIMNÍ SEMESTR, LETNÍ SEMESTR** - podrobné informace k těmto kategoriím najdeš v místnosti #role 
+
+**Příkazy**
+Pomocí příkazu **/everyrequest popisek** můžete poslat žádost o @everyone. Prosíme popište podrobně svoji žádost.
 
 Doufáme, že na serveru najdeš všechny potřebné informace a taky skvělou komunitu studentů. V případě jakýchkoliv dotazů, napiš do #dotazy.
 

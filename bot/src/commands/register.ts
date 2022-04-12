@@ -1,10 +1,10 @@
 import crypto from "crypto";
 
 import { SlashCommandBuilder } from "@discordjs/builders";
-
+import { VOC_HasNotPermission } from "../vocabulary";
 import { Command } from "../command";
 
-const RequiredOptionEmail = "optionalemail";
+const RequiredOptionEmail = "email";
 const VerificationCodeLength = 6;
 
 function isValidateEmail(email: string): boolean {
@@ -25,26 +25,29 @@ export const commandRegister = new Command(
     "registrace",
     "Zaregistruj se na náš discord a pokud jsi student tak obdrž roli @Studnet",
     new SlashCommandBuilder()
-    .addStringOption(option => {
-        return option
-            .setName(RequiredOptionEmail)
-            .setDescription("Zadejte validní email.")
-            .setRequired(true);
-    }),
-    async ({ interaction }) => {
+        .addStringOption(option => {
+            return option
+                .setName(RequiredOptionEmail)
+                .setDescription("Zadejte validní email.")
+                .setRequired(true);
+        }),
+    async ({ interaction, replySilent, permissionRolesCount }) => {
+
+        const hasPermission = await permissionRolesCount((size: Number) => size === 0);
+        if (!hasPermission) {
+            await replySilent(VOC_HasNotPermission);
+            return;
+        }
 
         const email = interaction.options.getString(RequiredOptionEmail);
-
         if (email === null || !isValidateEmail(email)) {
-            await interaction.reply({
-                content: `Email není ve správném tvaru ${email}.`,
-                ephemeral: true,
-            });
-        } else if (!isUpolEmail(email)) {
-            await interaction.reply({
-                content: `Email nenáleží Univerzitě Palackého.`,
-                ephemeral: true,
-            });
+            await replySilent(`Email není ve správném tvaru ${email}.`);
+            return;
+        }
+
+        if (!isUpolEmail(email)) {
+            await replySilent(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`);
+            return;
         }
 
         const verificationCode = crypto
@@ -53,9 +56,6 @@ export const commandRegister = new Command(
 
         // Save verification code to DB and send email.
 
-        await interaction.reply({
-            content: `Verifikační kod byl zaslán na email: ${email}.`,
-            ephemeral: true,
-        });
+        await replySilent(`Verifikační kod byl zaslán na email: ${email}.`);
     },
 );
