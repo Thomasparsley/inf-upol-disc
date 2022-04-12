@@ -1,6 +1,7 @@
 import { GuildMemberRoleManager } from "discord.js";
 import { OnInteractionCreateAction } from "../bot";
 import { CommandArgs } from "../command";
+import { VOC_HasNotPermission } from "../vocabulary";
 
 const event: OnInteractionCreateAction = async (args) => {
     const { client, interaction, commands, commandRegistration } = args;
@@ -61,16 +62,7 @@ const event: OnInteractionCreateAction = async (args) => {
                     return false;
                 }
 
-                if (!roles.cache.has(roleID)) {
-                    await interaction.reply({
-                        content: "Nemáš oprávnění pro tento příkaz!",
-                        ephemeral: true,
-                    });
-
-                    return false;
-                }
-
-                return true
+                return roles.cache.has(roleID);
             },
         }
 
@@ -78,7 +70,7 @@ const event: OnInteractionCreateAction = async (args) => {
 
     } catch (err) {
         console.error(err);
-        await replySilent("There was an error while executing this command!");
+        await replySilent("Nastala chyba při vykonávání příkazu!");
     }
 }
 

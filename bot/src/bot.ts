@@ -3,7 +3,6 @@ import { Routes } from "discord-api-types/v9";
 import { REST } from "@discordjs/rest";
 
 import { Command } from "./command";
-import { SlashCommandBuilder } from "@discordjs/builders";
 
 const REST_VERSION = '9';
 
@@ -27,7 +26,7 @@ export class Bot {
 
     constructor(config: BotConfig) {
         this.commands = new Map<string, Command>();
-        this.reactionMessages = new Map<Message, Map<Emoji, Role>>();
+        this.reactionMessages = new Map<Message, Map<String, Role>>();
         this.applicationId = config.applicationId;
         this.guildId = config.guildId;
         this.token = config.token;
