@@ -1,14 +1,15 @@
-import { channelMention, SlashCommandBuilder } from "@discordjs/builders";
-import { Channel, GuildChannel, Message, TextChannel } from "discord.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
+import { TextChannel } from "discord.js";
 
+import { VOC_HasNotPermission } from "../vocabulary";
 import { Command } from "../command";
 
-const RequiredOptionRequest = "popisek_zadosti";
+const RequiredOptionRequest = "popisek";
 const RequestChannelID = "961981948740386826";
 
 export const everyRequest = new Command(
     "everyreq",
-    "Žádost o @overyone. Je možné žádat jednou za 96 hodin.",
+    "Žádost o @everyone. Prosíme popište podrobně svoji žádost. Zneužití se trestá.",
     new SlashCommandBuilder()
         .addStringOption(option => {
             return option
@@ -16,33 +17,30 @@ export const everyRequest = new Command(
                 .setDescription("Zadej popisek žádosti o everyone.")
                 .setRequired(true);
         }),
-    async ({ interaction, client }) => {
-        
-        const sender = interaction.member
-        const senderRoom = interaction.channel
+    async ({ interaction, client, replySilent, permissionRolesCount }) => {
+
+        const hasPermission = await permissionRolesCount((size: Number) => size > 0);
+        if (!hasPermission) {
+            await replySilent(VOC_HasNotPermission);
+            return;
+        }
+
+        const sender = interaction.member;
+        const senderRoom = interaction.channel;
         const requestText = interaction.options.getString(RequiredOptionRequest);
 
         if (!requestText) {
-            await interaction.reply({
-                content: `Popisek žádosti nemůže být prázdný.`,
-                ephemeral: true,
-            });
+            await replySilent("Popisek žádosti nemůže být prázdný.");
             return;
         }
 
         const channel = (client.channels.cache.get(RequestChannelID) as TextChannel);
         if (!channel) {
-            await interaction.reply({
-                content: 'Error: everyoneRequest#1',
-                ephemeral: true,
-            });
-        } else {
-            channel.send(`Uživatel ${sender} zažádal v ${senderRoom} o everyone. Důvod žádost: ${requestText}`);
+            await replySilent("Error: everyoneRequest#1");
+            return;
         }
 
-        await interaction.reply({
-            content: "Žádost byla odeslána.",
-            ephemeral: true,
-        });
+        channel.send(`Uživatel ${sender} zažádal v ${senderRoom} o everyone. Důvod žádost: ${requestText}`);
+        await replySilent("Žádost byla odeslána.");
     },
 );

@@ -1,9 +1,8 @@
 import crypto from "crypto";
 
 import { SlashCommandBuilder } from "@discordjs/builders";
-
+import { VOC_HasNotPermission } from "../vocabulary";
 import { Command } from "../command";
-import { GuildMemberRoleManager } from "discord.js";
 
 const RequiredOptionEmail = "email";
 const VerificationCodeLength = 6;
@@ -32,38 +31,22 @@ export const commandRegister = new Command(
                 .setDescription("Zadejte validní email.")
                 .setRequired(true);
         }),
-    async ({ interaction }) => {
+    async ({ interaction, replySilent, permissionRolesCount }) => {
 
-        const email = interaction.options.getString(RequiredOptionEmail);
-
-        if (email === null || !isValidateEmail(email)) {
-            await interaction.reply({
-                content: `Email není ve správném tvaru ${email}.`,
-                ephemeral: true,
-            });
-
-            return
-        } else if (!isUpolEmail(email)) {
-            await interaction.reply({
-                content: `Email nenáleží Univerzitě Palackého.`,
-                ephemeral: true,
-            });
-
-            return
+        const hasPermission = await permissionRolesCount((size: Number) => size === 0);
+        if (!hasPermission) {
+            await replySilent(VOC_HasNotPermission);
+            return;
         }
 
-        const roles = (interaction.member?.roles as GuildMemberRoleManager)
-        if (!roles) {
-            await interaction.reply({
-                content: 'Error: regiter#1',
-                ephemeral: true,
-            });
+        const email = interaction.options.getString(RequiredOptionEmail);
+        if (email === null || !isValidateEmail(email)) {
+            await replySilent(`Email není ve správném tvaru ${email}.`);
             return;
-        } else if (roles.cache.size === 0) {
-            await interaction.reply({
-                content: 'Nemáš oprávnění pro tento příkaz!',
-                ephemeral: true,
-            });
+        }
+
+        if (!isUpolEmail(email)) {
+            await replySilent(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`);
             return;
         }
 
@@ -73,9 +56,6 @@ export const commandRegister = new Command(
 
         // Save verification code to DB and send email.
 
-        await interaction.reply({
-            content: `Verifikační kod byl zaslán na email: ${email}.`,
-            ephemeral: true,
-        });
+        await replySilent(`Verifikační kod byl zaslán na email: ${email}.`);
     },
 );
