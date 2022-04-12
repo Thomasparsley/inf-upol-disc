@@ -1,0 +1,1 @@
+V této místnosti si můžeš vybrat role. Role ti zpřístupní mnoho funkcí, umožní ti vstup do speciálních místností a zobrazí se ti na profilu, takže každý ví co tě zajímá. Pro výber role stačí ~~ zareagovat na zprávu emotikonem, který je vedle role, nebo ~~ použít příkaz **/role @název_role**.
