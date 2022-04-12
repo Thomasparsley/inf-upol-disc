@@ -10,6 +10,10 @@ services:
       - 5432:5432
     volumes:
       - ./database/data:/var/lib/postgres/data
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 2
 
       
   # bot:
