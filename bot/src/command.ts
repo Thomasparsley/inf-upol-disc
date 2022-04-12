@@ -16,13 +16,17 @@ export type CommandAction = (args: CommandArgs) => Awaitable<void>
 export class Command {
     private name: string;
     private description: string;
-    private builder: SlashCommandBuilder | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand"> | SlashCommandSubcommandsOnlyBuilder;
+    private builder: SlashCommandBuilder
+        | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">
+        | SlashCommandSubcommandsOnlyBuilder;
     readonly execute: CommandAction;
 
     constructor(
         name: string,
         description: string,
-        builder: SlashCommandBuilder | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand"> | SlashCommandSubcommandsOnlyBuilder,
+        builder: SlashCommandBuilder
+            | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">
+            | SlashCommandSubcommandsOnlyBuilder,
         action: CommandAction,
     ) {
         this.name = name;
@@ -42,7 +46,10 @@ export class Command {
         return this.description;
     }
 
-    public getBuilder(): SlashCommandBuilder | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand"> | SlashCommandSubcommandsOnlyBuilder {
+    public getBuilder(): SlashCommandBuilder
+        | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand"> 
+        | SlashCommandSubcommandsOnlyBuilder
+    {
         return this.builder;
     }
 }
