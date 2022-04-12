@@ -2,24 +2,18 @@ import {
     PrimaryGeneratedColumn,
     CreateDateColumn,
     BaseEntity,
-    Entity,
     Column,
+    Entity,
 } from "typeorm";
 
 @Entity()
-export class Validation extends BaseEntity {
+export class Errors extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
-
-    @Column({ length: 320 })
-    email!: number;
-
-    @Column({ length: 6 })
-    key!: string;
 
     @CreateDateColumn()
     createdAt!: Date;
 
-    @Column()
-    expiresAt!: Date;
+    @Column("text")
+    error!: string;
 }

@@ -13,13 +13,17 @@ import {
     botMessage,
 } from "./commands";
 
-const { token, ApplicationID, GuildID } = require('./token.json');
+const {
+    TOKEN,
+    APPLICATION_ID,
+    GUILD_ID,
+} = require('../../.env');
 
 const bot = new Bot({
-    token: token,
-    applicationId: ApplicationID,
+    token: TOKEN,
+    applicationId: APPLICATION_ID,
     // reactionMessages: new Map,
-    guildId: GuildID,
+    guildId: GUILD_ID,
     onReady: onReady,
     onReactionAdd: onReactionAdd,
     onReactionRemove: onReactionRemove,
@@ -36,7 +40,7 @@ const bot = new Bot({
 
 (async () => {
 
-    await bot.registerSlashCommands(Array.from(bot.commands.values()))
-    await bot.login()
+    await bot.registerSlashCommands(Array.from(bot.commands.values()));
+    await bot.login();
 
-})()
+})();
