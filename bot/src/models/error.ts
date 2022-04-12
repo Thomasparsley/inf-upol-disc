@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 
 @Entity()
-export class Errors extends BaseEntity {
+export class Error extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
