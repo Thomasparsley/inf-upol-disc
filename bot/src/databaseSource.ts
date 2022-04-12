@@ -4,8 +4,8 @@ import { DataSource } from "typeorm";
 
 import { 
     Validation,
-    Errors,
-    Users
+    Error,
+    User
 } from "./models";
 
 const {
@@ -24,9 +24,9 @@ export const DatabaseSource = new DataSource({
     password: DATABASE_PASSWORD,
     database: DATABASE_NAME,
     entities: [
-        Errors,
-        Users,
         Validation,
+        Error,
+        User,
     ],
     synchronize: true,
     logging: true,
