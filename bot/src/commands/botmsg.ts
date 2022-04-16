@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { VOC_CantEditPermission, VOC_HasNotPermission } from "../vocabulary";
 import { Command, CommandArgs } from "../command";
+import { Client, CommandInteraction } from "discord.js";
 
 const RequiredOptionMessageID = "message";
 const RequiredOptionText = "text";
@@ -96,7 +97,7 @@ export const botMessage = new Command(
                 return;
         }
 
-        await replySilent("Akce byla provedena.")
+        await replySilent("Akce byla provedena.");
     },
 );
 
@@ -130,7 +131,7 @@ async function commandEdit(args: CommandArgs): Promise<void> {
         }
 
         if (message.author !== client.user) {
-            await replySilent("Bot může upravovat jen svoje zprávy!"); // <-- Move into VOC
+            await replySilent(VOC_CantEditPermission); 
         }
 
         message.edit(text);
@@ -168,12 +169,12 @@ async function commandFetch(args: CommandArgs): Promise<void> {
     const url = interaction.options.getString(RequiredOptionURL);
 
     if (!channel || !messageID || !url) {
-        await replySilent("Error: botmsg#1")
+        await replySilent("Error: botmsg#1");
         return;
     }
 
     if (!isHttpUrl(url)) {
-        await replySilent("Nepředal jsi validní URL.")
+        await replySilent("Nepředal jsi validní URL.");
         return;
     }
 
@@ -190,16 +191,69 @@ async function commandFetch(args: CommandArgs): Promise<void> {
         data = (response.data as string);
     } catch (err) {
         console.error(err);
-        await replySilent("Error: botmsg#2")
-
+        await replySilent("Error: botmsg#2");
         return;
     }
 
     if (data.length > maxMessageLength) {
-        await replySilent(`Požadavek nebyl zpracován, protože text překročil ${maxMessageLength} znaků.`)
+        await replySilent(`Požadavek nebyl zpracován, protože text překročil ${maxMessageLength} znaků.`);
         return;
     }
 
-    message.edit(data);
+    const messageContent = await handleMentions(data, args);
 
+    if (!messageContent) {
+        replySilent("Error: botmsg#5");
+
+        return;
+    }
+
+    message.edit(messageContent);
+}
+
+function tagSubstring(string: string):string {
+    const regex = /[&\/\,+()$~%.'":*?<>{}\s]/g;
+    const index = string.search(regex);
+
+    if(index === -1) {
+        return string;
+    }
+
+    return string.slice(0, index);
+}
+
+async function handleMentions(message: string, args: CommandArgs): Promise<string | null> {
+    const { interaction, replySilent } = args;
+
+    const words = message.split(/\s*(?:;|\s|,)\s*/);
+    const rooms = words.filter(word => word.startsWith('#')).map(word => tagSubstring(word));
+    const mentions = words.filter(word => word.startsWith('@')).map(word => tagSubstring(word));
+
+    const guild = interaction.guild;
+    const roleManager = guild?.roles;
+    const channelManager = guild?.channels;
+    
+    if (!guild || !roleManager || !channelManager) {
+        await replySilent("Error: botmsg#4");
+
+        return null;
+    }
+
+    for (const room of rooms) {
+        const channel = channelManager.cache.find(r => r.name === room.replace("#", ""));
+
+        if (channel) {
+            message = message.replace(room, channel.toString());
+        }
+    }
+    
+    for (const mention of mentions) {
+        const role = roleManager.cache.find(r => r.name === mention.replace("@", ""));
+
+        if (role) {
+            message = message.replace(mention, role.toString());
+        }
+    }
+
+    return message;
 }
