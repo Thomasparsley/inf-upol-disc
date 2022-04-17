@@ -1,12 +1,12 @@
 **Výběr:**
-:zero: @algo3 
-:one: @pos1 
-:two: @pos2 
-:three: @vytal 
-:four: @kombi 
-:five: @dastr 
-:six: @os1 
-:seven: @os2 
-:eight: @uroz 
-:nine: @pp4 
-:keycap_ten: @pp1
+:zero: <role>algo3</role>
+:one: <role>pos1</role>
+:two: <role>pos2</role>
+:three: <role>vytal</role>
+:four: <role>kombi</role>
+:five: <role>dastr</role>
+:six: <role>os1</role>
+:seven: <role>os2</role>
+:eight: <role>uroz</role>
+:nine: <role>pp4</role>
+:keycap_ten: <role>pp1</role>

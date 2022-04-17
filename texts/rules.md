@@ -8,8 +8,8 @@
 8. Nesdílejte irrelevantní promo, scamy, nelegální odkazy apod. 
 9. Nikdo nezodpovídá za informace, které tu dostanete.
 10. Než se na něco zeptáte tak se podívejte do připnutých zpráv.
-11. Žádné spamování příkazů. (kromě #bot-spam) 
+11. Žádné spamování příkazů. (kromě <channel>bot-spam</channel>) 
 12. Zákaz zneužívání botů.
-13. Pokud si všimnete jakéhokoliv porušení pravidel informuj jednoho z našich @Moderátor nebo @Root.
+13. Pokud si všimnete jakéhokoliv porušení pravidel informuj jednoho z našich <role>Moderátor</role> nebo <role>Root</role>.
 
 **Neznalost pravidel se neomlouvá.**

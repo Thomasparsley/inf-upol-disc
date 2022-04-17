@@ -1,12 +1,12 @@
 **Výběr:**
-:zero: @znm 
-:one: @akti 
-:two: @grafa 
-:three: @pogr 
-:four: @prast 
-:five: @unixs 
-:six: @infos 
-:seven: @sprda 
-:eight: @3dt 
-:nine: @mr 
-:keycap_ten: @pmv
+:zero: <role>@znm</role>
+:one: <role>@akti</role>
+:two: <role>@grafa</role>
+:three: <role>@pogr</role>
+:four: <role>@prast</role>
+:five: <role>@unixs</role>
+:six: <role>@infos</role>
+:seven: <role>@sprda</role>
+:eight: <role>@3dt</role>
+:nine: <role>@mr</role>
+:keycap_ten: <role>@pmv</role>
