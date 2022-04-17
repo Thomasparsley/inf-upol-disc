@@ -1,9 +1,10 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import axios from "axios";
+import { JSDOM } from "jsdom";
 
 import { VOC_CantEditPermission, VOC_HasNotPermission } from "../vocabulary";
 import { Command, CommandArgs } from "../command";
-import { Client, CommandInteraction } from "discord.js";
+import { GuildChannelManager, GuildMemberManager, RoleManager } from "discord.js";
 
 const RequiredOptionMessageID = "message";
 const RequiredOptionText = "text";
@@ -211,49 +212,59 @@ async function commandFetch(args: CommandArgs): Promise<void> {
     message.edit(messageContent);
 }
 
-function tagSubstring(string: string):string {
-    const regex = /[&\/\,+()$~%.'":*?<>{}\s]/g;
-    const index = string.search(regex);
-
-    if(index === -1) {
-        return string;
-    }
-
-    return string.slice(0, index);
-}
+const channelTagName = "channel";
+const roleTagName = "role";
+const mentionTagName = "mention";
 
 async function handleMentions(message: string, args: CommandArgs): Promise<string | null> {
     const { interaction, replySilent } = args;
 
-    const words = message.split(/\s*(?:;|\s|,)\s*/);
-    const rooms = words.filter(word => word.startsWith('#')).map(word => tagSubstring(word));
-    const mentions = words.filter(word => word.startsWith('@')).map(word => tagSubstring(word));
+    const channels = parseByTag(message, channelTagName);
+    const roles = parseByTag(message, roleTagName);
+    const mentions = parseByTag(message, mentionTagName);
 
     const guild = interaction.guild;
     const roleManager = guild?.roles;
     const channelManager = guild?.channels;
+    const memberManager = guild?.members;
     
-    if (!guild || !roleManager || !channelManager) {
+    if (!guild || !roleManager || !channelManager || !memberManager) {
         await replySilent("Error: botmsg#4");
 
         return null;
     }
 
-    for (const room of rooms) {
-        const channel = channelManager.cache.find(r => r.name === room.replace("#", ""));
+    message = replaceTags(message, roleTagName, roles, roleManager);
+    message = replaceTags(message, channelTagName, channels, channelManager);
+    message = replaceTags(message, mentionTagName, mentions, memberManager);
 
-        if (channel) {
-            message = message.replace(room, channel.toString());
-        }
-    }
-    
-    for (const mention of mentions) {
-        const role = roleManager.cache.find(r => r.name === mention.replace("@", ""));
-
-        if (role) {
-            message = message.replace(mention, role.toString());
-        }
-    }
 
     return message;
+}
+
+function replaceTags(
+        data: string, 
+        tagName: string, 
+        items: string[],
+        manager: RoleManager | GuildMemberManager | GuildChannelManager,
+    ): string {
+    for (const itemName of items) {
+        // Used datatype any due to different managers find methods.
+        const item = (manager.cache as any).find((item: { name: string; }) => item.name === itemName);
+
+        if (item) {
+            data = data.replace(`<${tagName}>${itemName}</${tagName}>`, item.toString());
+        }
+    }
+
+    return data;
+}
+
+function parseByTag(data: string, tagName: string): string[] {
+    const { document } = new JSDOM(`<!DOCTYPE html>${data}`).window;
+
+    const tagCollection = document.getElementsByTagName(tagName);
+    const elements = Array.from(tagCollection);
+    
+    return elements.map(el => (el.textContent !== null) ? el.textContent : "");
 }
