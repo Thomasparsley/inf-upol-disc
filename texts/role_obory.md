@@ -12,6 +12,6 @@ Nejprve si vyber obor, který tě zajímá. Tím se ti zobrazí v kategorii letn
 :five: <role>Bc. IT KOMBI</role>
 :six: <role>Mgr. Obecná informatika</role>
 :seven: <role>Mgr. Počítačové systémy a technologie</role>
-:eight:  <role>Mgr. Vývoj software</role>
+:eight: <role>Mgr. Vývoj software</role>
 :nine: <role>Mgr. Umělá inteligence</role>
 :keycap_ten: <role>Mgr. Učitelství informatiky pro střední školy</role>
