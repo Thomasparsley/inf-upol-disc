@@ -12,4 +12,4 @@ Pro všechny zájemce o daný jazyk máme speciální role. Role také <role>Stu
 :eight: <role>Golang</role>
 :nine: <role>Assembler</role>
 :keycap_ten: <role>Mobilní aplikace</role>
-:sos:  <role>CommonLisp</role>
+:sos: <role>CommonLisp</role>
