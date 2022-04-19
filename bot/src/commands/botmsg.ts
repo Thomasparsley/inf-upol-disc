@@ -196,16 +196,15 @@ async function commandFetch(args: CommandArgs): Promise<void> {
         return;
     }
 
-    if (data.length > maxMessageLength) {
-        await replySilent(`Požadavek nebyl zpracován, protože text překročil ${maxMessageLength} znaků.`);
+    const messageContent = await handleMentions(data, args);
+    
+    if (!messageContent) {
+        replySilent("Error: botmsg#5");        
         return;
     }
 
-    const messageContent = await handleMentions(data, args);
-
-    if (!messageContent) {
-        replySilent("Error: botmsg#5");
-
+    if (messageContent.length > maxMessageLength) {
+        await replySilent(`Požadavek nebyl zpracován, protože text překročil ${maxMessageLength} znaků.`);
         return;
     }
 

@@ -6,8 +6,8 @@ import { Command } from "../command";
 
 const StudentID = "960478701684936734";
 const RequiredRoleOptionName = "role";
-const everyoneRoleColors = ["#9b59b6", "#1abc9c"] // programovací jazyky (fialová), oznámení (zelená)
-const studentOnlyRoleColors = ["#33aadd", "#95a5a6"] // obory (modrá), předměty (šedá)
+const everyoneRoleColors = ["#9b59b6", "#1abc9c"] // oznámení (zelená)
+const studentOnlyRoleColors = ["#9b59b6", "#33aadd", "#95a5a6"] // programovací jazyky (fialová), obory (modrá), předměty (šedá)
 
 export const roleCommand = new Command(
     "role",
