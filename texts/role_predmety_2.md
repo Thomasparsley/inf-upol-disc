@@ -2,7 +2,7 @@
 :zero: <role>@znm</role>
 :one: <role>@akti</role>
 :two: <role>@grafa</role>
-:three: <role>@pogr</role>
+:three: <role>@pogr</role> (pg)
 :four: <role>@prast</role>
 :five: <role>@unixs</role>
 :six: <role>@infos</role>

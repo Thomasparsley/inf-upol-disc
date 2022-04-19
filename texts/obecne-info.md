@@ -8,7 +8,7 @@ Nejprve navštiv místnost <channel>role</channel> a podle návodu si nastav ty 
 **GENERAL** - hlavní chat, memes, <channel>dotazy</channel> k fungování discordu a serveru, <channel>citáty</channel> učitelů
 **KATEDRA** - místnosti s aktualitami, novinkami a různými aktivitami spojenými s katedrou 
 **STUDIUM** - tady najdeš veškeré věci týkající se studia, dále místnosti pro bakalářské a diplomové práce, <channel>rozvrhy</channel> pro dotazy k rozvrhům a výměně předmětů s ostatními studenty,  
-**TECHNOLOGIE** - diskuzní místnosti týkajících daných technologií, pokud máš nějaký technický dotaz ptej se zde
+**TECHNOLOGIE** - diskuzní místnosti týkajících daných technologií, pokud máš nějaký technický dotaz nebo zajímavost piš sem (dotazy k daným předmětům piš do semestrů nebo programovacích jazyků)
 **OSTATNÍ** - chceš si pokecat o gamingu, doporučit film, udělat si promo, nebo prostě jen zajít na pivo? Tady k tomu najdeš místnost! 
 **BOT/SPAM** - tato kategorie nesmí chybět na žádném serveru, takže ani tady
 **PROGRAMOVACÍ JAZYKY, ZIMNÍ SEMESTR, LETNÍ SEMESTR** - podrobné informace k těmto kategoriím najdeš v místnosti <channel>role</channel> 

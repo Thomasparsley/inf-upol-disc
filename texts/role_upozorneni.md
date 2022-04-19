@@ -5,6 +5,5 @@ Chceš dostávat info o novinkách nebo **pivních srazech**? Po výběru role b
 :one: <role>Novinky</role>
 :two: <role>Akce</role>
 :three: <role>Pivní srazy</role>
-:four: <role>Připomínky</role>
-:five: <role>Háčkování</role>
-:six: <role>Menza</role>
+:four: <role>Háčkování</role>
+:five: <role>Menza</role>
