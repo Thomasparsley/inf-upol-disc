@@ -6,7 +6,6 @@ import { Command } from "../command";
 import { Validation } from "../models";
 
 const RequiredOptionEmail = "email";
-const VerificationCodeLength = 6;
 
 function isValidateEmail(email: string): boolean {
     return email
@@ -34,7 +33,7 @@ export const commandRegister = new Command(
         }),
     async ({ interaction, replySilent, permissionRolesCount }) => {
 
-        const hasPermission = await permissionRolesCount((size: Number) => size === 0);
+        const hasPermission = await permissionRolesCount((size: Number) => size === 1);
         if (!hasPermission) {
             await replySilent(VOC_HasNotPermission);
             return;
@@ -51,13 +50,13 @@ export const commandRegister = new Command(
             return;
         }
 
-        const verificationCode = crypto
-            .randomBytes(VerificationCodeLength)
-            .toString();
+        const verificationCode = Math.floor(Math.random() * 900000) + 100000;
+
+        console.log(`Nové vygenerované heslo je: ${verificationCode}`)
 
         const validation = new Validation();
         validation.user = interaction.user.id;
-        validation.key = verificationCode;
+        validation.key = verificationCode.toString();
         validation.createdAt = new Date();
         validation.expiresAt = new Date();
         validation.expiresAt.setHours(validation.expiresAt.getHours() + 1);

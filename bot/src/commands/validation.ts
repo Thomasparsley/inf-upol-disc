@@ -20,7 +20,7 @@ export const validationCommand = new Command(
         }),
     async ({ interaction, replySilent, permissionRolesCount }) => {
 
-        const hasPermission = await permissionRolesCount((size: Number) => size === 0);
+        const hasPermission = await permissionRolesCount((size: Number) => size === 1);
         if (!hasPermission) {
             await replySilent(VOC_HasNotPermission);
             return;

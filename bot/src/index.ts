@@ -1,4 +1,4 @@
-require('dotenv').config({ path: "/home/parsley/dev/inf-upol-disc/.env" });
+require('dotenv').config({ path: "../.env" });
 
 import onInteractionCreate from "./events/onInteractionCreate";
 import onReactionRemove from "./events/onReactionRemove"
