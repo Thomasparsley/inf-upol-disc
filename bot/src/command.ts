@@ -1,10 +1,12 @@
-import { Awaitable, CacheType, Client, CommandInteraction } from "discord.js";
 import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from "@discordjs/builders";
+import { Awaitable, CacheType, Client, CommandInteraction } from "discord.js";
+import { DataSource } from "typeorm";
 
 export interface CommandArgs {
     client: Client;
     interaction: CommandInteraction<CacheType>;
     commands: Map<string, Command>;
+    db: DataSource;
     commandRegistration: (commands: Command[]) => Promise<void>;
     reply: (content: string) => Promise<void>;
     replySilent: (content: string) => Promise<void>;

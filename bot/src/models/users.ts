@@ -7,19 +7,13 @@ import {
 } from "typeorm";
 
 @Entity()
-export class Validation extends BaseEntity {
+export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column("varchar", { length: 40 })
-    user!: string;
-
-    @Column("varchar", { length: 6 })
-    key!: string;
+    @Column("varchar", { length: 320 })
+    email!: number;
 
     @CreateDateColumn()
     createdAt!: Date;
-
-    @Column()
-    expiresAt!: Date;
 }

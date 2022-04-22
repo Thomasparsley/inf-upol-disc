@@ -3,6 +3,7 @@ import crypto from "crypto";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { VOC_HasNotPermission } from "../vocabulary";
 import { Command } from "../command";
+import { Validation } from "../models";
 
 const RequiredOptionEmail = "email";
 const VerificationCodeLength = 6;
@@ -54,7 +55,16 @@ export const commandRegister = new Command(
             .randomBytes(VerificationCodeLength)
             .toString();
 
-        // Save verification code to DB and send email.
+        const validation = new Validation();
+        validation.user = interaction.user.id;
+        validation.key = verificationCode;
+        validation.createdAt = new Date();
+        validation.expiresAt = new Date();
+        validation.expiresAt.setHours(validation.expiresAt.getHours() + 1);
+
+        await validation.save();
+
+        // send email
 
         await replySilent(`Verifikační kod byl zaslán na email: ${email}.`);
     },

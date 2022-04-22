@@ -1,8 +1,11 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 import { VOC_HasNotPermission } from "../vocabulary";
+import { Validation } from "../models";
 import { Command } from "../command";
+import { GuildMemberRoleManager } from "discord.js";
 
+const StudentID = "960478701684936734";
 const RequiredKeyOptionName = "key";
 
 export const validationCommand = new Command(
@@ -23,15 +26,35 @@ export const validationCommand = new Command(
             return;
         }
 
-        const userInput = interaction.options.getString(RequiredKeyOptionName);
+        const userInput = interaction.options.getString(RequiredKeyOptionName) as string;
 
-        // getKeyFromDatabase
+        const validationFinder = await Validation.findAndCountBy({
+            key: userInput,
+            user: interaction.user.id,
+        })
 
-        if (userInput !== "1234567") {
-            replySilent("Zadali jste invalidní klíč.");
+        if (validationFinder[1] === 0) {
+            await replySilent("Nemáte validní klíč.");
             return;
         }
 
-        replySilent("Úspěšně jste se ověřil.");
+        const validation = validationFinder[0][0];
+
+        if (validation.expiresAt.getTime() < Date.now()) {
+            await replySilent("Validační klíč vypršel.");
+            return;
+        }
+
+        const roles = (interaction.member?.roles as GuildMemberRoleManager);
+
+        if (!roles) {
+            await replySilent("Error: validation#1");
+            return;
+        }
+
+        roles.add(StudentID);
+        
+        await replySilent("Úspěšně jste se ověřil/a.");
+        await validation.remove();
     },
 );
