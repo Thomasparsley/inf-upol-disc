@@ -14,12 +14,12 @@ const {
     DATABASE_USERNAME,
     DATABASE_PASSWORD,
     DATABASE_NAME,
-} = require('../../.env');
+} = process.env;
 
 export const DatabaseSource = new DataSource({
     type: "postgres",
     host: DATABASE_HOST,
-    port: DATABASE_PORT,
+    port: parseInt(DATABASE_PORT as string),
     username: DATABASE_USERNAME,
     password: DATABASE_PASSWORD,
     database: DATABASE_NAME,

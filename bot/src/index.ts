@@ -1,10 +1,12 @@
+require('dotenv').config({ path: "/home/parsley/dev/inf-upol-disc/.env" });
+
 import onInteractionCreate from "./events/onInteractionCreate";
 import onReactionRemove from "./events/onReactionRemove"
 import onReactionAdd from "./events/onReactionAdd"
 import onReady from "./events/onReady";
 
-import { Bot } from "./bot";
 import { DatabaseSource } from "./databaseSource";
+import { Bot } from "./bot";
 
 import {
     validationCommand,
@@ -19,17 +21,17 @@ const {
     TOKEN,
     APPLICATION_ID,
     GUILD_ID,
-} = require('../../.env');
+} = process.env;
 
 (async () => {
 
     await DatabaseSource.initialize();
 
     const bot = new Bot({
-        token: TOKEN,
-        applicationId: APPLICATION_ID,
+        token: TOKEN as string,
+        applicationId: APPLICATION_ID as string,
         // reactionMessages: new Map,
-        guildId: GUILD_ID,
+        guildId: GUILD_ID as string,
         db: DatabaseSource,
         onReady: onReady,
         onReactionAdd: onReactionAdd,

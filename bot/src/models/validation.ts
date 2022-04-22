@@ -11,10 +11,10 @@ export class Validation extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ length: 320 })
-    email!: number;
+    @Column("varchar", { length: 40 })
+    user!: string;
 
-    @Column({ length: 6 })
+    @Column("varchar", { length: 6 })
     key!: string;
 
     @CreateDateColumn()
