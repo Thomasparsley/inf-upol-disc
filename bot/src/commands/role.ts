@@ -23,7 +23,7 @@ export const roleCommand = new Command(
 
         const role = (interaction.options.getRole(RequiredRoleOptionName) as Role);
         if (!role) {
-            await replySilent("Error: role#1");
+            await replySilent("Error: role#1"); // TODO: Move to error
             return;
         }
 
@@ -38,13 +38,13 @@ export const roleCommand = new Command(
         const isEveryoneColor = everyoneRoleColors.includes(role.hexColor);
 
         if (!isStudentColor && !isEveryoneColor) {
-            await replySilent("Tuto roli si zvolit nemůžeš.");
+            await replySilent("Tuto roli si zvolit nemůžeš."); // TODO: Move to error
             return;
         }
 
         const roles = (interaction.member?.roles as GuildMemberRoleManager);
         if (!roles) {
-            await replySilent("Error: role#2");
+            await replySilent("Error: role#2"); // TODO: Move to error
             return;
         }
 

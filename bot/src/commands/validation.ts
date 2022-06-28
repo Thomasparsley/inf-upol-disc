@@ -22,7 +22,7 @@ export const validationCommand = new Command(
 
         const hasPermission = await permissionRolesCount((size: Number) => size === 1);
         if (!hasPermission) {
-            await replySilent(VOC_HasNotPermission);
+            await replySilent(VOC_HasNotPermission); // TODO: Move to error
             return;
         }
 
@@ -34,21 +34,21 @@ export const validationCommand = new Command(
         })
 
         if (validationFinder[1] === 0) {
-            await replySilent("Nemáte validní klíč.");
+            await replySilent("Nemáte validní klíč."); // TODO: Move to error
             return;
         }
 
         const validation = validationFinder[0][0];
 
         if (validation.expiresAt.getTime() < Date.now()) {
-            await replySilent("Validační klíč vypršel.");
+            await replySilent("Validační klíč vypršel."); // TODO: Move to error
             return;
         }
 
         const roles = (interaction.member?.roles as GuildMemberRoleManager);
 
         if (!roles) {
-            await replySilent("Error: validation#1");
+            await replySilent("Error: validation#1"); // TODO: Move to error
             return;
         }
 

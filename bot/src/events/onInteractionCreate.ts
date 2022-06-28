@@ -1,7 +1,24 @@
-import { GuildMemberRoleManager } from "discord.js";
+import { CacheType, CommandInteraction, GuildMemberRoleManager } from "discord.js";
 import { OnInteractionCreateAction } from "../bot";
 import { CommandArgs } from "../command";
 import { VOC_HasNotPermission } from "../vocabulary";
+
+function reply(interaction: CommandInteraction<CacheType>) {
+    return async function (content: string): Promise<void> {
+        return await interaction.reply({
+            content,
+        });
+    }
+}
+
+function replySilent(interaction: CommandInteraction<CacheType>) {
+    return async function (content: string): Promise<void> {
+        return await interaction.reply({
+            content,
+            ephemeral: true,
+        });
+    }
+}
 
 const event: OnInteractionCreateAction = async (args) => {
     const { client, interaction, commands, db, commandRegistration } = args;
@@ -12,22 +29,9 @@ const event: OnInteractionCreateAction = async (args) => {
 
     const command = commands.get(interaction.commandName);
 
-    const reply = async (content: string): Promise<void> => {
-        return await interaction.reply({
-            content,
-        });
-    }
-
-    const replySilent = async (content: string): Promise<void> => {
-        return await interaction.reply({
-            content,
-            ephemeral: true,
-        });
-    }
-
     try {
         if (!command) {
-            await replySilent("Neznámý příkaz!");
+            await replySilent("Neznámý příkaz!"); // TODO: Move to error
             return;
         }
 
@@ -37,8 +41,8 @@ const event: OnInteractionCreateAction = async (args) => {
             commands,
             db,
             commandRegistration,
-            reply,
-            replySilent,
+            reply: reply(interaction),
+            replySilent: replySilent(interaction),
             permissionRolesCount: async (predicate: Function): Promise<Boolean> => {
                 const roles = (interaction.member?.roles as GuildMemberRoleManager)
                 if (!roles) {
@@ -71,7 +75,7 @@ const event: OnInteractionCreateAction = async (args) => {
 
     } catch (err) {
         console.error(err);
-        await replySilent("Nastala chyba při vykonávání příkazu!");
+        await replySilent("Nastala chyba při vykonávání příkazu!"); // TODO: Move to error
     }
 }
 

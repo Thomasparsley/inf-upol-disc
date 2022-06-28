@@ -41,12 +41,13 @@ export const commandRegister = new Command(
 
         const email = interaction.options.getString(RequiredOptionEmail);
         if (email === null || !isValidateEmail(email)) {
-            await replySilent(`Email není ve správném tvaru ${email}.`);
+            await replySilent(`Email není ve správném tvaru ${email}.`); // TODO: Move to error
             return;
         }
 
         if (!isUpolEmail(email)) {
-            await replySilent(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`);
+            // !Typo
+            await replySilent(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`); // TODO: Move to error
             return;
         }
 

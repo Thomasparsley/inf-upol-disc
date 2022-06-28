@@ -21,7 +21,7 @@ export const everyRequest = new Command(
 
         const hasPermission = await permissionRolesCount((size: Number) => size > 0);
         if (!hasPermission) {
-            await replySilent(VOC_HasNotPermission);
+            await replySilent(VOC_HasNotPermission); // TODO: Move to error
             return;
         }
 
@@ -30,13 +30,13 @@ export const everyRequest = new Command(
         const requestText = interaction.options.getString(RequiredOptionRequest);
 
         if (!requestText) {
-            await replySilent("Popisek žádosti nemůže být prázdný.");
+            await replySilent("Popisek žádosti nemůže být prázdný."); // TODO: Move to error
             return;
         }
 
         const channel = (client.channels.cache.get(RequestChannelID) as TextChannel);
         if (!channel) {
-            await replySilent("Error: everyoneRequest#1");
+            await replySilent("Error: everyoneRequest#1"); // TODO: Move to error
             return;
         }
 

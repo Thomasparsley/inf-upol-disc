@@ -113,7 +113,7 @@ async function commandAdd(args: CommandArgs): Promise<void> {
         return;
     }
 
-    await replySilent("Error botmessage#1");
+    await replySilent("Error botmessage#1"); // TODO: Move to error
 }
 
 async function commandEdit(args: CommandArgs): Promise<void> {
@@ -127,7 +127,7 @@ async function commandEdit(args: CommandArgs): Promise<void> {
         const message = await channel.messages.fetch(messageID);
 
         if (!message) {
-            await replySilent("Error botmessage#2");
+            await replySilent("Error botmessage#2"); // TODO: Move to error
             return;
         }
 
@@ -140,7 +140,7 @@ async function commandEdit(args: CommandArgs): Promise<void> {
         return;
     }
 
-    await replySilent("Error botmessage#3");
+    await replySilent("Error botmessage#3"); // TODO: Move to error
 }
 
 function isHttpUrl(string: string): boolean {
@@ -175,14 +175,14 @@ async function commandFetch(args: CommandArgs): Promise<void> {
     }
 
     if (!isHttpUrl(url)) {
-        await replySilent("Nepředal jsi validní URL.");
+        await replySilent("Nepředal jsi validní URL."); // TODO: Move to error
         return;
     }
 
     const message = await channel.messages.fetch(messageID);
 
     if (message.author !== client.user) {
-        await replySilent(VOC_CantEditPermission);
+        await replySilent(VOC_CantEditPermission); // TODO: Move to error
         return;
     }
 
@@ -192,19 +192,19 @@ async function commandFetch(args: CommandArgs): Promise<void> {
         data = (response.data as string);
     } catch (err) {
         console.error(err);
-        await replySilent("Error: botmsg#2");
+        await replySilent("Error: botmsg#2"); // TODO: Move to error
         return;
     }
 
     const messageContent = await handleMentions(data, args);
     
     if (!messageContent) {
-        replySilent("Error: botmsg#5");        
+        replySilent("Error: botmsg#5"); // TODO: Move to error
         return;
     }
 
     if (messageContent.length > maxMessageLength) {
-        await replySilent(`Požadavek nebyl zpracován, protože text překročil ${maxMessageLength} znaků.`);
+        await replySilent(`Požadavek nebyl zpracován, protože text překročil ${maxMessageLength} znaků.`); // TODO: Move to error
         return;
     }
 
@@ -228,7 +228,7 @@ async function handleMentions(message: string, args: CommandArgs): Promise<strin
     const memberManager = guild?.members;
     
     if (!guild || !roleManager || !channelManager || !memberManager) {
-        await replySilent("Error: botmsg#4");
+        await replySilent("Error: botmsg#4"); // TODO: Move to error
 
         return null;
     }

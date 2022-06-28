@@ -73,7 +73,7 @@ export const reactionMessage = new Command(
                   const binds = getBinds(stringMap, guild)
 
                   if (!binds) {
-                    replySilent("Byl zadán špatný formát vazeb.")
+                      replySilent("Byl zadán špatný formát vazeb.") // TODO: Move to error
 
                     return
                   } 
@@ -81,7 +81,7 @@ export const reactionMessage = new Command(
                   const message = await channel.messages.fetch(messageID)
 
                   if (!message) {
-                      replySilent("Musíš být ve stejném kanále jako je zpráva, kterou upravuješ.")
+                      replySilent("Musíš být ve stejném kanále jako je zpráva, kterou upravuješ.") // TODO: Move to error
   
                       return
                   }
@@ -89,7 +89,7 @@ export const reactionMessage = new Command(
                   // Přidat message a vazby do reactionMessages
                   
             } else {
-                replySilent("Error reactionMessage#1")
+                replySilent("Error reactionMessage#1") // TODO: Move to error
 
                 return
             }
@@ -103,7 +103,7 @@ export const reactionMessage = new Command(
                 // Odebrat message z reactionMessages
 
             } else {
-                replySilent("Error reactionMessage#2")
+                replySilent("Error reactionMessage#2") // TODO: Move to error
 
                 return
             }
