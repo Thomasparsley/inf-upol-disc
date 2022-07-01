@@ -16,13 +16,11 @@ export const commandCmdreg = new Command(
                 .setRequired(true);
         }),
     async ({ commands, commandRegistration }) => {
-
         const cmd = commands.get(cmdname);
         if (!cmd) {
             return Err("Příkaz není k dispozici");
         }
 
-        await commandRegistration([cmd]);
-        return Ok({});
+        return Ok(commandRegistration([cmd]));
     },
 );

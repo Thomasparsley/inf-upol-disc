@@ -1,19 +1,16 @@
-export class Result<T> {
+
+export const Ok = <T, E>(value: T) => new Result<T, E>(value, undefined, ResultState.Success);
+export const Err = <T, E>(error: E) => new Result<T, E>(undefined, error, ResultState.Faulted);
+
+export class Result<T, E> {
     private state: ResultStateValue;
     private value: T | undefined;
-    private exception: Error | undefined;
+    private error: E | undefined;
 
-    constructor(input: T | Error) {
-        if (input instanceof Error) {
-            this.state = ResultState.Faulted;
-            this.value = undefined;
-            this.exception = input;
-            return;
-        }
-
-        this.state = ResultState.Success;
-        this.value = input;
-        this.exception = undefined;
+    constructor(value: T | undefined, error: E | undefined, state: ResultStateValue) {
+        this.state = state;
+        this.value = value;
+        this.error = error;
     }
 
     public IsValid() {
@@ -24,25 +21,29 @@ export class Result<T> {
         return this.state == ResultState.Faulted;
     }
 
-    public Match<TResult>(success: (value: T) => TResult, exception: (error: Error) => TResult): TResult {
+
+    public Match<T, E extends Error, TResult, EResult>(matchers: Matchers<T, E, TResult, EResult>) {
         if (this.IsValid()) {
-            return success(this.value as T);
+            return matchers.ok(this.value as unknown as T);
         }
 
-        return exception(this.exception as Error);
+        return matchers.err(this.error as unknown as E);
     }
 }
 
+type ResultStateValue = boolean;
 interface IResultState {
     readonly Success: ResultStateValue;
     readonly Faulted: ResultStateValue;
 }
 
-type ResultStateValue = boolean;
+export interface Matchers<T, E extends Error, TResult, EResult> {
+    ok(value: T): TResult;
+    err(error: E): EResult;
+}
+
 const ResultState: IResultState = {
     Success: true,
     Faulted: false,
 }
 
-export const Ok = <T>(value: T) => new Result<T>(value);
-export const Err = (message: string) => new Result(new Error(message));

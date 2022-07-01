@@ -38,8 +38,10 @@ export const everyRequest = new Command(
             return Err("Error: everyoneRequest#1");
         }
 
-        channel.send(`Uživatel ${sender} zažádal v ${senderRoom} o everyone. Důvod žádost: ${requestText}`);
-        await replySilent("Žádost byla odeslána.");
-        return Ok({});
+        
+        return Ok([
+            channel.send(`Uživatel ${sender} zažádal v ${senderRoom} o everyone. Důvod žádost: ${requestText}`),
+            replySilent("Žádost byla odeslána."),
+        ]);
     },
 );

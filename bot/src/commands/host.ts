@@ -27,11 +27,9 @@ export const commandHost = new Command(
         const HostRole = interaction.guild?.roles.cache.get(HostRoleID);
 
         if (!HostRole) {
-            await replySilent(`Byla ti přidělena role ${HostRoleID}`);
-            return Ok({});
+            return Ok(replySilent(`Byla ti přidělena role ${HostRoleID}`));
         }
 
-        await replySilent("Byla ti přidělena role Návštěvník");
-        return Ok({});
+        return Ok(replySilent("Byla ti přidělena role Návštěvník"));
     },
 );

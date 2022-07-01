@@ -46,13 +46,15 @@ export const roleCommand = new Command(
         }
 
         if (!roles.cache.has(role.id)) {
-            roles.add(role.id);
-            await replySilent(`Role ${role} byla **přidána**.`);
-            return Ok({});
+            return Ok([
+                roles.add(role.id),
+                replySilent(`Role ${role} byla **přidána**.`),
+            ]);
         }
 
-        roles.remove(role.id);
-        await replySilent(`Role ${role} byla **odebrána**.`);
-        return Ok({});
+        return Ok([
+            roles.remove(role.id),
+            replySilent(`Role ${role} byla **odebrána**.`),
+        ]);
     },
 );

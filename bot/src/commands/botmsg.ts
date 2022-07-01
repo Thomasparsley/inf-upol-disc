@@ -97,8 +97,7 @@ export const botMessage = new Command(
                 return Err("Neznámý podpříkaz!");
         }
 
-        await replySilent("Akce byla provedena.");
-        return Ok({});
+        return Ok(replySilent("Akce byla provedena."));
     },
 );
 

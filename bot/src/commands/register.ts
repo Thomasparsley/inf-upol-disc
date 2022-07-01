@@ -64,7 +64,6 @@ export const commandRegister = new Command(
 
         // send email
 
-        await replySilent(`Verifikační kod byl zaslán na email: ${email}.`);
-        return Ok({});
+        return Ok(replySilent(`Verifikační kod byl zaslán na email: ${email}.`));
     },
 );

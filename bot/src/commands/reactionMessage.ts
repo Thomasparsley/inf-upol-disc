@@ -102,7 +102,6 @@ export const reactionMessage = new Command(
             }
         }
 
-        await replySilent("Akce byla provedena.")
-        return Ok({});
+        return Ok(replySilent("Akce byla provedena."));
     },
 );

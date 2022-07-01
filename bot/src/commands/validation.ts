@@ -49,10 +49,10 @@ export const validationCommand = new Command(
             return Err("Error: validation#1");
         }
 
-        roles.add(StudentID);
-        
-        await replySilent("Úspěšně jste se ověřil/a.");
-        await validation.remove();
-        return Ok({});
+        return Ok([
+            roles.add(StudentID),
+            validation.remove(),
+            replySilent("Úspěšně jste se ověřil/a."),
+        ]);
     },
 );
