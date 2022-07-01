@@ -17,13 +17,12 @@ export const commandCmdreg = new Command(
         }),
     async ({ commands, commandRegistration }) => {
 
-        const command = commands.get("name of command");
-
-        if (!command) {
+        const cmd = commands.get(cmdname);
+        if (!cmd) {
             return Err("Příkaz není k dispozici");
         }
 
-        await commandRegistration([command]);
+        await commandRegistration([cmd]);
         return Ok({});
     },
 );
