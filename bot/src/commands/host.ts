@@ -3,6 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { VOC_HasNotPermission } from "../vocabulary";
 import { GuildMemberRoleManager } from "discord.js";
 import { Command } from "../command";
+import { Err, Ok } from "../result";
 
 const HostRoleID = "960478789161320448";
 
@@ -14,14 +15,12 @@ export const commandHost = new Command(
 
         const roles = (interaction.member?.roles as GuildMemberRoleManager);
         if (roles.cache.has(HostRoleID)) {
-            await replySilent("Tuto roli již máš.");
-            return;
+            return Err("Tuto roli již máš.");
         }
 
         const hasPermission = await permissionRolesCount((size: Number) => size === 0);
         if (!hasPermission) {
-            await replySilent(VOC_HasNotPermission);
-            return;
+            return Err(VOC_HasNotPermission);
         }
 
         roles.add(HostRoleID);
@@ -29,8 +28,10 @@ export const commandHost = new Command(
 
         if (!HostRole) {
             await replySilent(`Byla ti přidělena role ${HostRoleID}`);
-        } else {
-            await replySilent("Byla ti přidělena role Návštěvník");
+            return Ok({});
         }
+
+        await replySilent("Byla ti přidělena role Návštěvník");
+        return Ok({});
     },
 );

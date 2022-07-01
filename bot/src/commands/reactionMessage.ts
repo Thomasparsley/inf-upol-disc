@@ -2,6 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, Emoji, Guild, Message, Role } from "discord.js";
 
 import { Command } from "../command";
+import { Err, Ok } from "../result";
 
 const RequiredOptionMessageID = "message";
 const RequiredOptionBinds = "binds";
@@ -10,14 +11,14 @@ const SubCommandAdd = "add";
 const SubCommandRemove = "remove";
 const SubCommandEdit = "edit";
 
-function getBinds (input: string, guild: Guild):Map<String, Role> | null {
+function getBinds(input: string, guild: Guild): Map<String, Role> | null {
     const binds = input.split(",")
     const mapBinds = new Map<String, Role>()
 
     binds.forEach(bind => {
         const arr = bind.slice(1, -1).split(" ")
-        const inputEmote:string = arr[0].trim()
-        const inputRole:string = arr[1].trim().replace("@", "")
+        const inputEmote: string = arr[0].trim()
+        const inputRole: string = arr[1].trim().replace("@", "")
 
         const role = guild.roles.cache.find(r => r.name === inputRole);
 
@@ -60,8 +61,8 @@ export const reactionMessage = new Command(
                         .setDescription("ID zprávy, kterou chceš smazat.")
                         .setRequired(true);
                 })
-            }),
-    async ({ client, interaction, replySilent }) => { 
+        }),
+    async ({ client, interaction, replySilent }) => {
 
         if (interaction.options.getSubcommand() === SubCommandAdd) {
             const guild = interaction.guild
@@ -70,45 +71,38 @@ export const reactionMessage = new Command(
             const stringMap = interaction.options.getString(RequiredOptionBinds);
 
             if (channel && messageID && stringMap && guild) {
-                  const binds = getBinds(stringMap, guild)
+                const binds = getBinds(stringMap, guild)
 
-                  if (!binds) {
-                      replySilent("Byl zadán špatný formát vazeb.") // TODO: Move to error
+                if (!binds) {
+                    return Err("Byl zadán špatný formát vazeb.");
+                }
 
-                    return
-                  } 
+                const message = await channel.messages.fetch(messageID)
 
-                  const message = await channel.messages.fetch(messageID)
+                if (!message) {
+                    return Err("Musíš být ve stejném kanále jako je zpráva, kterou upravuješ.")
+                }
 
-                  if (!message) {
-                      replySilent("Musíš být ve stejném kanále jako je zpráva, kterou upravuješ.") // TODO: Move to error
-  
-                      return
-                  }
+                // Přidat message a vazby do reactionMessages
 
-                  // Přidat message a vazby do reactionMessages
-                  
             } else {
-                replySilent("Error reactionMessage#1") // TODO: Move to error
-
-                return
+                return Err("Error reactionMessage#1");
             }
 
-        } else if (interaction.options.getSubcommand() === SubCommandRemove) { 
+        } else if (interaction.options.getSubcommand() === SubCommandRemove) {
             const channel = interaction.channel;
             const messageID = interaction.options.getString(RequiredOptionMessageID)?.trim();
 
             if (channel && messageID) {
-                
+
                 // Odebrat message z reactionMessages
 
             } else {
-                replySilent("Error reactionMessage#2") // TODO: Move to error
-
-                return
+                return Err("Error reactionMessage#2");
             }
         }
-        
-        replySilent("Akce byla provedena.")
+
+        await replySilent("Akce byla provedena.")
+        return Ok({});
     },
 );

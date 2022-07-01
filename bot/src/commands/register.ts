@@ -4,6 +4,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { VOC_HasNotPermission } from "../vocabulary";
 import { Command } from "../command";
 import { Validation } from "../models";
+import { Err, Ok } from "../result";
 
 const RequiredOptionEmail = "email";
 
@@ -35,20 +36,17 @@ export const commandRegister = new Command(
 
         const hasPermission = await permissionRolesCount((size: Number) => size === 1);
         if (!hasPermission) {
-            await replySilent(VOC_HasNotPermission);
-            return;
+            return Err(VOC_HasNotPermission);
         }
 
         const email = interaction.options.getString(RequiredOptionEmail);
         if (email === null || !isValidateEmail(email)) {
-            await replySilent(`Email není ve správném tvaru ${email}.`); // TODO: Move to error
-            return;
+            return Err(`Email není ve správném tvaru ${email}.`);
         }
 
         if (!isUpolEmail(email)) {
             // !Typo
-            await replySilent(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`); // TODO: Move to error
-            return;
+            return Err(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`);
         }
 
         const verificationCode = Math.floor(Math.random() * 900000) + 100000;
@@ -67,5 +65,6 @@ export const commandRegister = new Command(
         // send email
 
         await replySilent(`Verifikační kod byl zaslán na email: ${email}.`);
+        return Ok({});
     },
 );

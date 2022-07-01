@@ -1,6 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 import { Command } from "../command";
+import { Err, Ok } from "../result";
 
 const cmdname = "cmdname";
 
@@ -19,9 +20,10 @@ export const commandCmdreg = new Command(
         const command = commands.get("name of command");
 
         if (!command) {
-            return;
+            return Err("Příkaz není k dispozici");
         }
 
         await commandRegistration([command]);
+        return Ok({});
     },
 );

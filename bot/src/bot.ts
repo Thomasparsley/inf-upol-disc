@@ -16,6 +16,7 @@ import {
 } from "discord.js";
 
 import { Command } from "./command";
+import { Result } from "./result";
 
 const REST_VERSION = '9';
 
@@ -34,9 +35,10 @@ export class Bot {
         = async (args: OnReactionAddArgs) => {}
     private onReactionRemove: onReactionRemoveAction
         = async (args: OnReactionRemoveArgs) => {}
-    private onInteractionCreate: OnInteractionCreateAction
-        = async (args: OnInteractionCreateArgs) => { }
-
+    private async onInteractionCreate<T>(args: OnInteractionCreateArgs): Promise<Result<T | Error>> {
+        return new Result(new Error("Empty on interaction create event"));
+        
+    }
 
     constructor(config: BotConfig) {
         this.reactionMessages = new Map<Message, Map<String, Role>>();
@@ -183,7 +185,7 @@ interface BotConfig {
     onReady?: OnReadyAction;
     onReactionAdd?: onReactionAddAction;
     onReactionRemove?: onReactionRemoveAction;
-    onInteractionCreate?: OnInteractionCreateAction;
+    onInteractionCreate?: OnInteractionCreateAction<any>;
 }
 
 export interface OnReadyArgs {
@@ -222,4 +224,4 @@ export interface OnInteractionCreateArgs {
     commandRegistration: (commands: Command[]) => Promise<void>;
 }
 
-export type OnInteractionCreateAction = (args: OnInteractionCreateArgs) => Awaitable<void>
+export type OnInteractionCreateAction<T> = (args: OnInteractionCreateArgs) => Promise<Result<T>>

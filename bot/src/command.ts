@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from "@discordjs/builders";
-import { Awaitable, CacheType, Client, CommandInteraction } from "discord.js";
+import { CacheType, Client, CommandInteraction } from "discord.js";
 import { DataSource } from "typeorm";
+import { Result } from "./result";
 
 export interface CommandArgs {
     client: Client;
@@ -10,10 +11,10 @@ export interface CommandArgs {
     commandRegistration: (commands: Command[]) => Promise<void>;
     reply: (content: string) => Promise<void>;
     replySilent: (content: string) => Promise<void>;
-    permissionRolesCount: (predicate: Function) => Promise<Boolean>;
-    permissionRole: (roleID: string) => Promise<Boolean>;
+    permissionRolesCount: (predicate: Function) => Promise<Result<boolean | Error>>;
+    permissionRole: (roleID: string) => Promise<Result<boolean | Error>>;
 }
-export type CommandAction = (args: CommandArgs) => Awaitable<void>
+export type CommandAction<T> = (args: CommandArgs) => Promise<Result<T>>
 
 export class Command {
     private name: string;
@@ -21,7 +22,7 @@ export class Command {
     private builder: SlashCommandBuilder
         | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">
         | SlashCommandSubcommandsOnlyBuilder;
-    readonly execute: CommandAction;
+    readonly execute: CommandAction<any>;
 
     constructor(
         name: string,
@@ -29,7 +30,7 @@ export class Command {
         builder: SlashCommandBuilder
             | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">
             | SlashCommandSubcommandsOnlyBuilder,
-        action: CommandAction,
+        action: CommandAction<any>,
     ) {
         this.name = name;
         this.description = description;

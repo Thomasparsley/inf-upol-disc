@@ -1,6 +1,7 @@
 import { CacheType, CommandInteraction, GuildMemberRoleManager } from "discord.js";
-import { OnInteractionCreateAction } from "../bot";
+import { OnInteractionCreateAction, OnInteractionCreateArgs } from "../bot";
 import { CommandArgs } from "../command";
+import { Err, Ok, Result } from "../result";
 import { VOC_HasNotPermission } from "../vocabulary";
 
 function reply(interaction: CommandInteraction<CacheType>) {
@@ -20,63 +21,60 @@ function replySilent(interaction: CommandInteraction<CacheType>) {
     }
 }
 
-const event: OnInteractionCreateAction = async (args) => {
-    const { client, interaction, commands, db, commandRegistration } = args;
+// @ts-ignore
+function makeCommandArgs({ client, interaction, commands, db, commandRegistration }) {
+    const commandArgs: CommandArgs = {
+        client,
+        interaction,
+        commands,
+        db,
+        commandRegistration,
+        reply: reply(interaction),
+        replySilent: replySilent(interaction),
+        permissionRolesCount: async (predicate: Function): Promise<Result<boolean | Error>> => {
+            const roles = (interaction.member?.roles as GuildMemberRoleManager)
+            if (!roles) {
+                return Err("Error: permissionRolesCount#1");
+            }
+
+            return Ok(predicate(roles.cache.size));
+        },
+        permissionRole: async (roleID: string): Promise<Result<boolean | Error>> => {
+            const roles = (interaction.member?.roles as GuildMemberRoleManager)
+            if (!roles) {
+                return Err("Error: permissionRole#1");
+            }
+
+            return Ok(roles.cache.has(roleID));
+        },
+    }
+
+    return commandArgs;
+}
+
+async function event(args: OnInteractionCreateArgs) {
+    const { interaction, commands } = args;
 
     if (!interaction.isCommand()) {
-        return;
+        return Err("Zadaný požadavek není příkaz!");
     }
-
-    const command = commands.get(interaction.commandName);
+    
+    const commandArgs = makeCommandArgs(args)
 
     try {
+        const command = commands.get(interaction.commandName);
         if (!command) {
-            await replySilent("Neznámý příkaz!"); // TODO: Move to error
-            return;
+            return Err("Neznámý příkaz!");
         }
 
-        const commandArgs: CommandArgs = {
-            client,
-            interaction,
-            commands,
-            db,
-            commandRegistration,
-            reply: reply(interaction),
-            replySilent: replySilent(interaction),
-            permissionRolesCount: async (predicate: Function): Promise<Boolean> => {
-                const roles = (interaction.member?.roles as GuildMemberRoleManager)
-                if (!roles) {
-                    await interaction.reply({
-                        content: "Error: permissionRolesCount#1",
-                        ephemeral: true,
-                    });
-
-                    return false;
-                }
-
-                return predicate(roles.cache.size);
-            },
-            permissionRole: async (roleID: string): Promise<Boolean> => {
-                const roles = (interaction.member?.roles as GuildMemberRoleManager)
-                if (!roles) {
-                    await interaction.reply({
-                        content: "Error: permissionRole#1",
-                        ephemeral: true,
-                    });
-
-                    return false;
-                }
-
-                return roles.cache.has(roleID);
-            },
-        }
-
-        await command.execute(commandArgs);
-
+        return Ok(await command.execute(commandArgs));
     } catch (err) {
         console.error(err);
-        await replySilent("Nastala chyba při vykonávání příkazu!"); // TODO: Move to error
     }
+
+    return Err("Nastala chyba při vykonávání příkazu!");
 }
 
 export default event
+
+
