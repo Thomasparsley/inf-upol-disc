@@ -1,6 +1,6 @@
 
 export const Ok = <T, E>(value: T) => new Result<T, E>(value, undefined, ResultState.Success);
-export const Err = <T, E>(error: E) => new Result<T, E>(undefined, error, ResultState.Faulted);
+export const Err = <T, E>(error: E) => new Result<T, E>(undefined, error, ResultState.Failed);
 
 export class Result<T, E> {
     private state: ResultStateValue;
@@ -18,7 +18,7 @@ export class Result<T, E> {
     }
 
     public IsInvalid() {
-        return this.state == ResultState.Faulted;
+        return this.state == ResultState.Failed;
     }
 
 
@@ -34,7 +34,7 @@ export class Result<T, E> {
 type ResultStateValue = boolean;
 interface IResultState {
     readonly Success: ResultStateValue;
-    readonly Faulted: ResultStateValue;
+    readonly Failed: ResultStateValue;
 }
 
 export interface Matchers<T, E extends Error, TResult, EResult> {
@@ -44,6 +44,6 @@ export interface Matchers<T, E extends Error, TResult, EResult> {
 
 const ResultState: IResultState = {
     Success: true,
-    Faulted: false,
+    Failed: false,
 }
 
