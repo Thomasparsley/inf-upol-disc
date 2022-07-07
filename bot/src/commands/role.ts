@@ -3,7 +3,7 @@ import { GuildMemberRoleManager, Role } from "discord.js";
 
 import { VOC_HasNotPermission } from "../vocabulary";
 import { Command } from "../command";
-import { Err, Ok } from "../result";
+import { Result } from "../result";
 
 const StudentID = "960478701684936734";
 const RequiredRoleOptionName = "role";
@@ -24,12 +24,12 @@ export const roleCommand = new Command(
 
         const role = (interaction.options.getRole(RequiredRoleOptionName) as Role);
         if (!role) {
-            return Err("Error: role#1");
+            return Result.err("Error: role#1".toError());
         }
 
         const hasPermission = await permissionRolesCount((size: Number) => size > 0);
         if (!hasPermission) {
-            return Err(VOC_HasNotPermission);
+            return Result.err(VOC_HasNotPermission.toError());
         }
 
         const isStudent = await permissionRole(StudentID);
@@ -37,22 +37,22 @@ export const roleCommand = new Command(
         const isEveryoneColor = everyoneRoleColors.includes(role.hexColor);
 
         if (!isStudentColor && !isEveryoneColor) {
-            return Err("Tuto roli si zvolit nemůžeš.");
+            return Result.err("Tuto roli si zvolit nemůžeš.".toError());
         }
 
         const roles = (interaction.member?.roles as GuildMemberRoleManager);
         if (!roles) {
-            return Err("Error: role#2");
+            return Result.err("Error: role#2".toError());
         }
 
         if (!roles.cache.has(role.id)) {
-            return Ok([
+            return Result.ok([
                 roles.add(role.id),
                 replySilent(`Role ${role} byla **přidána**.`),
             ]);
         }
 
-        return Ok([
+        return Result.ok([
             roles.remove(role.id),
             replySilent(`Role ${role} byla **odebrána**.`),
         ]);

@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { Client, Emoji, Guild, Message, Role } from "discord.js";
 
 import { Command } from "../command";
-import { Err, Ok } from "../result";
+import { Result } from "../result";
 
 const RequiredOptionMessageID = "message";
 const RequiredOptionBinds = "binds";
@@ -74,19 +74,19 @@ export const reactionMessage = new Command(
                 const binds = getBinds(stringMap, guild)
 
                 if (!binds) {
-                    return Err("Byl zadán špatný formát vazeb.");
+                    return Result.err("Byl zadán špatný formát vazeb.".toError());
                 }
 
                 const message = await channel.messages.fetch(messageID)
 
                 if (!message) {
-                    return Err("Musíš být ve stejném kanále jako je zpráva, kterou upravuješ.")
+                    return Result.err("Musíš být ve stejném kanále jako je zpráva, kterou upravuješ.".toError())
                 }
 
                 // Přidat message a vazby do reactionMessages
 
             } else {
-                return Err("Error reactionMessage#1");
+                return Result.err("Error reactionMessage#1".toError());
             }
 
         } else if (interaction.options.getSubcommand() === SubCommandRemove) {
@@ -98,10 +98,10 @@ export const reactionMessage = new Command(
                 // Odebrat message z reactionMessages
 
             } else {
-                return Err("Error reactionMessage#2");
+                return Result.err("Error reactionMessage#2".toError());
             }
         }
 
-        return Ok(replySilent("Akce byla provedena."));
+        return Result.ok(replySilent("Akce byla provedena."));
     },
 );

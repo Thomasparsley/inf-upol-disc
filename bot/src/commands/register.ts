@@ -4,7 +4,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { VOC_HasNotPermission } from "../vocabulary";
 import { Command } from "../command";
 import { Validation } from "../models";
-import { Err, Ok } from "../result";
+import { Result } from "../result";
 
 const RequiredOptionEmail = "email";
 
@@ -36,17 +36,17 @@ export const commandRegister = new Command(
 
         const hasPermission = await permissionRolesCount((size: Number) => size === 1);
         if (!hasPermission) {
-            return Err(VOC_HasNotPermission);
+            return Result.err(VOC_HasNotPermission.toError());
         }
 
         const email = interaction.options.getString(RequiredOptionEmail);
         if (email === null || !isValidateEmail(email)) {
-            return Err(`Email není ve správném tvaru ${email}.`);
+            return Result.err(`Email není ve správném tvaru ${email}.`.toError());
         }
 
         if (!isUpolEmail(email)) {
-            // !Typo
-            return Err(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`);
+            // TODO: Typo
+            return Result.err(`${email} napatrí do domény Univerzitě Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`.toError());
         }
 
         const verificationCode = Math.floor(Math.random() * 900000) + 100000;
@@ -64,6 +64,6 @@ export const commandRegister = new Command(
 
         // send email
 
-        return Ok(replySilent(`Verifikační kod byl zaslán na email: ${email}.`));
+        return Result.ok(replySilent(`Verifikační kod byl zaslán na email: ${email}.`));
     },
 );

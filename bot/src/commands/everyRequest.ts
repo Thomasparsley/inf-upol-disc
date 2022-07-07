@@ -3,7 +3,7 @@ import { TextChannel } from "discord.js";
 
 import { VOC_HasNotPermission } from "../vocabulary";
 import { Command } from "../command";
-import { Err, Ok } from "../result";
+import { Result } from "../result";
 
 const RequiredOptionRequest = "popisek";
 const RequestChannelID = "961981948740386826";
@@ -22,7 +22,7 @@ export const everyRequest = new Command(
 
         const hasPermission = await permissionRolesCount((size: Number) => size > 0);
         if (!hasPermission) {
-            return Err(VOC_HasNotPermission);
+            return Result.err(VOC_HasNotPermission.toError());
         }
 
         const sender = interaction.member;
@@ -30,16 +30,16 @@ export const everyRequest = new Command(
         const requestText = interaction.options.getString(RequiredOptionRequest);
 
         if (!requestText) {
-            return Err("Popisek žádosti nemůže být prázdný.");
+            return Result.err("Popisek žádosti nemůže být prázdný.".toError());
         }
 
         const channel = (client.channels.cache.get(RequestChannelID) as TextChannel);
         if (!channel) {
-            return Err("Error: everyoneRequest#1");
+            return Result.err("Error: everyoneRequest#1".toError());
         }
 
         
-        return Ok([
+        return Result.ok([
             channel.send(`Uživatel ${sender} zažádal v ${senderRoom} o everyone. Důvod žádost: ${requestText}`),
             replySilent("Žádost byla odeslána."),
         ]);

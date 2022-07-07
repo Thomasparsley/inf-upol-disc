@@ -5,7 +5,7 @@ import { JSDOM } from "jsdom";
 import { VOC_CantEditPermission, VOC_HasNotPermission } from "../vocabulary";
 import { Command, CommandArgs } from "../command";
 import { GuildChannelManager, GuildMemberManager, RoleManager } from "discord.js";
-import { Err, Ok } from "../result";
+import { Result } from "../result";
 
 const RequiredOptionMessageID = "message";
 const RequiredOptionText = "text";
@@ -76,7 +76,7 @@ export const botMessage = new Command(
         const isRoot = await permissionRole(rootID);
         const isMod = await permissionRole(modID);
         if (!isRoot && !isMod) {
-            return Err(VOC_HasNotPermission);
+            return Result.err(VOC_HasNotPermission.toError());
         }
 
         const subCommand = interaction.options.getSubcommand();
@@ -94,10 +94,10 @@ export const botMessage = new Command(
                 break;
 
             default:
-                return Err("Neznámý podpříkaz!");
+                return Result.err("Neznámý podpříkaz!".toError());
         }
 
-        return Ok(replySilent("Akce byla provedena."));
+        return Result.ok(replySilent("Akce byla provedena."));
     },
 );
 

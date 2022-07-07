@@ -4,7 +4,7 @@ import { VOC_HasNotPermission } from "../vocabulary";
 import { Validation } from "../models";
 import { Command } from "../command";
 import { GuildMemberRoleManager } from "discord.js";
-import { Err, Ok } from "../result";
+import { Result } from "../result";
 
 const StudentID = "960478701684936734";
 const RequiredKeyOptionName = "key";
@@ -23,7 +23,7 @@ export const validationCommand = new Command(
 
         const hasPermission = await permissionRolesCount((size: Number) => size === 1);
         if (!hasPermission) {
-            return Err(VOC_HasNotPermission);
+            return Result.err(VOC_HasNotPermission.toError());
         }
 
         const userInput = interaction.options.getString(RequiredKeyOptionName) as string;
@@ -34,22 +34,22 @@ export const validationCommand = new Command(
         })
 
         if (validationFinder[1] === 0) {
-            return Err("Nemáte validní klíč.");
+            return Result.err("Nemáte validní klíč.".toError());
         }
 
         const validation = validationFinder[0][0];
 
         if (validation.expiresAt.getTime() < Date.now()) {
-            return Err("Validační klíč vypršel.");
+            return Result.err("Validační klíč vypršel.".toError());
         }
 
         const roles = (interaction.member?.roles as GuildMemberRoleManager);
 
         if (!roles) {
-            return Err("Error: validation#1");
+            return Result.err("Error: validation#1".toError());
         }
 
-        return Ok([
+        return Result.ok([
             roles.add(StudentID),
             validation.remove(),
             replySilent("Úspěšně jste se ověřil/a."),
