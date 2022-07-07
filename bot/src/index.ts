@@ -1,5 +1,7 @@
 require('dotenv').config({ path: "../.env" });
 
+import "./string.ext";
+
 import onInteractionCreate from "./events/onInteractionCreate";
 import onReactionRemove from "./events/onReactionRemove"
 import onReactionAdd from "./events/onReactionAdd"

@@ -35,9 +35,8 @@ export class Bot {
         = async (args: OnReactionAddArgs) => {}
     private onReactionRemove: onReactionRemoveAction
         = async (args: OnReactionRemoveArgs) => {}
-    private async onInteractionCreate<T>(args: OnInteractionCreateArgs): Promise<Result<T | Error>> {
-        return new Result(new Error("Empty on interaction create event"));
-        
+    private async onInteractionCreate<T>(args: OnInteractionCreateArgs): Promise<Result<T, Error>> {
+        return Result.err(new Error("Empty on interaction create event"));
     }
 
     constructor(config: BotConfig) {
@@ -224,4 +223,4 @@ export interface OnInteractionCreateArgs {
     commandRegistration: (commands: Command[]) => Promise<void>;
 }
 
-export type OnInteractionCreateAction<T> = (args: OnInteractionCreateArgs) => Promise<Result<T>>
+export type OnInteractionCreateAction<T> = (args: OnInteractionCreateArgs) => Promise<Result<T, Error>>

@@ -11,10 +11,10 @@ export interface CommandArgs {
     commandRegistration: (commands: Command[]) => Promise<void>;
     reply: (content: string) => Promise<void>;
     replySilent: (content: string) => Promise<void>;
-    permissionRolesCount: (predicate: Function) => Promise<Result<boolean | Error>>;
-    permissionRole: (roleID: string) => Promise<Result<boolean | Error>>;
+    permissionRolesCount: (predicate: Function) => Promise<Result<boolean, Error>>;
+    permissionRole: (roleID: string) => Promise<Result<boolean, Error>>;
 }
-export type CommandAction<T> = (args: CommandArgs) => Promise<Result<T>>
+export type CommandAction<T> = (args: CommandArgs) => Promise<Result<T, Error>>
 
 export class Command {
     private name: string;
