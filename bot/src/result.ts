@@ -1,17 +1,19 @@
+export enum ResultState {
+    Failed = 0,
+    Success = 1,
+}
 
-export const Ok = <T, E>(value: T) => new Result<T, E>(value, undefined, ResultState.Success);
-export const Err = <T, E>(error: E) => new Result<T, E>(undefined, error, ResultState.Failed);
+export interface Matchers<T, E, TResult, EResult> {
+    ok(value: T): TResult;
+    err(error: E): EResult;
+}
 
 export class Result<T, E> {
-    private state: ResultStateValue;
-    private value: T | undefined;
-    private error: E | undefined;
-
-    constructor(value: T | undefined, error: E | undefined, state: ResultStateValue) {
-        this.state = state;
-        this.value = value;
-        this.error = error;
-    }
+    constructor(
+        private readonly value: T | undefined,
+        private readonly error: E | undefined,
+        private readonly state: ResultState,
+    ) { }
 
     public IsValid() {
         return this.state == ResultState.Success;
@@ -22,28 +24,19 @@ export class Result<T, E> {
     }
 
 
-    public Match<T, E extends Error, TResult, EResult>(matchers: Matchers<T, E, TResult, EResult>) {
+    public Match<T, E, TResult, EResult>(matchers: Matchers<T, E, TResult, EResult>) {
         if (this.IsValid()) {
             return matchers.ok(this.value as unknown as T);
         }
 
         return matchers.err(this.error as unknown as E);
     }
-}
 
-type ResultStateValue = boolean;
-interface IResultState {
-    readonly Success: ResultStateValue;
-    readonly Failed: ResultStateValue;
-}
+    public static Ok<T, E>(value: T) {
+        return new Result<T, E>(value, undefined, ResultState.Success);
+    }
 
-export interface Matchers<T, E extends Error, TResult, EResult> {
-    ok(value: T): TResult;
-    err(error: E): EResult;
+    public static Err<T, E>(error: E) {
+        return new Result<T, E>(undefined, error, ResultState.Failed);
+    }
 }
-
-const ResultState: IResultState = {
-    Success: true,
-    Failed: false,
-}
-
