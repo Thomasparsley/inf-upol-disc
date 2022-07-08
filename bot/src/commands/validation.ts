@@ -1,60 +1,49 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-
-import { VOC_HasNotPermission } from "../vocabulary";
-import { Validation } from "../models";
-import { Command } from "../command";
 import { GuildMemberRoleManager } from "discord.js";
 
+import { VOC_VerificationSuccessful } from "../vocabulary";
+import { UnauthorizedError } from "../errors";
+import { Validation } from "../models";
+import { CD_Validation } from "../cd";
+import { Command } from "../command";
+
 const StudentID = "960478701684936734";
-const RequiredKeyOptionName = "key";
+const cd = CD_Validation;
 
 export const validationCommand = new Command(
-    "validace",
-    "Tento příkaz slouží k validaci účtu.",
+    cd.name,
+    cd.description,
     new SlashCommandBuilder()
         .addStringOption(option => {
             return option
-                .setName(RequiredKeyOptionName)
-                .setDescription("Zadejte validační klíč. Pokud nemáš klíč tak použí příkaz register.")
+                .setName(cd.options[0].name)
+                .setDescription(cd.options[0].description)
                 .setRequired(true);
         }),
     async ({ interaction, replySilent, permissionRolesCount }) => {
+        const hasPermission = permissionRolesCount((size: Number) => size === 1);
+        if (!hasPermission) 
+            throw new UnauthorizedError();
 
-        const hasPermission = await permissionRolesCount((size: Number) => size === 1);
-        if (!hasPermission) {
-            await replySilent(VOC_HasNotPermission);
-            return;
-        }
-
-        const userInput = interaction.options.getString(RequiredKeyOptionName) as string;
+        const userInput = interaction.options.getString(cd.options[0].name) as string;
 
         const validationFinder = await Validation.findAndCountBy({
             key: userInput,
             user: interaction.user.id,
         })
 
-        if (validationFinder[1] === 0) {
-            await replySilent("Nemáte validní klíč.");
-            return;
-        }
+        if (validationFinder[1] === 0) 
+            throw "Nemáte validní klíč.".toError();
 
         const validation = validationFinder[0][0];
-
-        if (validation.expiresAt.getTime() < Date.now()) {
-            await replySilent("Validační klíč vypršel.");
-            return;
-        }
+        if (validation.expiresAt.getTime() < Date.now()) throw "Validační klíč vypršel.".toError();
 
         const roles = (interaction.member?.roles as GuildMemberRoleManager);
+        if (!roles)
+            throw "validation#1".toError();
 
-        if (!roles) {
-            await replySilent("Error: validation#1");
-            return;
-        }
-
-        roles.add(StudentID);
-        
-        await replySilent("Úspěšně jste se ověřil/a.");
+        await roles.add(StudentID);
         await validation.remove();
+        await replySilent(VOC_VerificationSuccessful);
     },
 );
