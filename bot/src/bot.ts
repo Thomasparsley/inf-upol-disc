@@ -16,7 +16,6 @@ import {
 } from "discord.js";
 
 import { Command } from "./command";
-import { Result } from "./result";
 
 const REST_VERSION = '9';
 
@@ -25,27 +24,25 @@ export class Bot {
     rest: REST;
     commands: Map<string, Command>;
     reactionMessages: Map<Message, Map<String, Role>>;
-    db: DataSource;
-    private applicationId: string;
-    private guildId: string;
-    private token: string;
     private onReady: OnReadyAction
         = async (args: OnReadyArgs) => {}
     private onReactionAdd: onReactionAddAction
         = async (args: OnReactionAddArgs) => {}
     private onReactionRemove: onReactionRemoveAction
         = async (args: OnReactionRemoveArgs) => {}
-    private async onInteractionCreate<T>(args: OnInteractionCreateArgs): Promise<Result<T, Error>> {
-        return Result.err(new Error("Empty on interaction create event"));
+    private async onInteractionCreate(args: OnInteractionCreateArgs): Promise<void> {
+        throw new Error("Empty on interaction create event");
     }
 
-    constructor(config: BotConfig) {
+    constructor(
+        private readonly applicationId: string,
+        private readonly guildId: string,
+        private readonly token: string,
+        public db: DataSource,
+        config: BotConfig
+    ) {
         this.reactionMessages = new Map<Message, Map<String, Role>>();
         this.commands = new Map<string, Command>();
-        this.applicationId = config.applicationId;
-        this.guildId = config.guildId;
-        this.token = config.token;
-        this.db = config.db;
 
         this.client = new Client({
             intents: [
@@ -143,7 +140,11 @@ export class Bot {
                 commandRegistration: this.registerSlashCommands,
             };
 
-            await this.onInteractionCreate(args);
+            try {
+                await this.onInteractionCreate(args);
+            } catch (error) {
+                
+            }
         });
     }
 
@@ -175,16 +176,11 @@ export class Bot {
 }
 
 interface BotConfig {
-    token: string;
-    applicationId: string;
-    guildId: string;
-    // reactionMessages: Map<Message, Map<String, Role>>;
-    db: DataSource;
     commands?: Command[];
     onReady?: OnReadyAction;
     onReactionAdd?: onReactionAddAction;
     onReactionRemove?: onReactionRemoveAction;
-    onInteractionCreate?: OnInteractionCreateAction<any>;
+    onInteractionCreate?: OnInteractionCreateAction;
 }
 
 export interface OnReadyArgs {
@@ -223,4 +219,4 @@ export interface OnInteractionCreateArgs {
     commandRegistration: (commands: Command[]) => Promise<void>;
 }
 
-export type OnInteractionCreateAction<T> = (args: OnInteractionCreateArgs) => Promise<Result<T, Error>>
+export type OnInteractionCreateAction = (args: OnInteractionCreateArgs) => Promise<void>

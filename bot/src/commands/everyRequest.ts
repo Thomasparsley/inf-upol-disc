@@ -1,47 +1,41 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { TextChannel } from "discord.js";
 
-import { VOC_HasNotPermission } from "../vocabulary";
+import { VOC_EveryRequest, VOC_RequestSended } from "../vocabulary";
+import { UnauthorizedError } from "../errors";
+import { CD_EveryRequest } from "../cd";
 import { Command } from "../command";
-import { Result } from "../result";
 
-const RequiredOptionRequest = "popisek";
 const RequestChannelID = "961981948740386826";
+const cd = CD_EveryRequest;
 
 export const everyRequest = new Command(
-    "everyreq",
-    "Žádost o @everyone. Prosíme popište podrobně svoji žádost. Zneužití se trestá.",
+    cd.name,
+    cd.description,
     new SlashCommandBuilder()
         .addStringOption(option => {
             return option
-                .setName(RequiredOptionRequest)
-                .setDescription("Zadej popisek žádosti o everyone.")
+                .setName(cd.options[0].name)
+                .setDescription(cd.options[0].description)
                 .setRequired(true);
         }),
     async ({ interaction, client, replySilent, permissionRolesCount }) => {
-
-        const hasPermission = await permissionRolesCount((size: Number) => size > 0);
-        if (!hasPermission) {
-            return Result.err(VOC_HasNotPermission.toError());
-        }
+        const hasPermission = permissionRolesCount((size: Number) => size > 0);
+        if (!hasPermission)
+            throw new UnauthorizedError();
 
         const sender = interaction.member;
         const senderRoom = interaction.channel;
-        const requestText = interaction.options.getString(RequiredOptionRequest);
+        const requestText = interaction.options.getString(cd.options[0].name);
 
-        if (!requestText) {
-            return Result.err("Popisek žádosti nemůže být prázdný.".toError());
-        }
+        if (!requestText)
+            throw "Popisek žádosti nemůže být prázdný.".toError();
 
         const channel = (client.channels.cache.get(RequestChannelID) as TextChannel);
-        if (!channel) {
-            return Result.err("Error: everyoneRequest#1".toError());
-        }
+        if (!channel)
+            throw "everyoneRequest#1".toError();
 
-        
-        return Result.ok([
-            channel.send(`Uživatel ${sender} zažádal v ${senderRoom} o everyone. Důvod žádost: ${requestText}`),
-            replySilent("Žádost byla odeslána."),
-        ]);
+        await channel.send(VOC_EveryRequest(sender, senderRoom, requestText));
+        await replySilent(VOC_RequestSended);
     },
 );

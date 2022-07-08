@@ -1,26 +1,28 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 
+import { UnknownCommandError } from "../errors";
 import { Command } from "../command";
-import { Result } from "../result";
+import { CD_Cmdreg } from "../cd";
 
-const cmdname = "cmdname";
+const cd = CD_Cmdreg;
 
+// WIP
 export const commandCmdreg = new Command(
-    "cmdreg",
-    "Zaregistruje command, který je součástí S2A2 botu. WIP.",
+    cd.name,
+    cd.description,
     new SlashCommandBuilder()
         .addStringOption(option => {
             return option
-                .setName(cmdname)
-                .setDescription("Jméno příkazu k registraci.")
+                .setName(cd.options[0].name)
+                .setDescription(cd.options[0].description)
                 .setRequired(true);
         }),
     async ({ commands, commandRegistration }) => {
-        const cmd = commands.get(cmdname);
-        if (!cmd) {
-            return Result.err("Příkaz není k dispozici".toError());
-        }
+        const cmd = commands.get(cd.options[0].name);
 
-        return Result.ok(commandRegistration([cmd]));
+        if (!cmd)
+            throw new UnknownCommandError();
+
+        await commandRegistration([cmd]);
     },
 );
