@@ -6,7 +6,7 @@ Student project for enhancing the quality of life on our Department's discord se
 ## TODO:
 
 - [ ] Web api
-- [ ] Students verification
+- [x] Students verification
 - [ ] Basic commands
 - [ ] Integration with [@svickova](https://github.com/mikulatomas/svickova)
 - [ ] Event and date reminder

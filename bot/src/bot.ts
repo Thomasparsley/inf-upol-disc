@@ -1,6 +1,19 @@
-import { Awaitable, CacheType, Client, Emoji, Intents, Interaction, Message, MessageReaction, PartialMessageReaction, PartialUser, Role, User } from "discord.js";
 import { Routes } from "discord-api-types/v9";
 import { REST } from "@discordjs/rest";
+import { DataSource } from "typeorm";
+import { 
+    PartialMessageReaction,
+    MessageReaction,
+    Interaction,
+    PartialUser,
+    Awaitable,
+    CacheType,
+    Intents,
+    Message,
+    Client,
+    Role,
+    User,
+} from "discord.js";
 
 import { Command } from "./command";
 
@@ -11,25 +24,25 @@ export class Bot {
     rest: REST;
     commands: Map<string, Command>;
     reactionMessages: Map<Message, Map<String, Role>>;
-    private applicationId: string;
-    private guildId: string;
-    private token: string;
     private onReady: OnReadyAction
         = async (args: OnReadyArgs) => {}
     private onReactionAdd: onReactionAddAction
         = async (args: OnReactionAddArgs) => {}
     private onReactionRemove: onReactionRemoveAction
         = async (args: OnReactionRemoveArgs) => {}
-    private onInteractionCreate: OnInteractionCreateAction
-        = async (args: OnInteractionCreateArgs) => { }
+    private async onInteractionCreate(args: OnInteractionCreateArgs): Promise<void> {
+        throw new Error("Empty on interaction create event");
+    }
 
-
-    constructor(config: BotConfig) {
-        this.commands = new Map<string, Command>();
+    constructor(
+        private readonly applicationId: string,
+        private readonly guildId: string,
+        private readonly token: string,
+        public db: DataSource,
+        config: BotConfig
+    ) {
         this.reactionMessages = new Map<Message, Map<String, Role>>();
-        this.applicationId = config.applicationId;
-        this.guildId = config.guildId;
-        this.token = config.token;
+        this.commands = new Map<string, Command>();
 
         this.client = new Client({
             intents: [
@@ -82,6 +95,7 @@ export class Bot {
             const args: OnReadyArgs = {
                 client: this.client,
                 commands: this.commands,
+                db: this.db,
             };
 
             await this.onReady(args);
@@ -95,6 +109,7 @@ export class Bot {
                 reaction: messageReaction,
                 user: user,
                 commands: this.commands,
+                db: this.db,
             };
         
             await this.onReactionAdd(args);
@@ -108,6 +123,7 @@ export class Bot {
                 reaction: messageReaction,
                 user: user,
                 commands: this.commands,
+                db: this.db,
             };
     
             await this.onReactionRemove(args);
@@ -120,10 +136,15 @@ export class Bot {
                 client: this.client,
                 interaction: interaction,
                 commands: this.commands,
+                db: this.db,
                 commandRegistration: this.registerSlashCommands,
             };
 
-            await this.onInteractionCreate(args);
+            try {
+                await this.onInteractionCreate(args);
+            } catch (error) {
+                
+            }
         });
     }
 
@@ -155,10 +176,6 @@ export class Bot {
 }
 
 interface BotConfig {
-    token: string;
-    applicationId: string;
-    guildId: string;
-    // reactionMessages: Map<Message, Map<String, Role>>;
     commands?: Command[];
     onReady?: OnReadyAction;
     onReactionAdd?: onReactionAddAction;
@@ -169,6 +186,7 @@ interface BotConfig {
 export interface OnReadyArgs {
     client: Client;
     commands: Map<string, Command>;
+    db: DataSource;
 }
 
 export type OnReadyAction = (args: OnReadyArgs) => Awaitable<void>
@@ -178,6 +196,7 @@ export interface OnReactionAddArgs {
     reaction: MessageReaction | PartialMessageReaction; 
     user: User | PartialUser;
     commands: Map<string, Command>;
+    db: DataSource;
 }
 
 export type onReactionAddAction = (args: OnReactionAddArgs) => Awaitable<void>
@@ -187,6 +206,7 @@ export interface OnReactionRemoveArgs {
     reaction: MessageReaction | PartialMessageReaction; 
     user: User | PartialUser;
     commands: Map<string, Command>;
+    db: DataSource;
 }
 
 export type onReactionRemoveAction = (args: OnReactionRemoveArgs) => Awaitable<void>
@@ -195,7 +215,8 @@ export interface OnInteractionCreateArgs {
     client: Client;
     interaction: Interaction<CacheType>;
     commands: Map<string, Command>;
+    db: DataSource;
     commandRegistration: (commands: Command[]) => Promise<void>;
 }
 
-export type OnInteractionCreateAction = (args: OnInteractionCreateArgs) => Awaitable<void>
+export type OnInteractionCreateAction = (args: OnInteractionCreateArgs) => Promise<void>
