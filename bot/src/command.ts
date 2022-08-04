@@ -1,12 +1,14 @@
 import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from "@discordjs/builders";
 import { CacheType, Client, CommandInteraction } from "discord.js";
 import { DataSource } from "typeorm";
+import { Mailer } from "./mailer";
 
 export interface CommandArgs {
     client: Client;
     interaction: CommandInteraction<CacheType>;
     commands: Map<string, Command>;
     db: DataSource;
+    mailer: Mailer;
     commandRegistration: (commands: Command[]) => Promise<void>;
     reply: (content: string) => Promise<void>;
     replySilent: (content: string) => Promise<void>;

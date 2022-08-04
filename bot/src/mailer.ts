@@ -2,7 +2,7 @@ import { createTransport, Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 
-export class Message {
+export class Mailer {
     private ctx: Transporter<SMTPTransport.SentMessageInfo>;
     
     constructor(

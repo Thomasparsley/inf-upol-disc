@@ -21,12 +21,13 @@ function replySilent(interaction: CommandInteraction<CacheType>) {
 }
 
 // @ts-ignore
-function makeCommandArgs({ client, interaction, commands, db, commandRegistration }) {
+function makeCommandArgs({ client, interaction, commands, db, mailer, commandRegistration }) {
     const commandArgs: CommandArgs = {
         client,
         interaction,
         commands,
         db,
+        mailer,
         commandRegistration,
         reply: reply(interaction),
         replySilent: replySilent(interaction),

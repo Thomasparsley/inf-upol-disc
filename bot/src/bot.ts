@@ -16,6 +16,7 @@ import {
 } from "discord.js";
 
 import { Command } from "./command";
+import { Mailer } from "./mailer";
 
 const REST_VERSION = '9';
 
@@ -38,6 +39,7 @@ export class Bot {
         private readonly applicationId: string,
         private readonly guildId: string,
         private readonly token: string,
+        private readonly mailer: Mailer,
         public db: DataSource,
         config: BotConfig
     ) {
@@ -137,6 +139,7 @@ export class Bot {
                 interaction: interaction,
                 commands: this.commands,
                 db: this.db,
+                mailer: this.mailer,
                 commandRegistration: this.registerSlashCommands,
             };
 
@@ -216,6 +219,7 @@ export interface OnInteractionCreateArgs {
     interaction: Interaction<CacheType>;
     commands: Map<string, Command>;
     db: DataSource;
+    mailer: Mailer;
     commandRegistration: (commands: Command[]) => Promise<void>;
 }
 

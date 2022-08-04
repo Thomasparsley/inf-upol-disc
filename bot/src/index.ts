@@ -18,20 +18,35 @@ import {
     commandHost,
     botMessage,
 } from "./commands";
+import { Mailer } from "./mailer";
 
 const {
     TOKEN,
     APPLICATION_ID,
     GUILD_ID,
+    MAILER_PASS,
 } = process.env;
 
 (async () => {
+    if (!MAILER_PASS) {
+        throw ""; // TODO:
+    }
+
     await DatabaseSource.initialize();
+    const mailer = new Mailer(
+        "mail.inf.upol.cz",
+        993,
+        `"Discord Katedry Informatiky" <discord@inf.upol.cz>`,
+        true,
+        "discord",
+        MAILER_PASS,
+    );
 
     const bot = new Bot(
         TOKEN as string,
         APPLICATION_ID as string,
         GUILD_ID as string,
+        mailer,
         DatabaseSource,
         {
             onReady: onReady,
