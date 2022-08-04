@@ -3,23 +3,24 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 
 export class Message {
-    private host: string;
-    private port: number;
-    private from: string;
     private ctx: Transporter<SMTPTransport.SentMessageInfo>;
     
-    constructor(config: Config) {
-        this.host = config.host;
-        this.port = config.port;
-        this.from = config.from;
+    constructor(
+        private readonly host: string,
+        private readonly port: number,
+        private readonly from: string,
+        secure: boolean,
+        username: string,
+        password: string,
+    ) {
 
         this.ctx = createTransport({
             host: this.host,
             port: this.port,
-            secure: config.secure,
+            secure: secure,
             auth: {
-                user: config.user,
-                pass: config.pass
+                user: username,
+                pass: password
             },
         });   
     }
@@ -33,15 +34,6 @@ export class Message {
             html: message.html
         });
     }
-}
-
-export interface Config {
-    host: string;
-    port: number;
-    secure: boolean;
-    user: string;
-    pass: string;
-    from: string;
 }
 
 export interface Message {
