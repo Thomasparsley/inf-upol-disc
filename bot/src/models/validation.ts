@@ -1,12 +1,21 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn } from "typeorm";
+import {
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    BaseEntity,
+    Entity,
+    Column,
+} from "typeorm";
 
 @Entity()
 export class Validation extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
-    email!: number;
+    @Column("varchar", { length: 40 })
+    user!: string;
+
+    @Column("varchar", { length: 6 })
+    key!: string;
 
     @CreateDateColumn()
     createdAt!: Date;

@@ -1,39 +1,29 @@
-import { Awaitable, CacheType, Client, CommandInteraction } from "discord.js";
 import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from "@discordjs/builders";
+import { CacheType, Client, CommandInteraction } from "discord.js";
+import { DataSource } from "typeorm";
 
 export interface CommandArgs {
     client: Client;
     interaction: CommandInteraction<CacheType>;
     commands: Map<string, Command>;
+    db: DataSource;
     commandRegistration: (commands: Command[]) => Promise<void>;
     reply: (content: string) => Promise<void>;
     replySilent: (content: string) => Promise<void>;
-    permissionRolesCount: (predicate: Function) => Promise<Boolean>;
-    permissionRole: (roleID: string) => Promise<Boolean>;
+    permissionRolesCount: (predicate: Function) => boolean;
+    permissionRole: (roleID: string) => boolean;
 }
-export type CommandAction = (args: CommandArgs) => Awaitable<void>
+export type CommandAction = (args: CommandArgs) => Promise<void>
 
 export class Command {
-    private name: string;
-    private description: string;
-    private builder: SlashCommandBuilder
-        | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">
-        | SlashCommandSubcommandsOnlyBuilder;
-    readonly execute: CommandAction;
-
     constructor(
-        name: string,
-        description: string,
-        builder: SlashCommandBuilder
+        private name: string,
+        private description: string,
+        private builder: SlashCommandBuilder
             | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">
             | SlashCommandSubcommandsOnlyBuilder,
-        action: CommandAction,
+        public readonly execute: CommandAction,
     ) {
-        this.name = name;
-        this.description = description;
-        this.builder = builder;
-        this.execute = action;
-
         this.builder.setName(this.name);
         this.builder.setDescription(this.description);
     }

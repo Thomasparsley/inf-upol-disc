@@ -1,10 +1,19 @@
-import { Entity, PrimaryGeneratedColumn, BaseEntity, CreateDateColumn } from "typeorm";
+import {
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    BaseEntity,
+    Column,
+    Entity,
+} from "typeorm";
 
 @Entity()
-export class Validation extends BaseEntity {
+export class Error extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
     @CreateDateColumn()
     createdAt!: Date;
+
+    @Column("text")
+    error!: string;
 }
