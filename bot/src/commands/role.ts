@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { GuildMemberRoleManager, Role } from "discord.js";
 
 import { VOC_RoleAdded, VOC_RoleRemoved } from "../vocabulary";
-import { UnauthorizedError } from "../errors";
+import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
 import { Command } from "../command";
 import { CD_Role } from "../cd";
 
@@ -24,6 +24,9 @@ export const roleCommand = new Command(
                 .setRequired(true);
         }),
     async ({ interaction, replySilent, permissionRole, permissionRolesCount }) => {
+        if (!interaction.isChatInputCommand())
+            throw new BadInputForChatCommandError();
+
         const role = (interaction.options.getRole(RequiredRoleOptionName) as Role);
         if (!role) 
             throw "role#1".toError();

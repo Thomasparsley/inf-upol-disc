@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { TextChannel } from "discord.js";
 
 import { VOC_EveryRequest, VOC_RequestSended } from "../vocabulary";
-import { UnauthorizedError } from "../errors";
+import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
 import { CD_EveryRequest } from "../cd";
 import { Command } from "../command";
 
@@ -23,6 +23,9 @@ export const everyRequest = new Command(
         const hasPermission = permissionRolesCount((size: Number) => size > 0);
         if (!hasPermission)
             throw new UnauthorizedError();
+
+        if (!interaction.isChatInputCommand())
+            throw new BadInputForChatCommandError();
 
         const sender = interaction.member;
         const senderRoom = interaction.channel;

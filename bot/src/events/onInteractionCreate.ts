@@ -1,22 +1,30 @@
-import { CacheType, CommandInteraction, GuildMemberRoleManager } from "discord.js";
-import { OnInteractionCreateAction, OnInteractionCreateArgs } from "../bot";
-import { CommandArgs } from "../command";
-import { UnknownCommandError } from "../errors";
+import { CacheType, GuildMemberRoleManager, Interaction } from "discord.js";
 
-function reply(interaction: CommandInteraction<CacheType>) {
+import { OnInteractionCreateArgs } from "../bot";
+import { UnknownCommandError, UnrepliableInteractionError } from "../errors";
+import { CommandArgs } from "../command";
+
+
+export function reply(interaction: Interaction<CacheType>) {
     return async function (content: string) {
-        return await interaction.reply({
-            content,
-        });
+        if (interaction.isRepliable())
+            return await interaction.reply({
+                content,
+            });
+
+        throw new UnrepliableInteractionError();
     }
 }
 
-function replySilent(interaction: CommandInteraction<CacheType>) {
+export function replySilent(interaction: Interaction<CacheType>) {
     return async function (content: string) {
-        return await interaction.reply({
-            content,
-            ephemeral: true,
-        });
+        if (interaction.isRepliable())
+            return await interaction.reply({
+                content,
+                ephemeral: true,
+            });
+
+        throw new UnrepliableInteractionError();
     }
 }
 

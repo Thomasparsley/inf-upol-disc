@@ -1,12 +1,15 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 
-import { InvalidEmailFormatError, UnauthorizedError, UnknownUpolEmailError } from "../errors";
+import { BadInputForChatCommandError, InvalidEmailFormatError, UnauthorizedError, UnknownUpolEmailError } from "../errors";
 import { VOC_VerificationCodeSended } from "../vocabulary";
 import { Validation } from "../models";
 import { Command } from "../command";
 import { CD_Register } from "../cd";
 
+
 const cd = CD_Register;
+
+
 
 export const commandRegister = new Command(
     cd.name,
@@ -19,6 +22,8 @@ export const commandRegister = new Command(
                 .setRequired(true);
         }),
     async ({ interaction, replySilent, permissionRolesCount, mailer }) => {
+        if (!interaction.isChatInputCommand())
+            throw new BadInputForChatCommandError();
 
         // mohou použít jen nový uživatelé, kteří nejsou zvalidováni
         // const hasPermission = permissionRolesCount((size: Number) => size === 1);

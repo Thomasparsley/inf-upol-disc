@@ -3,22 +3,24 @@ import { REST } from "@discordjs/rest";
 import { DataSource } from "typeorm";
 import { 
     PartialMessageReaction,
+    GatewayIntentBits,
     MessageReaction,
     Interaction,
     PartialUser,
+    GuildMember,
     Awaitable,
     CacheType,
-    Intents,
     Message,
     Client,
     Role,
     User,
+    Partials,
 } from "discord.js";
 
 import { Command } from "./command";
 import { Mailer } from "./mailer";
 
-const REST_VERSION = '9';
+const REST_VERSION = "10";
 
 export class Bot {
     client: Client;
@@ -27,6 +29,8 @@ export class Bot {
     reactionMessages: Map<Message, Map<String, Role>>;
     private onReady: OnReadyAction
         = async (args: OnReadyArgs) => {}
+    private onGuildMemberAdd: OnGuildMemberAddAction
+        = async (args: OnGuildMemberAddArgs) => {}
     private onReactionAdd: onReactionAddAction
         = async (args: OnReactionAddArgs) => {}
     private onReactionRemove: onReactionRemoveAction
@@ -48,14 +52,16 @@ export class Bot {
 
         this.client = new Client({
             intents: [
-                Intents.FLAGS.GUILDS,
-                Intents.FLAGS.GUILD_MESSAGES,
-                Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.GuildMessageReactions,
+                GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.DirectMessages,
             ],
             partials : [
-                'MESSAGE', 
-                'CHANNEL', 
-                'REACTION',
+                Partials.Message, 
+                Partials.Channel, 
+                Partials.Reaction,
             ],
         });
 
@@ -66,12 +72,16 @@ export class Bot {
             this.initCommands(config.commands);
         }
 
-        // if (config.reactionMessages) {
-        //     this.initReactionMessages(config.reactionMessages);
-        // }
+        /* if (config.reactionMessages) {
+            this.initReactionMessages(config.reactionMessages);
+        } */
 
         if (config.onReady) {
             this.onReady = config.onReady;
+        }
+
+        if (config.onGuildMemberAdd) {
+            this.onGuildMemberAdd = config.onGuildMemberAdd;
         }
 
         if (config.onReactionAdd) {
@@ -87,9 +97,10 @@ export class Bot {
         }
 
         this.initOnReady();
+        this.initOnInteractionCreate();
+        this.initOnGuildMemberAdd();
         this.initOnReactionAdd();
         this.initOnReactionRemove();
-        this.initOnInteractionCreate();
     }
 
     private initOnReady() {
@@ -104,6 +115,42 @@ export class Bot {
         });
     }
 
+    private initOnInteractionCreate() {
+        this.client.on('interactionCreate', async (interaction) => {
+            const args: OnInteractionCreateArgs = {
+                client: this.client,
+                interaction: interaction,
+                commands: this.commands,
+                db: this.db,
+                mailer: this.mailer,
+                commandRegistration: this.registerSlashGuildCommands,
+            };
+
+            
+
+            try {
+                await this.onInteractionCreate(args);
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    }
+
+    private initOnGuildMemberAdd() {
+        this.client.on('guildMemberAdd', async (member) => {
+            const args: OnGuildMemberAddArgs = {
+                client: this.client,
+                member: member,
+            };
+            
+            try {
+                await this.onGuildMemberAdd(args);
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    }
+
     private initOnReactionAdd() {
         this.client.on('messageReactionAdd', async (messageReaction, user) => {
             const args: OnReactionAddArgs = {
@@ -114,7 +161,11 @@ export class Bot {
                 db: this.db,
             };
         
-            await this.onReactionAdd(args);
+            try {
+                await this.onReactionAdd(args);
+            } catch (err) {
+                console.error(err);
+            }
         });
     }
 
@@ -128,25 +179,10 @@ export class Bot {
                 db: this.db,
             };
     
-            await this.onReactionRemove(args);
-        });
-    }
-
-    private initOnInteractionCreate() {
-        this.client.on('interactionCreate', async (interaction) => {
-            const args: OnInteractionCreateArgs = {
-                client: this.client,
-                interaction: interaction,
-                commands: this.commands,
-                db: this.db,
-                mailer: this.mailer,
-                commandRegistration: this.registerSlashCommands,
-            };
-
             try {
-                await this.onInteractionCreate(args);
-            } catch (error) {
-                
+                await this.onReactionRemove(args);
+            } catch (err) {
+                console.error(err);
             }
         });
     }
@@ -157,24 +193,30 @@ export class Bot {
         });
     }
 
-    // private initReactionMessages() {}
-
     public async login() {
         await this.client.login(this.token);
     }
 
-    public async registerSlashCommands(commands: Command[]) {
+    private async registerSlashCommands(commands: Command[], path: any) {
         const slashCommands = commands.map((command) => {
             return command.getBuilder().toJSON()
         });
-
-        const path = Routes.applicationGuildCommands(this.applicationId, this.guildId);
 
         try {
             await this.rest.put(path, { body: slashCommands });
         } catch (err) {
             console.error(err);
         }
+    }
+
+    public async registerSlashGuildCommands(commands: Command[]) {
+        const path = Routes.applicationGuildCommands(this.applicationId, this.guildId);
+        this.registerSlashCommands(commands, path)
+    }
+
+    public async registerSlashGlobalCommands(commands: Command[]) {
+        const path = Routes.applicationCommands(this.applicationId)
+        this.registerSlashCommands(commands, path)
     }
 }
 
@@ -184,6 +226,7 @@ interface BotConfig {
     onReactionAdd?: onReactionAddAction;
     onReactionRemove?: onReactionRemoveAction;
     onInteractionCreate?: OnInteractionCreateAction;
+    onGuildMemberAdd?: OnGuildMemberAddAction;
 }
 
 export interface OnReadyArgs {
@@ -192,7 +235,14 @@ export interface OnReadyArgs {
     db: DataSource;
 }
 
+export interface OnGuildMemberAddArgs {
+    client: Client;
+    member: GuildMember;
+}
+
 export type OnReadyAction = (args: OnReadyArgs) => Awaitable<void>
+export type OnGuildMemberAddAction = (args: OnGuildMemberAddArgs) => Awaitable<void>
+
 
 export interface OnReactionAddArgs {
     client: Client;

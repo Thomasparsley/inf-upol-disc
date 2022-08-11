@@ -14,6 +14,8 @@ export const VOC_EveryRequest = (sender: any, room: any, text: string) => `Uživ
 export const VOC_Unauthorized = "Nemáš oprávnění pro tento příkaz!";
 export const VOC_CantEditPermission = "Bot může upravovat jen svoje zprávy!";
 export const VOC_NonValidUrl = "Nepředal jsi validní URL.";
+export const VOC_IsntChatInputCommand = "Příkaz nelze zpracovat.";
 
 export const VOC_NonValidEmail = (email: string) => `Email není ve správném tvaru ${email}.`;
 export const VOC_InvalidDomain = (email: string) => `${email} napatří do domény Univerzity Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`;
+

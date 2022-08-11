@@ -4,6 +4,7 @@ import { Guild, Role } from "discord.js";
 import { VOC_ActionSuccessful } from "../vocabulary";
 import { Command } from "../command";
 import { CD_RM } from "../cd";
+import { BadInputForChatCommandError } from "../errors";
 
 const RequiredOptionMessageID = "message";
 const RequiredOptionBinds = "binds";
@@ -45,6 +46,9 @@ export const reactionMessage = new Command(
                 })
         }),
     async ({ interaction, replySilent }) => {
+        if (!interaction.isChatInputCommand())
+            throw new BadInputForChatCommandError();
+
         if (interaction.options.getSubcommand() === subAdd.name) {
             const guild = interaction.guild
             const channel = interaction.channel;
@@ -94,7 +98,7 @@ function getBinds(input: string, guild: Guild): Map<String, Role> | null {
         const inputEmote: string = arr[0].trim()
         const inputRole: string = arr[1].trim().replace("@", "")
 
-        const role = guild.roles.cache.find(r => r.name === inputRole);
+        const role = guild.roles.cache.find((r: Role) => r.name === inputRole);
 
         if (!role) 
             return null

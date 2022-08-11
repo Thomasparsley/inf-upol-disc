@@ -4,7 +4,7 @@ import { JSDOM } from "jsdom";
 import { GuildChannelManager, GuildMemberManager, RoleManager } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 
-import { InvalidURLError, UnauthorizedError, UnknownCommandError } from "../errors";
+import { BadInputForChatCommandError, InvalidURLError, UnauthorizedError, UnknownCommandError } from "../errors";
 import { VOC_ActionSuccessful, VOC_CantEditPermission } from "../vocabulary";
 import { Command, CommandArgs } from "../command";
 import { CD_BotMessage } from "../cd";
@@ -73,11 +73,15 @@ export const botMessage = new Command(
     async (args) => {
         const { interaction, replySilent, permissionRole } = args;
 
+
         const isRoot = permissionRole(rootID);
         const isMod = permissionRole(modID);
 
         if (!isRoot && !isMod)
             throw new UnauthorizedError();
+
+        if (!interaction.isChatInputCommand())
+            throw new BadInputForChatCommandError();
 
         const subCommand = interaction.options.getSubcommand();
         switch (subCommand) {
@@ -105,6 +109,9 @@ export const botMessage = new Command(
 async function commandAdd(args: CommandArgs): Promise<void> {
     const { interaction } = args;
 
+    if (!interaction.isChatInputCommand())
+        throw new BadInputForChatCommandError();
+
     const channel = interaction.channel
     const text = interaction.options.getString(subAdd.options[0].name);
 
@@ -118,6 +125,9 @@ async function commandAdd(args: CommandArgs): Promise<void> {
 
 async function commandEdit(args: CommandArgs): Promise<void> {
     const { client, interaction, replySilent } = args;
+
+    if (!interaction.isChatInputCommand())
+        throw new BadInputForChatCommandError();
 
     const channel = interaction.channel;
     const messageID = interaction.options.getString(subEdit.options[0].name)?.trim();
@@ -162,7 +172,10 @@ function isHttpUrl(string: string): boolean {
   }
 
 async function commandFetch(args: CommandArgs): Promise<void> {
-    const { client, interaction, replySilent } = args;
+    const { client, interaction } = args;
+
+    if (!interaction.isChatInputCommand())
+        throw "ERRR".toError();
 
     const channel = interaction.channel;
     const messageID = interaction.options.getString(subFetch.options[0].name)?.trim();
@@ -185,9 +198,7 @@ async function commandFetch(args: CommandArgs): Promise<void> {
         const response = await axios.get(url);
         data = (response.data as string);
     } catch (err) {
-        console.error(err);
-        await replySilent("Error: botmsg#2"); // TODO: Move to error
-        return;
+        throw `Error: botmsg#2: ${err}`.toError();
     }
 
     const messageContent = await handleMentions(data, args);

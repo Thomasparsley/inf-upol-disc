@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { GuildMemberRoleManager } from "discord.js";
 
 import { VOC_VerificationSuccessful } from "../vocabulary";
-import { UnauthorizedError } from "../errors";
+import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
 import { Validation } from "../models";
 import { CD_Validation } from "../cd";
 import { Command } from "../command";
@@ -21,6 +21,9 @@ export const validationCommand = new Command(
                 .setRequired(true);
         }),
     async ({ interaction, replySilent, permissionRolesCount }) => {
+        if (!interaction.isChatInputCommand())
+            throw new BadInputForChatCommandError();
+
         const hasPermission = permissionRolesCount((size: Number) => size === 1);
         if (!hasPermission) 
             throw new UnauthorizedError();

@@ -9,10 +9,12 @@ import { CD_Host } from "../cd";
 const HostRoleID = "960478789161320448";
 const cd = CD_Host;
 
+
 export const commandHost = new Command(
     cd.name,
     cd.description,
-    new SlashCommandBuilder(),
+    new SlashCommandBuilder()
+        .setDMPermission(true),
     async ({ interaction, replySilent, permissionRolesCount }) => {
         const roles = (interaction.member?.roles as GuildMemberRoleManager);
         if (roles.cache.has(HostRoleID)) 
