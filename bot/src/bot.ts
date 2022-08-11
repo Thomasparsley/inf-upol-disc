@@ -1,24 +1,30 @@
+import { DataSource } from "typeorm";
 import { Routes } from "discord-api-types/v9";
 import { REST } from "@discordjs/rest";
-import { DataSource } from "typeorm";
 import { 
-    PartialMessageReaction,
     GatewayIntentBits,
-    MessageReaction,
-    Interaction,
-    PartialUser,
-    GuildMember,
-    Awaitable,
-    CacheType,
     Message,
     Client,
     Role,
-    User,
     Partials,
 } from "discord.js";
 
 import { Command } from "./command";
 import { Mailer } from "./mailer";
+import { 
+    BotConfig,
+    OnGuildMemberAddArgs,
+    OnInteractionCreateArgs,
+    OnReactionAddArgs,
+    OnReactionRemoveArgs,
+    OnReadyArgs
+} from "./interfaces";
+import {
+    OnGuildMemberAddAction,
+    onReactionAddAction,
+    onReactionRemoveAction,
+    OnReadyAction
+} from "./types";
 
 const REST_VERSION = "10";
 
@@ -38,6 +44,7 @@ export class Bot {
     private async onInteractionCreate(args: OnInteractionCreateArgs): Promise<void> {
         throw new Error("Empty on interaction create event");
     }
+    private isLogedIn: boolean = false;
 
     constructor(
         private readonly applicationId: string,
@@ -194,7 +201,11 @@ export class Bot {
     }
 
     public async login() {
+        if (this.isLogedIn)
+            return
+
         await this.client.login(this.token);
+        this.isLogedIn = true;
     }
 
     private async registerSlashCommands(commands: Command[], path: any) {
@@ -219,58 +230,3 @@ export class Bot {
         this.registerSlashCommands(commands, path)
     }
 }
-
-interface BotConfig {
-    commands?: Command[];
-    onReady?: OnReadyAction;
-    onReactionAdd?: onReactionAddAction;
-    onReactionRemove?: onReactionRemoveAction;
-    onInteractionCreate?: OnInteractionCreateAction;
-    onGuildMemberAdd?: OnGuildMemberAddAction;
-}
-
-export interface OnReadyArgs {
-    client: Client;
-    commands: Map<string, Command>;
-    db: DataSource;
-}
-
-export interface OnGuildMemberAddArgs {
-    client: Client;
-    member: GuildMember;
-}
-
-export type OnReadyAction = (args: OnReadyArgs) => Awaitable<void>
-export type OnGuildMemberAddAction = (args: OnGuildMemberAddArgs) => Awaitable<void>
-
-
-export interface OnReactionAddArgs {
-    client: Client;
-    reaction: MessageReaction | PartialMessageReaction; 
-    user: User | PartialUser;
-    commands: Map<string, Command>;
-    db: DataSource;
-}
-
-export type onReactionAddAction = (args: OnReactionAddArgs) => Awaitable<void>
-
-export interface OnReactionRemoveArgs {
-    client: Client;
-    reaction: MessageReaction | PartialMessageReaction; 
-    user: User | PartialUser;
-    commands: Map<string, Command>;
-    db: DataSource;
-}
-
-export type onReactionRemoveAction = (args: OnReactionRemoveArgs) => Awaitable<void>
-
-export interface OnInteractionCreateArgs {
-    client: Client;
-    interaction: Interaction<CacheType>;
-    commands: Map<string, Command>;
-    db: DataSource;
-    mailer: Mailer;
-    commandRegistration: (commands: Command[]) => Promise<void>;
-}
-
-export type OnInteractionCreateAction = (args: OnInteractionCreateArgs) => Promise<void>

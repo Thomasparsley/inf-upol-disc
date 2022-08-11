@@ -1,35 +1,12 @@
-import { CacheType, GuildMemberRoleManager, Interaction } from "discord.js";
+import { GuildMemberRoleManager } from "discord.js";
 
-import { OnInteractionCreateArgs } from "../bot";
-import { UnknownCommandError, UnrepliableInteractionError } from "../errors";
-import { CommandArgs } from "../command";
+import { CommandArgs, OnInteractionCreateArgs } from "../interfaces";
+import { reply, replySilent } from "../functions";
+import { UnknownCommandError } from "../errors";
 
+function makeCommandArgs(args: OnInteractionCreateArgs) {
+    const { client, interaction, commands, db, mailer, commandRegistration } = args;
 
-export function reply(interaction: Interaction<CacheType>) {
-    return async function (content: string) {
-        if (interaction.isRepliable())
-            return await interaction.reply({
-                content,
-            });
-
-        throw new UnrepliableInteractionError();
-    }
-}
-
-export function replySilent(interaction: Interaction<CacheType>) {
-    return async function (content: string) {
-        if (interaction.isRepliable())
-            return await interaction.reply({
-                content,
-                ephemeral: true,
-            });
-
-        throw new UnrepliableInteractionError();
-    }
-}
-
-// @ts-ignore
-function makeCommandArgs({ client, interaction, commands, db, mailer, commandRegistration }) {
     const commandArgs: CommandArgs = {
         client,
         interaction,
@@ -67,7 +44,6 @@ async function event(args: OnInteractionCreateArgs) {
         throw "Zadaný požadavek není příkaz!".toError();
     
     const commandArgs = makeCommandArgs(args)
-
     const command = commands.get(interaction.commandName);
     if (!command)
         throw new UnknownCommandError();

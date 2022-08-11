@@ -1,6 +1,6 @@
 import { createTransport, Transporter } from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-
+import { Message } from "./interfaces";
 
 export class Mailer {
     private ctx: Transporter<SMTPTransport.SentMessageInfo>;
@@ -34,11 +34,4 @@ export class Mailer {
             html: message.html
         });
     }
-}
-
-export interface Message {
-    to: string;
-    subject: string;
-    text?: string;
-    html?: string;
 }

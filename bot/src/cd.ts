@@ -23,51 +23,6 @@
     };
 */
 
-export const CD_BotMessage = {
-	name: "botmessage",
-	description: "Pošle nebo upraví zprávu pomocí bota.",
-	sub: { 
-        add: {
-			name: "add", 
-			description: "Pošle zprávu pomocí bota.",
-            options: [
-                {
-                    name: "text",
-                    description: "Text zprávy."
-                },
-            ]
-		},
-        edit: {
-			name: "edit",
-			description: "Upraví zprávu pomocí bota.",
-            options: [
-                {
-                    name: "messageid",
-                    description: "ID zprávy, kterou chceš upravit."
-                },
-                {
-                    name: "text",
-                    description: "Nový text zprávy."
-                },
-            ]
-		},
-        fetch: {
-			name: "fetch",
-			description: "Načte z dané URL obsah zprávy.",
-            options: [
-                {
-                    name: "messageid",
-                    description: "ID zprávy, kterou chceš upravit."
-                },
-                {
-                    name: "url",
-                    description: "Text zprávy."
-                },
-            ]
-		},
-    }
-};
-
 export const CD_Cmdreg = {
     name: "cmdreg",
     description: "Zaregistruje command, který je součástí S2A2 botu.",

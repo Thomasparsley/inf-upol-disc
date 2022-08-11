@@ -1,4 +1,4 @@
-import { OnReadyAction } from "../bot";
+import { OnReadyAction } from "../types";
 
 const event: OnReadyAction = async ({ client }) => {
     if (!client.user) {

@@ -1,10 +1,10 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { Guild, Role } from "discord.js";
 
+import { BadInputForChatCommandError } from "../errors";
 import { VOC_ActionSuccessful } from "../vocabulary";
+import { getBinds } from "../functions";
 import { Command } from "../command";
 import { CD_RM } from "../cd";
-import { BadInputForChatCommandError } from "../errors";
 
 const RequiredOptionMessageID = "message";
 const RequiredOptionBinds = "binds";
@@ -87,24 +87,3 @@ export const reactionMessage = new Command(
         await replySilent(VOC_ActionSuccessful);
     },
 );
-
-// TODO: Move outside?
-function getBinds(input: string, guild: Guild): Map<String, Role> | null {
-    const binds = input.split(",")
-    const mapBinds = new Map<String, Role>()
-
-    binds.forEach(bind => {
-        const arr = bind.slice(1, -1).split(" ")
-        const inputEmote: string = arr[0].trim()
-        const inputRole: string = arr[1].trim().replace("@", "")
-
-        const role = guild.roles.cache.find((r: Role) => r.name === inputRole);
-
-        if (!role) 
-            return null
-
-        mapBinds.set(inputEmote, role)
-    })
-
-    return mapBinds
-}

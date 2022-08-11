@@ -1,21 +1,6 @@
 import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from "@discordjs/builders";
-import { CacheType, Client, Interaction, InteractionResponse } from "discord.js";
-import { DataSource } from "typeorm";
-import { Mailer } from "./mailer";
+import { CommandAction } from "./types";
 
-export interface CommandArgs {
-    client: Client;
-    interaction: Interaction<CacheType>;
-    commands: Map<string, Command>;
-    db: DataSource;
-    mailer: Mailer;
-    commandRegistration: (commands: Command[]) => Promise<void>;
-    reply: (content: string) => Promise<void | InteractionResponse<boolean>>;
-    replySilent: (content: string) => Promise<void | InteractionResponse<boolean>>;
-    permissionRolesCount: (predicate: Function) => boolean;
-    permissionRole: (roleID: string) => boolean;
-}
-export type CommandAction = (args: CommandArgs) => Promise<void>
 
 export class Command {
     constructor(

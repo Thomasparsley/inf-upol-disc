@@ -6,7 +6,7 @@ import { CD_Cmdreg } from "../cd";
 
 const cd = CD_Cmdreg;
 
-// WIP
+//  TODO: WIP
 export const commandCmdreg = new Command(
     cd.name,
     cd.description,

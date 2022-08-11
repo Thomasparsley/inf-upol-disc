@@ -1,11 +1,3 @@
-import { 
-    VOC_InvalidDomain as VOC_InvalidEmailDomain,
-    VOC_IsntChatInputCommand,
-    VOC_NonValidEmail,
-    VOC_NonValidUrl,
-    VOC_Unauthorized,
-} from "./vocabulary"
-
 export class UnrepliableInteractionError extends Error {
     constructor() { super() }
 }
@@ -15,21 +7,37 @@ export class UnknownCommandError extends Error {
 }
 
 export class UnauthorizedError extends Error {
-    constructor() { super(VOC_Unauthorized) }
+    constructor() {
+        super("Nemáš oprávnění pro tento příkaz!")
+    }
 }
 
 export class InvalidURLError extends Error {
-    constructor() { super(VOC_NonValidUrl) }
+    constructor() {
+        super("Nepředal jsi validní URL.")
+    }
 }
 
 export class InvalidEmailFormatError extends Error {
-    constructor(email: string) { super(VOC_NonValidEmail(email)) }
+    constructor(email: string) {
+        super(`Email není ve správném tvaru ${email}.`)
+    }
 }
 
 export class UnknownUpolEmailError extends Error {
-    constructor(email: string) { super(VOC_InvalidEmailDomain(email)) }
+    constructor(email: string) {
+        super(`${email} napatří do domény Univerzity Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`)
+    }
 }
 
 export class BadInputForChatCommandError extends Error {
-    constructor() { super(VOC_IsntChatInputCommand) }
+    constructor() {
+        super("Příkaz nelze zpracovat.")
+    }
+}
+
+export class BotCanEditOnlySelfMessagesError extends Error {
+    constructor() {
+        super("Bot může upravovat jen svoje zprávy!")
+    }
 }
