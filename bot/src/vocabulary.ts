@@ -1,6 +1,5 @@
 import { Role } from "discord.js";
 
-
 export const VOC_VerificationSuccessful = "Úspěšně jste se ověřil/a.";
 export const VOC_ActionSuccessful = "Akce byla provedena.";
 export const VOC_RequestSended = "Žádost byla odeslána.";
