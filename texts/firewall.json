@@ -1,0 +1,45 @@
+{
+    "channelID": 962442923868315669,
+    "messages": [
+        {
+            "id": 963455922036957294,
+            "content": [
+                "V této místnosti si ověříš svůj účet. Můžeš zažádat jednu z rolí <role>Student</role> ,<role>Návštěva</role> nebo <role>Katedra</role>.",
+                "",
+                "",
+                "**Postup při žádosti o jednotlivé role:**",
+                "",
+                "<role>Návštěva</role> - pokud jsi přišel jen na návštěvu nebo nejsi student naší katedry, klikni na tlačítko \"Jsem návštěvník\". Následně se ti přidá(odstraní) role <role>@Návštěva</role>.",
+                "",
+                "<role>Student</role> - student katedry informatiky",
+                "1. Klikni na tlačítko \"Jsem student\".",
+                "2. Do kolonky email zadej tvůj univerzitní email ve tvaru **uzivatel@upol.cz** a dej zašli formulář.",
+                "3. Na zadaný email přijde ověřovací URL odkaz, kterým ověříš svůj účet.",
+                "",
+                "<role>Katedra</role> - učitel nebo doktorand naší katedry",
+                "Pro přidělení této role kontaktujte libovolného uživatele s rolí <role>Root</role>.",
+                "",
+                "**Použitím následujících tlačítek souhlasíte se zpracováním Vašich osobních/školních údajů a s pravidly serveru. (školní email)**"
+            ],
+            "components": {
+                "buttons": [
+                    {
+                        "id": "btnHost",
+                        "label": "Jsem návštěvník",
+                        "style": "Primary"
+                    },
+                    {
+                        "id": "btnStuden",
+                        "label": "Jsem student",
+                        "style": "Success"
+                    },
+                    {
+                        "id": "bntDepartment",
+                        "label": "Jsem z katedry",
+                        "style": "Danger"
+                    }
+                ]
+            }
+        }
+    ] 
+}
