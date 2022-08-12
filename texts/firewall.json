@@ -6,7 +6,6 @@
             "content": [
                 "V této místnosti si ověříš svůj účet. Můžeš zažádat jednu z rolí <role>Student</role> ,<role>Návštěva</role> nebo <role>Katedra</role>.",
                 "",
-                "",
                 "**Postup při žádosti o jednotlivé role:**",
                 "",
                 "<role>Návštěva</role> - pokud jsi přišel jen na návštěvu nebo nejsi student naší katedry, klikni na tlačítko \"Jsem návštěvník\". Následně se ti přidá(odstraní) role <role>@Návštěva</role>.",

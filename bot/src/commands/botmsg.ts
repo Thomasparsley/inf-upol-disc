@@ -248,13 +248,14 @@ async function commandLoad(args: CommandArgs): Promise<void> {
         throw new InvalidTextBasedChannel();
 
     for (const rawMessage of data.messages)
-        await processOneMessage(rawMessage, channel, client);
+        await processOneMessage(rawMessage, channel, client, args);
 }
 
 async function processOneMessage(
     rawMessage: TextFileMessage,
     channel: TextBasedChannel,
-    client: Client<boolean>
+    client: Client<boolean>,
+    args: CommandArgs
 ) {
     const messageId = rawMessage.id;
     const message = await channel.messages.fetch(messageId);
@@ -274,7 +275,8 @@ async function processOneMessage(
         for (const raw of rawMessage.components.buttons)
             components.push(createButtonComponent(raw));
 
-    const content = rawMessage.content.join("\n");
+    const unparsedContent = rawMessage.content.join("\n");
+    const content = await handleMentions(unparsedContent, args);
     const row = new ActionRowBuilder()
         .addComponents(components);
 
@@ -317,7 +319,7 @@ function getButtonStyle(style: string): ButtonStyle {
         case "Secondary":
             return ButtonStyle.Secondary;
 
-        case "Succecss":
+        case "Success":
             return ButtonStyle.Success;
 
         case "Danger":
