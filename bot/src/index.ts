@@ -19,6 +19,7 @@ import {
     commandHost,
     botMessage,
 } from "./commands";
+
 import { Mailer } from "./mailer";
 
 const {
@@ -56,16 +57,12 @@ const {
             onReactionRemove: onReactionRemove,
             onInteractionCreate: onInteractionCreate,
             commands: [
-                validationCommand,
                 roleCommand,
                 everyRequest,
-                commandRegister,
-                commandHost,
                 botMessage,
-            ],
+            ]
         });
 
     await bot.registerSlashGuildCommands(Array.from(bot.commands.values()));
     await bot.login();
-
 })();

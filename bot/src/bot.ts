@@ -32,6 +32,8 @@ export class Bot {
     client: Client;
     rest: REST;
     commands: Map<string, Command>;
+    buttons: Map<string, Command>;
+    modals: Map<string, Command>;
     reactionMessages: Map<Message, Map<String, Role>>;
     private onReady: OnReadyAction
         = async (args: OnReadyArgs) => {}
@@ -56,6 +58,8 @@ export class Bot {
     ) {
         this.reactionMessages = new Map<Message, Map<String, Role>>();
         this.commands = new Map<string, Command>();
+        this.buttons = new Map<string, Command>();
+        this.modals = new Map<string, Command>();
 
         this.client = new Client({
             intents: [
@@ -75,9 +79,9 @@ export class Bot {
         this.rest = new REST({ version: REST_VERSION })
             .setToken(this.token);
 
-        if (config.commands) {
-            this.initCommands(config.commands);
-        }
+        if (config.commands) this.initCommands(config.commands);
+        if (config.buttons) this.initButtons(config.buttons);
+        if (config.modals) this.initModals(config.modals);
 
         /* if (config.reactionMessages) {
             this.initReactionMessages(config.reactionMessages);
@@ -128,12 +132,12 @@ export class Bot {
                 client: this.client,
                 interaction: interaction,
                 commands: this.commands,
+                buttons: this.buttons,
+                modals: this.modals,
                 db: this.db,
                 mailer: this.mailer,
                 commandRegistration: this.registerSlashGuildCommands,
             };
-
-            
 
             try {
                 await this.onInteractionCreate(args);
@@ -197,6 +201,18 @@ export class Bot {
     private initCommands(commands: Command[]) {
         commands.forEach((command) => {
             this.commands.set(command.getName(), command);
+        });
+    }
+
+    private initButtons(commands: Command[]) {
+        commands.forEach((command) => {
+            this.buttons.set(command.getName(), command);
+        });
+    }
+
+    private initModals(commands: Command[]) {
+        commands.forEach((command) => {
+            this.modals.set(command.getName(), command);
         });
     }
 

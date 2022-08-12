@@ -4,11 +4,10 @@ import { GuildMemberRoleManager } from "discord.js";
 import { VOC_VerificationSuccessful } from "../vocabulary";
 import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
 import { Validation } from "../models";
-import { CD_Validation } from "../cd";
+import { CD_Validation as cd } from "../cd";
 import { Command } from "../command";
 
 const StudentID = "960478701684936734";
-const cd = CD_Validation;
 
 export const validationCommand = new Command(
     cd.name,

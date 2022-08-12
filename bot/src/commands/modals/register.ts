@@ -1,24 +1,21 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 
-import { VOC_VerificationCodeSended } from "../vocabulary";
-import { Validation } from "../models";
-import { Command } from "../command";
-import { CD_Register } from "../cd";
+import { VOC_VerificationCodeSended } from "../../vocabulary";
+import { Validation } from "../../models";
+import { Command } from "../../command";
+import { CD_Register as cd } from "../../cd";
 
 import {
     isValidateEmail,
     isUpolEmail,
     makeRegisterText,
     makeRegisterHTML
-} from "../functions";
+} from "../../utils";
 import {
     BadInputForChatCommandError,
     InvalidEmailFormatError,
     UnknownUpolEmailError,
-} from "../errors";
-
-
-const cd = CD_Register;
+} from "../../errors";
 
 export const commandRegister = new Command(
     cd.name,

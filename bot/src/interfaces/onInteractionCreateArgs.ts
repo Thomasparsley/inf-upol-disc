@@ -7,6 +7,8 @@ export interface OnInteractionCreateArgs {
     client: Client;
     interaction: Interaction<CacheType>;
     commands: Map<string, Command>;
+    buttons: Map<string, Command>;
+    modals: Map<string, Command>;
     db: DataSource;
     mailer: Mailer;
     commandRegistration: (commands: Command[]) => Promise<void>;

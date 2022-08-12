@@ -2,14 +2,13 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 
 import { BadInputForChatCommandError } from "../errors";
 import { VOC_ActionSuccessful } from "../vocabulary";
-import { getBinds } from "../functions";
+import { getBinds } from "../utils";
 import { Command } from "../command";
-import { CD_RM } from "../cd";
+import { CD_RM as cd} from "../cd";
 
 const RequiredOptionMessageID = "message";
 const RequiredOptionBinds = "binds";
 
-const cd = CD_RM;
 const subAdd = cd.sub.add;
 const subRemove = cd.sub.remove;
 

@@ -18,6 +18,24 @@ export class InvalidURLError extends Error {
     }
 }
 
+export class InvalidTextBasedChannel extends Error {
+    constructor() {
+        super("Nelze najít příslušný textový kanál.")
+    }
+}
+
+export class InvalidChannel extends Error {
+    constructor() {
+        super("Nelze najít příslušný kanál.")
+    }
+}
+
+export class InvalidGuild extends Error {
+    constructor() {
+        super("Nelze najít příslušnou guildu.")
+    }
+}
+
 export class InvalidEmailFormatError extends Error {
     constructor(email: string) {
         super(`Email není ve správném tvaru ${email}.`)

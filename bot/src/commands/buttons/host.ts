@@ -1,14 +1,12 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { GuildMemberRoleManager } from "discord.js";
 
-import { UnauthorizedError } from "../errors";
-import { VOC_RoleAdded } from "../vocabulary";
-import { Command } from "../command";
-import { CD_Host } from "../cd";
+import { UnauthorizedError } from "../../errors";
+import { VOC_RoleAdded } from "../../vocabulary";
+import { Command } from "../../command";
+import { CD_Host as cd } from "../../cd";
 
 const HostRoleID = "960478789161320448";
-const cd = CD_Host;
-
 
 export const commandHost = new Command(
     cd.name,

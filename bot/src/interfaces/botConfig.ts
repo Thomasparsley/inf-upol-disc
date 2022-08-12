@@ -9,6 +9,8 @@ import {
 
 export interface BotConfig {
     commands?: Command[];
+    buttons?: Command[];
+    modals?: Command[];
     onReady?: OnReadyAction;
     onReactionAdd?: onReactionAddAction;
     onReactionRemove?: onReactionRemoveAction;

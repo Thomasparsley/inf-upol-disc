@@ -1,8 +1,9 @@
 import { GuildMemberRoleManager } from "discord.js";
 
 import { CommandArgs, OnInteractionCreateArgs } from "../interfaces";
-import { reply, replySilent } from "../functions";
+import { reply, replySilent } from "../utils";
 import { UnknownCommandError } from "../errors";
+import { Command } from "../command";
 
 function makeCommandArgs(args: OnInteractionCreateArgs) {
     const { client, interaction, commands, db, mailer, commandRegistration } = args;
@@ -38,19 +39,23 @@ function makeCommandArgs(args: OnInteractionCreateArgs) {
 }
 
 async function event(args: OnInteractionCreateArgs) {
-    const { interaction, commands } = args;
+    const { interaction, commands, buttons, modals } = args;
 
-    if (!interaction.isCommand())
-        throw "Zadaný požadavek není příkaz!".toError();
+    let command: Command | undefined;
+    if(interaction.isButton())
+        command = buttons.get(interaction.customId);
+
+    else if(interaction.isModalSubmit())
+        command = modals.get(interaction.customId);
     
-    const commandArgs = makeCommandArgs(args)
-    const command = commands.get(interaction.commandName);
+    else if (interaction.isChatInputCommand())
+        command = commands.get(interaction.commandName);
+    
     if (!command)
         throw new UnknownCommandError();
 
+    const commandArgs = makeCommandArgs(args)
     await command.execute(commandArgs);
-
-    throw "Nastala chyba při vykonávání příkazu!".toError();
 }
 
 export default event

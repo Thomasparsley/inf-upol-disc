@@ -2,9 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 
 import { UnknownCommandError } from "../errors";
 import { Command } from "../command";
-import { CD_Cmdreg } from "../cd";
-
-const cd = CD_Cmdreg;
+import { CD_Cmdreg as cd } from "../cd";
 
 //  TODO: WIP
 export const commandCmdreg = new Command(

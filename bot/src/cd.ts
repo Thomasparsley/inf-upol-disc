@@ -81,6 +81,61 @@ export const CD_RM = {
     }
 };
 
+export const CD_Botmsg = {
+    name: "botmessage",
+    description: "Pošle nebo upraví zprávu pomocí bota.",
+    sub: {
+        add: {
+            name: "add",
+            description: "Pošle zprávu pomocí bota.",
+            options:  {
+                text: {
+                    name: "text",
+                    description: "Text zprávy.",
+                },
+            },
+        },
+        edit: {
+            name: "edit",
+            description: "Upraví zprávu pomocí bota.",
+            options: {
+                messageid: {
+                    name: "messageid",
+                    description: "ID zprávy, kterou chceš upravit.",
+                },
+                text: {
+                    name: "text",
+                    description: "Nový text zprávy.",
+                },
+            },
+        },
+        fetch: {
+            name: "fetch",
+            description: "Načte z dané URL obsah zprávy.",
+            options: {
+                messageid: {
+                    name: "messageid",
+                    description: "ID zprávy, kterou chceš upravit.",
+                },
+                url: {
+                    name: "url",
+                    description: "Odkaz na soubor.",
+                },
+            },
+        },
+        load: {
+            name: "load",
+            description: "Načte z dané URL zprávu i s případnými komponentami.",
+            options: {
+                url: {
+                    name: "url",
+                    description: "Odkaz na soubor.",
+                },
+            },
+        },
+    },
+};
+
 export const CD_Register = {
     name: "registrace",
     description: "Zaregistruj se na náš discord a pokud jsi student tak obdrž roli Studnet.",

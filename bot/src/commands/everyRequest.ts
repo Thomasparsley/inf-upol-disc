@@ -3,11 +3,10 @@ import { TextChannel } from "discord.js";
 
 import { VOC_EveryRequest, VOC_RequestSended } from "../vocabulary";
 import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
-import { CD_EveryRequest } from "../cd";
+import { CD_EveryRequest as cd } from "../cd";
 import { Command } from "../command";
 
 const RequestChannelID = "961981948740386826";
-const cd = CD_EveryRequest;
 
 export const everyRequest = new Command(
     cd.name,
