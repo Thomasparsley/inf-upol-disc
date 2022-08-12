@@ -58,7 +58,7 @@
                     {
                         "id": "dropdownAddRole",
                         "flag": "novinky",
-                        "placeholder": "Vyber si obory",
+                        "placeholder": "Vyber si jaké novinky chceš odebírat",
                         "min": 1,
                         "max": 1,
                         "options": [
@@ -86,8 +86,8 @@
                 "dropdowns": [
                     {
                         "id": "dropdownAddRole",
-                        "flag": "novinky",
-                        "placeholder": "Vyber si obory",
+                        "flag": "jazyky",
+                        "placeholder": "Vyber si jaké programovací jazyky tě zajímají",
                         "min": 1,
                         "max": 1,
                         "options": [
