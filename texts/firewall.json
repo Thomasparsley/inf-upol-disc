@@ -1,8 +1,8 @@
 {
-    "channelID": 962442923868315669,
+    "channelID": "962442923868315669",
     "messages": [
         {
-            "id": 963455922036957294,
+            "id": "963455922036957294",
             "content": [
                 "V této místnosti si ověříš svůj účet. Můžeš zažádat jednu z rolí <role>Student</role> ,<role>Návštěva</role> nebo <role>Katedra</role>.",
                 "",

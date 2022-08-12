@@ -241,9 +241,7 @@ async function commandLoad(args: CommandArgs): Promise<void> {
     if (!guild)
         throw new InvalidGuild();
 
-    console.log(guild.name);
-    console.log(channelID.toString());
-    const channel = await guild.channels.fetch(channelID.toString());
+    const channel = await guild.channels.fetch(channelID);
     if (!channel)
         throw new InvalidChannel();
     if (!channel.isTextBased())
@@ -259,7 +257,7 @@ async function processOneMessage(
     client: Client<boolean>
 ) {
     const messageId = rawMessage.id;
-    const message = await channel.messages.fetch(messageId.toString());
+    const message = await channel.messages.fetch(messageId);
     if (!message)
         throw "".toError();
     if (message.author !== client.user)

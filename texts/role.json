@@ -1,15 +1,15 @@
 {
-    "channelID": 960452395312234545,
+    "channelID": "960452395312234545",
     "messages": [
         {
-            "id": 964816468346822666,
+            "id": "964816468346822666",
             "content": [
                 "**Výběr rolí**",
                 "V této místnosti si můžeš vybrat role. Role ti zpřístupní mnoho funkcí, umožní ti vstup do speciálních místností a zobrazí se ti na profilu, takže každý ví co tě zajímá. Pro výber role stačí zakliknout příslušné role v \"dropdown menu\", který je vždy pod výpisem možností."
             ]
         },
         {
-            "id": 964816519647342632,
+            "id": "964816519647342632",
             "content": [
                 "⠀",
                 "**Výběr oborů**",
@@ -45,7 +45,7 @@
             }
         },
         {
-            "id": 964817512942419998,
+            "id": "964817512942419998",
             "content": [
                 "⠀",
                 "**Speciální role**",
@@ -74,7 +74,7 @@
             }
         },
         {
-            "id": 964817827225804871,
+            "id": "964817827225804871",
             "content": [
                 "⠀",
                 "**Programovací jazyky**",
@@ -109,7 +109,7 @@
             }
         },
         {
-            "id": 964817841922666506,
+            "id": "964817841922666506",
             "content": [
                 "⠀",
                 "**Výběr předmětů**",

@@ -1,11 +1,11 @@
 export interface TextFile {
-    channelID: number;
+    channelID: string;
     messages: TextFileMessage[];
 
 }
 
 export interface TextFileMessage {
-    id: number;
+    id: string;
     content: string[];
     components?: {
         dropdowns?: {

@@ -1,8 +1,8 @@
 {
-    "channelID": 960522831374975017,
+    "channelID": "960522831374975017",
     "messages": [
         {
-            "id": 963432474837385286,
+            "id": "963432474837385286",
             "content": [
                 "**Vítáme Tě na oficiálním discord serveru Katedry informatiky UP. **",
                 "Dříve, než začneš na serveru fungovat, jdi do <channel>firewall</channel>, kde podle návodu ověříš tvůj účet. Bez ,tohoto kroku ti nebudou zpřístupněny žádné funkce.", 
@@ -28,7 +28,7 @@
             ]
         },
         {
-            "messageID": 1007586066271830097,
+            "id": "1007586066271830097",
             "content": [
                 "⠀",
                 "**Pravidla**",
