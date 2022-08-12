@@ -25,6 +25,7 @@ import {
     onReactionRemoveAction,
     OnReadyAction
 } from "./types";
+import { replySilent } from "./utils";
 
 const REST_VERSION = "10";
 
@@ -143,6 +144,7 @@ export class Bot {
                 await this.onInteractionCreate(args);
             } catch (err) {
                 console.error(err);
+                await replySilent(interaction)((err as Error).toString());
             }
         });
     }

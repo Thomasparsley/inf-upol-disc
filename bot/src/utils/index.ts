@@ -1,4 +1,5 @@
 export * from "./getBinds";
+export * from "./getButtonStyle";
 export * from "./isHttp";
 export * from "./isHttpUrlWithFileExt";
 export * from "./isUpolEmail";

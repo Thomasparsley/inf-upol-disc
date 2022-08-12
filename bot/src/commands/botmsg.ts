@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ActionRowBuilder, SelectMenuBuilder, SlashCommandBuilder } from "@discordjs/builders";
 import { CD_Botmsg as cd } from "../cd";
-import { isHttpUrlWithFileExt, replaceTags, parseByTag } from "../utils";
+import { isHttpUrlWithFileExt, replaceTags, parseByTag, getButtonStyle } from "../utils";
 import { VOC_ActionSuccessful } from "../vocabulary";
 import { Command } from "../command";
 import {
@@ -16,6 +16,7 @@ import {
 } from "../errors";
 import { CommandArgs, TextFile, TextFileMessage } from "../interfaces";
 import { ButtonBuilder, ButtonStyle, Channel, Client, TextBasedChannel } from "discord.js";
+import slugify from "slugify";
 
 
 const rootID = "960452395312234537";
@@ -103,19 +104,19 @@ export const botMessage = new Command(
         const subCommand = interaction.options.getSubcommand();
         switch (subCommand) {
             case cd.sub.add.name:
-                await commandAdd(args);
+                await subCommandAdd(args);
                 break;
 
             case cd.sub.edit.name:
-                await commandEdit(args);
+                await subCommandEdit(args);
                 break;
 
             case cd.sub.fetch.name:
-                await commandFetch(args);
+                await subCommandFetch(args);
                 break;
 
-            case "load":
-                await commandLoad(args);
+            case cd.sub.load.name:
+                await subCommandLoad(args);
                 break;
 
             default:
@@ -126,7 +127,7 @@ export const botMessage = new Command(
     },
 );
 
-async function commandAdd(args: CommandArgs): Promise<void> {
+async function subCommandAdd(args: CommandArgs): Promise<void> {
     const { interaction } = args;
 
     if (!interaction.isChatInputCommand())
@@ -144,7 +145,7 @@ async function commandAdd(args: CommandArgs): Promise<void> {
     throw "botmessage#1".toError();
 }
 
-async function commandEdit(args: CommandArgs): Promise<void> {
+async function subCommandEdit(args: CommandArgs): Promise<void> {
     const { client, interaction } = args;
 
     if (!interaction.isChatInputCommand())
@@ -172,7 +173,7 @@ async function commandEdit(args: CommandArgs): Promise<void> {
     throw new Error("botmessage#3");
 }
 
-async function commandFetch(args: CommandArgs): Promise<void> {
+async function subCommandFetch(args: CommandArgs): Promise<void> {
     const { client, interaction } = args;
 
     if (!interaction.isChatInputCommand())
@@ -203,7 +204,7 @@ async function commandFetch(args: CommandArgs): Promise<void> {
         throw `Error: botmsg#2: ${err}`.toError();
     }
 
-    const messageContent = await handleMentions(data, args);
+    const messageContent = handleMentions(data, args);
     if (!messageContent)
         throw "botmsg#5".toError();
 
@@ -213,7 +214,7 @@ async function commandFetch(args: CommandArgs): Promise<void> {
     message.edit(messageContent);
 }
 
-async function commandLoad(args: CommandArgs): Promise<void> {
+async function subCommandLoad(args: CommandArgs): Promise<void> {
     const { client, interaction } = args;
 
     if (!interaction.isChatInputCommand())
@@ -232,8 +233,6 @@ async function commandLoad(args: CommandArgs): Promise<void> {
     } catch (err) {
         throw `Error: botmsg#6: ${err}`.toError();
     }
-
-    console.log(data);
 
     const channelID = data.channelID;
     
@@ -256,7 +255,7 @@ async function processOneMessage(
     channel: TextBasedChannel,
     client: Client<boolean>,
     args: CommandArgs
-) {
+): Promise<void> {
     const messageId = rawMessage.id;
     const message = await channel.messages.fetch(messageId);
     if (!message)
@@ -268,7 +267,7 @@ async function processOneMessage(
     // Dropdown
     if (rawMessage.components && rawMessage.components.dropdowns)
         for (const raw of rawMessage.components.dropdowns)
-            components.push(createDropwodnComponent(raw));
+            components.push(createDropdownComponent(raw));
 
     // Buttons
     if (rawMessage.components && rawMessage.components.buttons)
@@ -276,15 +275,21 @@ async function processOneMessage(
             components.push(createButtonComponent(raw));
 
     const unparsedContent = rawMessage.content.join("\n");
-    const content = await handleMentions(unparsedContent, args);
-    const row = new ActionRowBuilder()
-        .addComponents(components);
+    const content = handleMentions(unparsedContent, args);
 
-    await message.edit({
-        content: content,
-        // @ts-ignore
-        components: [row]
-    });
+    if (components.length > 0) {
+        const row = new ActionRowBuilder()
+            .addComponents(...components);
+
+        await message.edit({
+            content: content,
+            // @ts-ignore
+            components: [row]
+        });
+        return;
+    }
+
+    await message.edit({ content: content });
 }
 
 function createButtonComponent(raw: { id: string; label: string; style: string; }) {
@@ -294,13 +299,7 @@ function createButtonComponent(raw: { id: string; label: string; style: string; 
         .setStyle(getButtonStyle(raw.style));
 }
 
-function createDropwodnComponent(raw: { id: string; flag: string; placeholder: string; min: number; max: number; options: string[]; }) {
-    const component = new SelectMenuBuilder()
-        .setCustomId(`${raw.id}-${raw.flag}`)
-        .setPlaceholder(raw.placeholder)
-        .setMinValues(raw.min)
-        .setMinValues((raw.max < 0) ? raw.options.length : raw.max);
-
+function createDropdownComponent(raw: { id: string; flag: string; placeholder: string; min: number; max: number; options: string[]; }) {
     const optionalValues: any[] = [];
     for (const value of raw.options)
         optionalValues.push({
@@ -308,32 +307,22 @@ function createDropwodnComponent(raw: { id: string; flag: string; placeholder: s
             value: value,
         });
 
+    let maxValue = (raw.max < 0) ? raw.options.length : raw.max;
+    if (maxValue > 25)
+        maxValue = 25;
+
+    const values = optionalValues.slice(0, 24);
+    const component = new SelectMenuBuilder()
+        .setCustomId(`${raw.id}-${raw.flag}`)
+        .setPlaceholder(raw.placeholder)
+        .setMinValues(raw.min)
+        .setMaxValues(maxValue)
+        .setOptions(...values);
+
     return component;
 }
 
-function getButtonStyle(style: string): ButtonStyle {
-    switch (style) {
-        case "Primary":
-            return ButtonStyle.Primary;
-
-        case "Secondary":
-            return ButtonStyle.Secondary;
-
-        case "Success":
-            return ButtonStyle.Success;
-
-        case "Danger":
-            return ButtonStyle.Danger;
-
-        case "Link":
-            return ButtonStyle.Link;
-
-        default:
-            return ButtonStyle.Primary;
-    }
-}
-
-async function handleMentions(message: string, args: CommandArgs): Promise<string> {
+function handleMentions(message: string, args: CommandArgs): string {
     const { interaction } = args;
 
     const channels = parseByTag(message, channelTagName);
