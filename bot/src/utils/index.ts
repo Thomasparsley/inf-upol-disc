@@ -1,5 +1,7 @@
+export * from "./fetchChannelFromGuild";
 export * from "./getBinds";
 export * from "./getButtonStyle";
+export * from "./getGuild";
 export * from "./isHttp";
 export * from "./isHttpUrlWithFileExt";
 export * from "./isUpolEmail";

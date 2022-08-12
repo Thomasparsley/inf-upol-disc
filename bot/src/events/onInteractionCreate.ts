@@ -1,7 +1,7 @@
 import { GuildMemberRoleManager } from "discord.js";
 
 import { CommandArgs, OnInteractionCreateArgs } from "../interfaces";
-import { reply, replySilent } from "../utils";
+import { fetchChannelFromGuild, getGuild, reply, replySilent } from "../utils";
 import { UnknownCommandError } from "../errors";
 import { Command } from "../command";
 
@@ -15,6 +15,8 @@ function makeCommandArgs(args: OnInteractionCreateArgs) {
         db,
         mailer,
         commandRegistration,
+        getGuild: getGuild(interaction),
+        fetchChannelFromGuild: fetchChannelFromGuild(interaction),
         reply: reply(interaction),
         replySilent: replySilent(interaction),
         permissionRolesCount: (predicate: Function): boolean => {

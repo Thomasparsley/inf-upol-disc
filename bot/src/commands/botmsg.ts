@@ -215,7 +215,7 @@ async function subCommandFetch(args: CommandArgs): Promise<void> {
 }
 
 async function subCommandLoad(args: CommandArgs): Promise<void> {
-    const { client, interaction } = args;
+    const { client, interaction, fetchChannelFromGuild } = args;
 
     if (!interaction.isChatInputCommand())
         throw new BadInputForChatCommandError();
@@ -235,20 +235,15 @@ async function subCommandLoad(args: CommandArgs): Promise<void> {
     }
 
     const channelID = data.channelID;
-    
-    const guild = interaction.guild;
-    if (!guild)
-        throw new InvalidGuild();
-
-    const channel = await guild.channels.fetch(channelID);
-    if (!channel)
-        throw new InvalidChannel();
+    const channel = await fetchChannelFromGuild(channelID);
     if (!channel.isTextBased())
         throw new InvalidTextBasedChannel();
 
     for (const rawMessage of data.messages)
         await processOneMessage(rawMessage, channel, client, args);
 }
+
+
 
 async function processOneMessage(
     rawMessage: TextFileMessage,
