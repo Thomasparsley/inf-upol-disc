@@ -5,11 +5,10 @@ import { VOC_VerificationSuccessful } from "../vocabulary";
 import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
 import { Validation } from "../models";
 import { CD_Validation as cd } from "../cd";
-import { Command } from "../command";
+import { ChatInputCommand } from "../command";
+import { Role } from "../enums";
 
-const StudentID = "960478701684936734";
-
-export const validationCommand = new Command(
+export const validationCommand = new ChatInputCommand(
     cd.name,
     cd.description,
     new SlashCommandBuilder()
@@ -44,7 +43,7 @@ export const validationCommand = new Command(
         if (!roles)
             throw "validation#1".toError();
 
-        await roles.add(StudentID);
+        await roles.add(Role.Student);
         await validation.remove();
         await replySilent(VOC_VerificationSuccessful);
     },

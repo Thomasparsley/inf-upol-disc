@@ -3,7 +3,7 @@ import { GuildMemberRoleManager, Role } from "discord.js";
 
 import { VOC_RoleAdded, VOC_RoleRemoved } from "../vocabulary";
 import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
-import { Command } from "../command";
+import { ChatInputCommand } from "../command";
 import { CD_Role as cd} from "../cd";
 
 const StudentID = "960478701684936734";
@@ -11,7 +11,7 @@ const RequiredRoleOptionName = "role";
 const everyoneRoleColors = ["#9b59b6", "#1abc9c"] // oznámení (zelená)
 const studentOnlyRoleColors = ["#9b59b6", "#33aadd", "#95a5a6"] // programovací jazyky (fialová), obory (modrá), předměty (šedá)
 
-export const roleCommand = new Command(
+export const roleCommand = new ChatInputCommand(
     cd.name,
     cd.description,
     new SlashCommandBuilder()

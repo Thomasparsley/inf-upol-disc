@@ -3,24 +3,20 @@ import { ActionRowBuilder, SelectMenuBuilder, SlashCommandBuilder } from "@disco
 import { CD_Botmsg as cd } from "../cd";
 import { isHttpUrlWithFileExt, replaceTags, parseByTag, getButtonStyle } from "../utils";
 import { VOC_ActionSuccessful } from "../vocabulary";
-import { Command } from "../command";
+import { ChatInputCommand } from "../command";
 import {
     BadInputForChatCommandError,
     UnknownCommandError,
     UnauthorizedError,
     InvalidURLError,
     BotCanEditOnlySelfMessagesError,
-    InvalidChannel,
     InvalidTextBasedChannel,
-    InvalidGuild,
 } from "../errors";
 import { CommandArgs, TextFile, TextFileMessage } from "../interfaces";
-import { ButtonBuilder, ButtonStyle, Channel, Client, TextBasedChannel } from "discord.js";
-import slugify from "slugify";
+import { ButtonBuilder, CacheType, ChatInputCommandInteraction, Client, Interaction, TextBasedChannel } from "discord.js";
+import { Role } from "../enums";
 
 
-const rootID = "960452395312234537";
-const modID = "960478652494118952";
 const maxMessageLength = 2000;
 const channelTagName = "channel";
 const roleTagName = "role";
@@ -84,7 +80,7 @@ const slashCommandBuilder = new SlashCommandBuilder()
             })
     }); 
 
-export const botMessage = new Command(
+export const botMessage = new ChatInputCommand(
     cd.name,
     cd.description,
     slashCommandBuilder,
@@ -92,8 +88,8 @@ export const botMessage = new Command(
         const { interaction, replySilent, permissionRole } = args;
 
 
-        const isRoot = permissionRole(rootID);
-        const isMod = permissionRole(modID);
+        const isRoot = permissionRole(Role.Root);
+        const isMod = permissionRole(Role.Mod);
 
         if (!isRoot && !isMod)
             throw new UnauthorizedError();
@@ -127,7 +123,7 @@ export const botMessage = new Command(
     },
 );
 
-async function subCommandAdd(args: CommandArgs): Promise<void> {
+async function subCommandAdd(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
     const { interaction } = args;
 
     if (!interaction.isChatInputCommand())
@@ -145,7 +141,7 @@ async function subCommandAdd(args: CommandArgs): Promise<void> {
     throw "botmessage#1".toError();
 }
 
-async function subCommandEdit(args: CommandArgs): Promise<void> {
+async function subCommandEdit(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
     const { client, interaction } = args;
 
     if (!interaction.isChatInputCommand())
@@ -173,7 +169,7 @@ async function subCommandEdit(args: CommandArgs): Promise<void> {
     throw new Error("botmessage#3");
 }
 
-async function subCommandFetch(args: CommandArgs): Promise<void> {
+async function subCommandFetch(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
     const { client, interaction } = args;
 
     if (!interaction.isChatInputCommand())
@@ -204,7 +200,7 @@ async function subCommandFetch(args: CommandArgs): Promise<void> {
         throw `Error: botmsg#2: ${err}`.toError();
     }
 
-    const messageContent = handleMentions(data, args);
+    const messageContent = handleMentions(data, args as CommandArgs<Interaction<CacheType>>);
     if (!messageContent)
         throw "botmsg#5".toError();
 
@@ -214,7 +210,7 @@ async function subCommandFetch(args: CommandArgs): Promise<void> {
     message.edit(messageContent);
 }
 
-async function subCommandLoad(args: CommandArgs): Promise<void> {
+async function subCommandLoad(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
     const { client, interaction, fetchChannelFromGuild } = args;
 
     if (!interaction.isChatInputCommand())
@@ -249,7 +245,7 @@ async function processOneMessage(
     rawMessage: TextFileMessage,
     channel: TextBasedChannel,
     client: Client<boolean>,
-    args: CommandArgs
+    args: CommandArgs<ChatInputCommandInteraction<CacheType>>
 ): Promise<void> {
     const messageId = rawMessage.id;
     const message = await channel.messages.fetch(messageId);
@@ -270,7 +266,7 @@ async function processOneMessage(
             components.push(createButtonComponent(raw));
 
     const unparsedContent = rawMessage.content.join("\n");
-    const content = handleMentions(unparsedContent, args);
+    const content = handleMentions(unparsedContent, args as CommandArgs<Interaction<CacheType>>);
 
     if (components.length > 0) {
         const row = new ActionRowBuilder()
@@ -317,7 +313,7 @@ function createDropdownComponent(raw: { id: string; flag: string; placeholder: s
     return component;
 }
 
-function handleMentions(message: string, args: CommandArgs): string {
+function handleMentions(message: string, args: CommandArgs<Interaction<CacheType>>): string {
     const { interaction } = args;
 
     const channels = parseByTag(message, channelTagName);

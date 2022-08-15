@@ -4,11 +4,11 @@ import { TextChannel } from "discord.js";
 import { VOC_EveryRequest, VOC_RequestSended } from "../vocabulary";
 import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
 import { CD_EveryRequest as cd } from "../cd";
-import { Command } from "../command";
+import { ChatInputCommand } from "../command";
 
 const RequestChannelID = "961981948740386826";
 
-export const everyRequest = new Command(
+export const everyRequest = new ChatInputCommand(
     cd.name,
     cd.description,
     new SlashCommandBuilder()

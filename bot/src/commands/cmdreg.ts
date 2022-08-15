@@ -1,11 +1,11 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 import { UnknownCommandError } from "../errors";
-import { Command } from "../command";
+import { ChatInputCommand } from "../command";
 import { CD_Cmdreg as cd } from "../cd";
 
 //  TODO: WIP
-export const commandCmdreg = new Command(
+export const commandCmdreg = new ChatInputCommand(
     cd.name,
     cd.description,
     new SlashCommandBuilder()

@@ -63,6 +63,6 @@ const {
             ]
         });
 
-    await bot.registerSlashGuildCommands(Array.from(bot.commands.values()));
+    await bot.registerChatInputGuildCommands(Array.from(bot.chatInputCommands.values()));
     await bot.login();
 })();

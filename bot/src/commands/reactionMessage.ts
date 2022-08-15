@@ -3,7 +3,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { BadInputForChatCommandError } from "../errors";
 import { VOC_ActionSuccessful } from "../vocabulary";
 import { getBinds } from "../utils";
-import { Command } from "../command";
+import { ChatInputCommand } from "../command";
 import { CD_RM as cd} from "../cd";
 
 const RequiredOptionMessageID = "message";
@@ -12,7 +12,7 @@ const RequiredOptionBinds = "binds";
 const subAdd = cd.sub.add;
 const subRemove = cd.sub.remove;
 
-export const reactionMessage = new Command(
+export const reactionMessage = new ChatInputCommand(
     cd.name,
     cd.description,
     new SlashCommandBuilder()

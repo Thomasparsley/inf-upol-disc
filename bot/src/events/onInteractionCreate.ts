@@ -1,4 +1,4 @@
-import { GuildMemberRoleManager } from "discord.js";
+import { CacheType, GuildMemberRoleManager, Interaction } from "discord.js";
 
 import { CommandArgs, OnInteractionCreateArgs } from "../interfaces";
 import { fetchChannelFromGuild, getGuild, reply, replySilent } from "../utils";
@@ -8,7 +8,7 @@ import { Command } from "../command";
 function makeCommandArgs(args: OnInteractionCreateArgs) {
     const { client, interaction, commands, db, mailer, commandRegistration } = args;
 
-    const commandArgs: CommandArgs = {
+    const commandArgs: CommandArgs<Interaction<CacheType>> = {
         client,
         interaction,
         commands,
@@ -41,14 +41,24 @@ function makeCommandArgs(args: OnInteractionCreateArgs) {
 }
 
 async function event(args: OnInteractionCreateArgs) {
-    const { interaction, commands, buttons, modals } = args;
+    const { interaction, commands, buttons, modals, dropdown } = args;
+    const commandArgs = makeCommandArgs(args)
 
-    let command: Command | undefined;
-    if(interaction.isButton())
+    let command: Command<any> | undefined;
+    if (interaction.isButton())
         command = buttons.get(interaction.customId);
 
-    else if(interaction.isModalSubmit())
+    else if (interaction.isModalSubmit())
         command = modals.get(interaction.customId);
+
+    else if (interaction.isSelectMenu()) {
+        const splited = interaction.customId.split("-");
+        const customId = splited[0];
+        const flag = splited[1];
+
+        command = dropdown.get(customId);
+        commandArgs.flag = flag;
+    }
     
     else if (interaction.isChatInputCommand())
         command = commands.get(interaction.commandName);
@@ -56,7 +66,6 @@ async function event(args: OnInteractionCreateArgs) {
     if (!command)
         throw new UnknownCommandError();
 
-    const commandArgs = makeCommandArgs(args)
     await command.execute(commandArgs);
 }
 
