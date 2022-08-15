@@ -5,7 +5,8 @@ import {
     CacheType,
     ButtonInteraction,
     ChatInputCommandInteraction,
-    ModalSubmitInteraction
+    ModalSubmitInteraction,
+    SelectMenuInteraction
 } from "discord.js";
 
 
@@ -58,4 +59,6 @@ export class ButtonCommand extends Command<ButtonInteraction<CacheType>> {
     }
 }
 
-export class ModalCommand extends Command<ModalSubmitInteraction<CacheType>> {}
+export class ModalCommand extends Command<ModalSubmitInteraction<CacheType>> { }
+
+export class DropdownCommand extends Command<SelectMenuInteraction<CacheType>> { }

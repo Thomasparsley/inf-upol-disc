@@ -1,1 +1,1 @@
-export * from "./roles";
+export * from "../interfaces/roles";

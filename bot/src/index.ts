@@ -17,7 +17,8 @@ import {
     botMessage,
     verificationFirewallButtonComamand as verificationStudentFirewallButtonComamand,
     hostFirewallButtonComamand,
-    departmentFirewallButtonComamand
+    departmentFirewallButtonComamand,
+    addRoleDropdownCommand
 } from "./commands";
 
 import { Mailer } from "./mailer";
@@ -77,6 +78,9 @@ const {
                 hostFirewallButtonComamand,
                 verificationStudentFirewallButtonComamand,
                 departmentFirewallButtonComamand,
+            ],
+            dropdownCommands: [
+                addRoleDropdownCommand,
             ]
         });
 

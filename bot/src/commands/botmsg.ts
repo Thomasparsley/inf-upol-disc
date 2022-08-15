@@ -14,7 +14,7 @@ import {
 } from "../errors";
 import { CommandArgs, TextFile, TextFileMessage } from "../interfaces";
 import { ButtonBuilder, CacheType, ChatInputCommandInteraction, Client, Interaction, TextBasedChannel } from "discord.js";
-import { Role } from "../enums";
+import { Roles } from "../enums";
 
 
 const maxMessageLength = 2000;
@@ -85,11 +85,11 @@ export const botMessage = new ChatInputCommand(
     cd.description,
     slashCommandBuilder,
     async (args) => {
-        const { interaction, replySilent, permissionRole } = args;
+        const { interaction, replySilent, hasRole: permissionRole } = args;
 
 
-        const isRoot = permissionRole(Role.Root);
-        const isMod = permissionRole(Role.Mod);
+        const isRoot = permissionRole(Roles["Root"]);
+        const isMod = permissionRole(Roles["Moderátor"]);
 
         if (!isRoot && !isMod)
             throw new UnauthorizedError();

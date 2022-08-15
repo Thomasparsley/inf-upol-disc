@@ -21,7 +21,7 @@ export const roleCommand = new ChatInputCommand(
                 .setDescription(cd.options[0].description)
                 .setRequired(true);
         }),
-    async ({ interaction, replySilent, permissionRole, permissionRolesCount }) => {
+    async ({ interaction, replySilent, hasRole, permissionRolesCount }) => {
         if (!interaction.isChatInputCommand())
             throw new BadInputForChatCommandError();
 
@@ -33,7 +33,7 @@ export const roleCommand = new ChatInputCommand(
         if (!hasPermission) 
             throw new UnauthorizedError();
 
-        const isStudent = permissionRole(StudentID);
+        const isStudent = hasRole(StudentID);
         const isStudentColor = isStudent && studentOnlyRoleColors.includes(role.hexColor);
         const isEveryoneColor = everyoneRoleColors.includes(role.hexColor);
 

@@ -6,7 +6,7 @@ import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
 import { Validation } from "../models";
 import { CD_Validation as cd } from "../cd";
 import { ChatInputCommand } from "../command";
-import { Role } from "../enums";
+import { Roles } from "../enums";
 
 export const validationCommand = new ChatInputCommand(
     cd.name,
@@ -43,7 +43,7 @@ export const validationCommand = new ChatInputCommand(
         if (!roles)
             throw "validation#1".toError();
 
-        await roles.add(Role.Student);
+        await roles.add(Roles["Student"]);
         await validation.remove();
         await replySilent(VOC_VerificationSuccessful);
     },

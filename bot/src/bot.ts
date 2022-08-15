@@ -12,7 +12,8 @@ import {
 import { 
     ChatInputCommand,
     ButtonCommand,
-    ModalCommand
+    ModalCommand,
+    DropdownCommand
 } from "./command";
 import { Mailer } from "./mailer";
 import { 
@@ -38,6 +39,7 @@ export class Bot {
     chatInputCommands = new Map<string, ChatInputCommand>();
     buttonCommands = new Map<string, ButtonCommand>();
     modalCommands = new Map<string, ModalCommand>();
+    dropdownCommands = new Map<string, DropdownCommand>();
     reactionMessages = new Map<Message, Map<String, Role>>();
     private async onReady(args: OnReadyArgs): Promise<void> {
         throw new Error("Event 'onReady' is not implementet");
@@ -82,6 +84,7 @@ export class Bot {
         if (config.chatInputCommands) this.initChatInputCommands(config.chatInputCommands);
         if (config.buttonCommands) this.initButtonCommands(config.buttonCommands);
         if (config.modalCommands) this.initModalCommands(config.modalCommands);
+        if (config.dropdownCommands) this.initDropdownCommands(config.dropdownCommands);
 
         /* if (config.reactionMessages) {
             this.initReactionMessages(config.reactionMessages);
@@ -132,6 +135,7 @@ export class Bot {
                 commands: this.chatInputCommands,
                 buttons: this.buttonCommands,
                 modals: this.modalCommands,
+                dropdown: this.dropdownCommands,
                 db: this.db,
                 mailer: this.mailer,
                 commandRegistration: this.registerChatInputGuildCommands,
@@ -212,6 +216,12 @@ export class Bot {
     private initModalCommands(commands: ModalCommand[]) {
         commands.forEach((command) => {
             this.modalCommands.set(command.getName(), command);
+        });
+    }
+
+    private initDropdownCommands(commands: DropdownCommand[]) {
+        commands.forEach((command) => {
+            this.dropdownCommands.set(command.getName(), command);
         });
     }
 

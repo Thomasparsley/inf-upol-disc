@@ -6,12 +6,25 @@ import { UnknownCommandError } from "../errors";
 import { Command } from "../command";
 
 function makeCommandArgs(args: OnInteractionCreateArgs) {
-    const { client, interaction, commands, db, mailer, commandRegistration } = args;
+    const {
+        client,
+        interaction,
+        commands,
+        buttons,
+        dropdown,
+        modals,
+        db,
+        mailer,
+        commandRegistration,
+    } = args;
 
     const commandArgs: CommandArgs<Interaction<CacheType>> = {
         client,
         interaction,
         commands,
+        buttons,
+        dropdown,
+        modals,
         db,
         mailer,
         commandRegistration,
@@ -27,7 +40,7 @@ function makeCommandArgs(args: OnInteractionCreateArgs) {
 
             return predicate(roles.cache.size);
         },
-        permissionRole: (roleID: string): boolean => {
+        hasRole: (roleID: string): boolean => {
             const roles = (interaction.member?.roles as GuildMemberRoleManager)
             if (!roles) {
                 return false;
@@ -41,7 +54,7 @@ function makeCommandArgs(args: OnInteractionCreateArgs) {
 }
 
 async function event(args: OnInteractionCreateArgs) {
-    const { interaction, commands, buttons, modals } = args;
+    const { interaction, commands, buttons, modals, dropdown } = args;
     const commandArgs = makeCommandArgs(args)
 
     let command: Command<any> | undefined;
@@ -56,7 +69,7 @@ async function event(args: OnInteractionCreateArgs) {
         const customId = splited[0];
         const flag = splited[1];
 
-        /* command = dropdown.get(customId); */
+        command = dropdown.get(customId);
         commandArgs.flag = flag;
     }
     
