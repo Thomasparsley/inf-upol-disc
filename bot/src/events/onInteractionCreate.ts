@@ -41,7 +41,7 @@ function makeCommandArgs(args: OnInteractionCreateArgs) {
 }
 
 async function event(args: OnInteractionCreateArgs) {
-    const { interaction, commands, buttons, modals, dropdown } = args;
+    const { interaction, commands, buttons, modals } = args;
     const commandArgs = makeCommandArgs(args)
 
     let command: Command<any> | undefined;
@@ -56,7 +56,7 @@ async function event(args: OnInteractionCreateArgs) {
         const customId = splited[0];
         const flag = splited[1];
 
-        command = dropdown.get(customId);
+        /* command = dropdown.get(customId); */
         commandArgs.flag = flag;
     }
     

@@ -1,9 +1,8 @@
-import { ModalBuilder } from "discord.js";
 import { ButtonCommand } from "../../command";
 
-export const hostComamand = new ButtonCommand(
-    "",
-    "cd.description",
+export const hostFirewallButtonComamand = new ButtonCommand(
+    "btnHost",
+    "Přidělí roli @host",
     async ({ replySilent }) => {
         await replySilent("Děkujeme..., bude Vám přidělena role @host");
     },

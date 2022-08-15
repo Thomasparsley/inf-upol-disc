@@ -10,9 +10,9 @@ import {
 } from "discord.js";
 
 import { 
-    ButtonCommand,
     ChatInputCommand,
-    Command
+    ButtonCommand,
+    ModalCommand
 } from "./command";
 import { Mailer } from "./mailer";
 import { 
@@ -27,7 +27,6 @@ import {
     OnGuildMemberAddAction,
     onReactionAddAction,
     onReactionRemoveAction,
-    OnReadyAction
 } from "./types";
 import { replySilent } from "./utils";
 
@@ -36,12 +35,13 @@ const REST_VERSION = "10";
 export class Bot {
     client: Client;
     rest: REST;
-    chatInputCommands: Map<string, ChatInputCommand>;
-    buttonCommands: Map<string, ButtonCommand>;
-    modalCommands: Map<string, Command>;
-    reactionMessages: Map<Message, Map<String, Role>>;
-    private onReady: OnReadyAction
-        = async (args: OnReadyArgs) => {}
+    chatInputCommands = new Map<string, ChatInputCommand>();
+    buttonCommands = new Map<string, ButtonCommand>();
+    modalCommands = new Map<string, ModalCommand>();
+    reactionMessages = new Map<Message, Map<String, Role>>();
+    private async onReady(args: OnReadyArgs): Promise<void> {
+        throw new Error("Event 'onReady' is not implementet");
+    }
     private onGuildMemberAdd: OnGuildMemberAddAction
         = async (args: OnGuildMemberAddArgs) => {}
     private onReactionAdd: onReactionAddAction
@@ -61,11 +61,6 @@ export class Bot {
         public db: DataSource,
         config: BotConfig
     ) {
-        this.reactionMessages = new Map<Message, Map<String, Role>>();
-        this.chatInputCommands = new Map<string, ChatInputCommand>();
-        this.buttonCommands = new Map<string, ButtonCommand>();
-        this.modalCommands = new Map<string, Command>();
-
         this.client = new Client({
             intents: [
                 GatewayIntentBits.Guilds,
@@ -84,34 +79,32 @@ export class Bot {
         this.rest = new REST({ version: REST_VERSION })
             .setToken(this.token);
 
-        if (config.commands) this.initChatInputCommands(config.commands);
-        if (config.buttons) this.initButtonCommands(config.buttons);
-        if (config.modals) this.initModals(config.modals);
+        if (config.chatInputCommands) this.initChatInputCommands(config.chatInputCommands);
+        if (config.buttonCommands) this.initButtonCommands(config.buttonCommands);
+        if (config.modalCommands) this.initModalCommands(config.modalCommands);
 
         /* if (config.reactionMessages) {
             this.initReactionMessages(config.reactionMessages);
         } */
 
-        if (config.onReady) {
+        this.initEvents(config);
+        this.init();
+    }
+
+    private initEvents(config: BotConfig) {
+        if (config.onReady)
             this.onReady = config.onReady;
-        }
-
-        if (config.onGuildMemberAdd) {
+        if (config.onGuildMemberAdd)
             this.onGuildMemberAdd = config.onGuildMemberAdd;
-        }
-
-        if (config.onReactionAdd) {
+        if (config.onReactionAdd)
             this.onReactionAdd = config.onReactionAdd;
-        }
-
-        if (config.onReactionRemove) {
+        if (config.onReactionRemove)
             this.onReactionRemove = config.onReactionRemove;
-        }
-
-        if (config.onInteractionCreate) {
+        if (config.onInteractionCreate)
             this.onInteractionCreate = config.onInteractionCreate;
-        }
+    }
 
+    private init() {
         this.initOnReady();
         this.initOnInteractionCreate();
         this.initOnGuildMemberAdd();
@@ -216,7 +209,7 @@ export class Bot {
         });
     }
 
-    private initModals(commands: Command[]) {
+    private initModalCommands(commands: ModalCommand[]) {
         commands.forEach((command) => {
             this.modalCommands.set(command.getName(), command);
         });

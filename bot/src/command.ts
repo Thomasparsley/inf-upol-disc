@@ -4,7 +4,8 @@ import {
     SlashCommandSubcommandsOnlyBuilder,
     CacheType,
     ButtonInteraction,
-    ChatInputCommandInteraction
+    ChatInputCommandInteraction,
+    ModalSubmitInteraction
 } from "discord.js";
 
 
@@ -56,3 +57,5 @@ export class ButtonCommand extends Command<ButtonInteraction<CacheType>> {
         super(name, description, execute);
     }
 }
+
+export class ModalCommand extends Command<ModalSubmitInteraction<CacheType>> {}

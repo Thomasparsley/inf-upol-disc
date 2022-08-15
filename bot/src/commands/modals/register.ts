@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
+/* import { SlashCommandBuilder } from "@discordjs/builders";
 
 import { VOC_VerificationCodeSended } from "../../vocabulary";
 import { Validation } from "../../models";
@@ -66,4 +66,4 @@ export const commandRegister = new Command(
         });
         await replySilent(VOC_VerificationCodeSended(email));
     },
-);
+); */

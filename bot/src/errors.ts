@@ -3,7 +3,7 @@ export class UnrepliableInteractionError extends Error {
 }
 
 export class UnknownCommandError extends Error {
-    constructor() { super() }
+    constructor() { super("Neznámý příkaz.") }
 }
 
 export class UnauthorizedError extends Error {

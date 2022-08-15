@@ -1,7 +1,7 @@
 import { ButtonCommand } from "../../command";
 
-export const hostComamand = new ButtonCommand(
-    "",
+export const departmentFirewallButtonComamand = new ButtonCommand(
+    "bntDepartment",
     "cd.description",
     async ({ replySilent }) => {
         await replySilent("Děkujeme..., Kontaktujte...");

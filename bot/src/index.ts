@@ -12,12 +12,12 @@ import { DatabaseSource } from "./databaseSource";
 import { Bot } from "./bot";
 
 import {
-    validationCommand,
     roleCommand,
     everyRequest,
-    commandRegister,
-    commandHost,
     botMessage,
+    verificationFirewallButtonComamand as verificationStudentFirewallButtonComamand,
+    hostFirewallButtonComamand,
+    departmentFirewallButtonComamand
 } from "./commands";
 
 import { Mailer } from "./mailer";
@@ -29,11 +29,23 @@ const {
     MAILER_PASS,
 } = process.env;
 
-(async () => {
-    if (!MAILER_PASS) {
-        throw ""; // TODO:
-    }
 
+(() => {
+    if (!APPLICATION_ID)
+        throw "APPLICATION_ID was not provided".toError();
+
+    if (!GUILD_ID)
+        throw "GUILD_ID was not provided".toError();
+
+    if (!TOKEN)
+        throw "TOKEN was not provided".toError();
+
+    if (!MAILER_PASS)
+        throw "Password for mailer was not provided".toError();
+
+})();
+
+(async () => {
     await DatabaseSource.initialize();
     const mailer = new Mailer(
         "mail.inf.upol.cz",
@@ -56,10 +68,15 @@ const {
             onGuildMemberAdd: onGuildMemberAdd,
             onReactionRemove: onReactionRemove,
             onInteractionCreate: onInteractionCreate,
-            commands: [
+            chatInputCommands: [
                 roleCommand,
                 everyRequest,
                 botMessage,
+            ],
+            buttonCommands: [
+                hostFirewallButtonComamand,
+                verificationStudentFirewallButtonComamand,
+                departmentFirewallButtonComamand,
             ]
         });
 

@@ -1,4 +1,4 @@
-import { Command } from "../command";
+import { ButtonCommand, ChatInputCommand, ModalCommand } from "../command";
 import {
     OnGuildMemberAddAction,
     OnInteractionCreateAction,
@@ -8,9 +8,9 @@ import {
 } from "../types";
 
 export interface BotConfig {
-    commands?: Command[];
-    buttons?: Command[];
-    modals?: Command[];
+    chatInputCommands?: ChatInputCommand[];
+    buttonCommands?: ButtonCommand[];
+    modalCommands?: ModalCommand[];
     onReady?: OnReadyAction;
     onReactionAdd?: onReactionAddAction;
     onReactionRemove?: onReactionRemoveAction;
