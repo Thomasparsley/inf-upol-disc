@@ -89,7 +89,7 @@
                         "flag": "jazyky",
                         "placeholder": "Vyber si jaké programovací jazyky tě zajímají",
                         "min": 1,
-                        "max": 1,
+                        "max": -1,
                         "options": [
                             "C",
                             "C#",
@@ -126,7 +126,7 @@
                         "flag": "predmety",
                         "placeholder": "Vyber si predmety",
                         "min": 1,
-                        "max": 1,
+                        "max": -1,
                         "options": [
                             "3dt", 
                             "aiii1", 
