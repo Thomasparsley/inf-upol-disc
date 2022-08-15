@@ -16,7 +16,7 @@
                 "3. Na zadaný email přijde ověřovací URL odkaz, kterým ověříš svůj účet.",
                 "",
                 "<role>Katedra</role> - učitel nebo doktorand naší katedry",
-                "Pro přidělení této role kontaktujte libovolného uživatele s rolí <role>Root</role>.",
+                "Pro přidělení této role kontaktujte libovolného uživatele s rolí <role>Katedra</role> nebo <role>Root</role>.",
                 "",
                 "**Použitím následujících tlačítek souhlasíte se zpracováním Vašich osobních/školních údajů a s pravidly serveru. (školní email)**"
             ],
