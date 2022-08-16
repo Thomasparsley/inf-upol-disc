@@ -34,6 +34,8 @@ export const CD_Cmdreg = {
     ]
 };
 
+
+
 export const CD_EveryRequest = {
     name: "everyreq",
     description: "Žádost o @everyone. Prosíme popište podrobně svoji žádost. Zneužití se trestá.",
@@ -41,6 +43,17 @@ export const CD_EveryRequest = {
         {
             name: "description",
             description: "Zadej popisek žádosti o everyone."
+        },
+    ]
+};
+
+export const CD_QuoteRequest = {
+    name: "quotereq",
+    description: "Žádost o přidání citátu do místnosti citáty.",
+    options: [
+        {
+            name: "quote",
+            description: "Formát: \"Text citátu. - Jméno učitele \""
         },
     ]
 };
@@ -81,6 +94,66 @@ export const CD_RM = {
     }
 };
 
+export const CD_Botmsg = {
+    name: "botmessage",
+    description: "Pošle nebo upraví zprávu pomocí bota.",
+    sub: {
+        add: {
+            name: "add",
+            description: "Pošle zprávu pomocí bota.",
+            options:  {
+                text: {
+                    name: "text",
+                    description: "Text zprávy.",
+                },
+            },
+        },
+        edit: {
+            name: "edit",
+            description: "Upraví zprávu pomocí bota.",
+            options: {
+                messageid: {
+                    name: "messageid",
+                    description: "ID zprávy, kterou chceš upravit.",
+                },
+                text: {
+                    name: "text",
+                    description: "Nový text zprávy.",
+                },
+            },
+        },
+        fetch: {
+            name: "fetch",
+            description: "Načte z dané URL obsah zprávy.",
+            options: {
+                messageid: {
+                    name: "messageid",
+                    description: "ID zprávy, kterou chceš upravit.",
+                },
+                url: {
+                    name: "url",
+                    description: "Odkaz na soubor.",
+                },
+            },
+        },
+        load: {
+            name: "load",
+            description: "Načte z dané URL zprávu i s případnými komponentami.",
+            options: {
+                url: {
+                    name: "url",
+                    description: "Odkaz na soubor.",
+                },
+            },
+        },
+    }
+    // ,
+    // maxMessageLength: 2000,
+    // channelTagName: "channel",
+    // roleTagName: "role",
+    // mentionTagName: "mention",
+};
+
 export const CD_Register = {
     name: "registrace",
     description: "Zaregistruj se na náš discord a pokud jsi student tak obdrž roli Studnet.",
@@ -112,4 +185,28 @@ export const CD_Validation = {
             description: "Zadejte validační klíč. Pokud nemáš klíč tak použí příkaz register."
         },
     ]
+};
+
+export const CD_Katedra = {
+	name: "katedra",
+	description: "Přidělí roli pro katedru.",
+	options: [
+		{
+			name: "user",
+			description: "Napiš jméno uživatele."
+		},
+	],
+
+};
+
+export const CD_PhD = {
+    name: "phd",
+    description: "Přidělí roli pro PhD.",
+    options: [
+        {
+            name: "user",
+            description: "Napiš jméno uživatele."
+        },
+    ],
+
 };

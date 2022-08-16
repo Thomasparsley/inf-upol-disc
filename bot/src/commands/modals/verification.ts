@@ -1,45 +1,24 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
-
-import { VOC_VerificationCodeSended } from "../vocabulary";
-import { Validation } from "../models";
-import { Command } from "../command";
-import { CD_Register } from "../cd";
+import { VOC_VerificationCodeSended } from "../../vocabulary";
+import { Validation } from "../../models";
+import { ModalCommand } from "../../command";
 
 import {
     isValidateEmail,
     isUpolEmail,
     makeRegisterText,
     makeRegisterHTML
-} from "../functions";
+} from "../../utils";
 import {
-    BadInputForChatCommandError,
     InvalidEmailFormatError,
     UnknownUpolEmailError,
-} from "../errors";
+} from "../../errors";
 
-
-const cd = CD_Register;
-
-export const commandRegister = new Command(
-    cd.name,
-    cd.description,
-    new SlashCommandBuilder()
-        .addStringOption(option => {
-            return option
-                .setName(cd.options[0].name)
-                .setDescription(cd.options[0].description)
-                .setRequired(true);
-        }),
-    async ({ interaction, replySilent, permissionRolesCount, mailer }) => {
-        if (!interaction.isChatInputCommand())
-            throw new BadInputForChatCommandError();
-
-        // mohou použít jen nový uživatelé, kteří nejsou zvalidováni
-        // const hasPermission = permissionRolesCount((size: Number) => size === 1);
-        // if (!hasPermission)
-        //     throw new UnauthorizedError();
+export const verificationModalCommand = new ModalCommand(
+    "verificationStudentModal",
+    "Zpracování verifikace studenta",
+    async ({ interaction, replySilent, mailer }) => {
         
-        const email = interaction.options.getString(cd.options[0].name);
+        const email = interaction.fields.getTextInputValue("verificationStudentUpolEmail")
         // validace emailu
         if (email === null || !isValidateEmail(email))
             throw new InvalidEmailFormatError(email as string);
@@ -51,7 +30,9 @@ export const commandRegister = new Command(
         // vygenerování 6 místného klíče   
         const verificationCode = Math.floor(Math.random() * 900000) + 100000;
 
-        console.log(`Nové vygenerované heslo je: ${verificationCode}`)
+        console.log(`Nové vygenerované heslo je: ${verificationCode}`);
+        await replySilent("Fridrich nám nedal přístup do SMTP, takže email Ti nepošleme. :)")
+        return;
 
         const validation = new Validation();
         validation.user = interaction.user.id;

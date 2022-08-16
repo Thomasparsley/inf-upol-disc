@@ -4,13 +4,11 @@ import { GuildMemberRoleManager } from "discord.js";
 import { VOC_VerificationSuccessful } from "../vocabulary";
 import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
 import { Validation } from "../models";
-import { CD_Validation } from "../cd";
-import { Command } from "../command";
+import { CD_Validation as cd } from "../cd";
+import { ChatInputCommand } from "../command";
+import { Roles } from "../enums";
 
-const StudentID = "960478701684936734";
-const cd = CD_Validation;
-
-export const validationCommand = new Command(
+export const validationCommand = new ChatInputCommand(
     cd.name,
     cd.description,
     new SlashCommandBuilder()
@@ -45,7 +43,7 @@ export const validationCommand = new Command(
         if (!roles)
             throw "validation#1".toError();
 
-        await roles.add(StudentID);
+        await roles.add(Roles["Student"]);
         await validation.remove();
         await replySilent(VOC_VerificationSuccessful);
     },

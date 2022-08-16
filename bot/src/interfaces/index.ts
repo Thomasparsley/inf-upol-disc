@@ -6,3 +6,4 @@ export * from "./onInteractionCreateArgs";
 export * from "./onReactionAddArgs";
 export * from "./onReactionRemoveArgs";
 export * from "./OnReadyArgs";
+export * from "./textFile";

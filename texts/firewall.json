@@ -1,0 +1,72 @@
+{
+    "channelID": "962442923868315669",
+    "messages": [
+        {
+            "id": "1008779009372459058",
+            "content": [
+                "V této místnosti si ověříš svůj účet. Můžeš zažádat jednu z rolí <role>Student</role> ,<role>Návštěva</role> nebo <role>Katedra</role>.",
+                "",
+                "**Postup při žádosti o jednotlivé role:**"
+            ]
+        },
+        {
+            "id": "1008779057917345862",
+            "content": [
+                "⠀",
+                "<role>Návštěva</role> - pokud jsi přišel jen na návštěvu nebo nejsi student naší katedry, klikni na tlačítko **\"Jsem návštěvník\"**. Následně se ti přidá nebo odstraní role <role>Návštěva</role>."
+            ],
+            "components": {
+                "buttons": [
+                    {
+                        "id": "btnHost",
+                        "label": "Jsem návštěvník",
+                        "style": "Primary"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "1008779079270535198",
+            "content": [
+                "⠀",
+                "<role>Student</role> - student katedry informatiky",
+                "1. Klikni na tlačítko **\"Jsem student\"**.",
+                "2. Do kolonky email zadej tvůj univerzitní email ve tvaru **uzivatel@upol.cz** a zašli formulář.",
+                "3. Na zadaný email přijde ověřovací URL odkaz, kterým ověříš svůj účet."
+            ],
+            "components": {
+                "buttons": [
+                    {
+                        "id": "btnStuden",
+                        "label": "Jsem student",
+                        "style": "Success"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "1008779106680328324",
+            "content": [
+                "⠀",
+                "<role>Katedra</role> - učitel nebo doktorand naší katedry",
+                "Pro přidělení této role kontaktujte libovolného uživatele s rolí <role>Katedra</role> nebo <role>Root</role>."
+            ],
+            "components": {
+                "buttons": [
+                    {
+                        "id": "bntDepartment",
+                        "label": "Jsem z katedry",
+                        "style": "Danger"
+                    }
+                ]
+            }
+        },
+        {
+            "id": "1008779124032147558",
+            "content": [
+                "⠀",
+                "_Použitím následujících tlačítek souhlasíte se zpracováním Vašich osobních/školních údajů a s pravidly serveru. (školní email)_"
+            ]
+        }
+    ] 
+}

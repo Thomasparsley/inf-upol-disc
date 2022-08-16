@@ -3,7 +3,7 @@ export class UnrepliableInteractionError extends Error {
 }
 
 export class UnknownCommandError extends Error {
-    constructor() { super() }
+    constructor() { super("Neznámý příkaz.") }
 }
 
 export class UnauthorizedError extends Error {
@@ -15,6 +15,24 @@ export class UnauthorizedError extends Error {
 export class InvalidURLError extends Error {
     constructor() {
         super("Nepředal jsi validní URL.")
+    }
+}
+
+export class InvalidTextBasedChannel extends Error {
+    constructor() {
+        super("Nelze najít příslušný textový kanál.")
+    }
+}
+
+export class InvalidChannel extends Error {
+    constructor() {
+        super("Nelze najít příslušný kanál.")
+    }
+}
+
+export class InvalidGuild extends Error {
+    constructor() {
+        super("Nelze najít příslušnou guildu.")
     }
 }
 

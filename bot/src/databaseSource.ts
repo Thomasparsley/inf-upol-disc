@@ -29,5 +29,5 @@ export const DatabaseSource = new DataSource({
         User,
     ],
     synchronize: true,
-    logging: true,
+    logging: false,
 });

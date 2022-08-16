@@ -1,14 +1,14 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { TextChannel } from "discord.js";
 
-import { VOC_EveryRequest, VOC_RequestSended } from "../vocabulary";
+import { VOC_QuoteRequest, VOC_RequestSended } from "../vocabulary";
 import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
-import { CD_EveryRequest as cd } from "../cd";
+import { CD_QuoteRequest as cd } from "../cd";
 import { ChatInputCommand } from "../command";
 
-const RequestChannelID = "961981948740386826";
+const RequestChannelID = "1009076301019238540";
 
-export const quoteRequestChatCommnad = new ChatInputCommand(
+export const everyRequestChatCommnad = new ChatInputCommand(
     cd.name,
     cd.description,
     new SlashCommandBuilder()
@@ -35,9 +35,9 @@ export const quoteRequestChatCommnad = new ChatInputCommand(
 
         const channel = (client.channels.cache.get(RequestChannelID) as TextChannel);
         if (!channel)
-            throw "everyoneRequest#1".toError();
+            throw "quoteRequest#1".toError();
 
-        await channel.send(VOC_EveryRequest(sender, senderRoom, requestText));
+        await channel.send(VOC_QuoteRequest(sender, requestText));
         await replySilent(VOC_RequestSended);
     },
 );

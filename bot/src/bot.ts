@@ -9,7 +9,12 @@ import {
     Partials,
 } from "discord.js";
 
-import { Command } from "./command";
+import { 
+    ChatInputCommand,
+    ButtonCommand,
+    ModalCommand,
+    DropdownCommand
+} from "./command";
 import { Mailer } from "./mailer";
 import { 
     BotConfig,
@@ -23,18 +28,22 @@ import {
     OnGuildMemberAddAction,
     onReactionAddAction,
     onReactionRemoveAction,
-    OnReadyAction
 } from "./types";
+import { replySilent } from "./utils";
 
 const REST_VERSION = "10";
 
 export class Bot {
     client: Client;
     rest: REST;
-    commands: Map<string, Command>;
-    reactionMessages: Map<Message, Map<String, Role>>;
-    private onReady: OnReadyAction
-        = async (args: OnReadyArgs) => {}
+    chatInputCommands = new Map<string, ChatInputCommand>();
+    buttonCommands = new Map<string, ButtonCommand>();
+    modalCommands = new Map<string, ModalCommand>();
+    dropdownCommands = new Map<string, DropdownCommand>();
+    reactionMessages = new Map<Message, Map<String, Role>>();
+    private async onReady(args: OnReadyArgs): Promise<void> {
+        throw new Error("Event 'onReady' is not implementet");
+    }
     private onGuildMemberAdd: OnGuildMemberAddAction
         = async (args: OnGuildMemberAddArgs) => {}
     private onReactionAdd: onReactionAddAction
@@ -54,9 +63,6 @@ export class Bot {
         public db: DataSource,
         config: BotConfig
     ) {
-        this.reactionMessages = new Map<Message, Map<String, Role>>();
-        this.commands = new Map<string, Command>();
-
         this.client = new Client({
             intents: [
                 GatewayIntentBits.Guilds,
@@ -75,34 +81,33 @@ export class Bot {
         this.rest = new REST({ version: REST_VERSION })
             .setToken(this.token);
 
-        if (config.commands) {
-            this.initCommands(config.commands);
-        }
+        if (config.chatInputCommands) this.initChatInputCommands(config.chatInputCommands);
+        if (config.buttonCommands) this.initButtonCommands(config.buttonCommands);
+        if (config.modalCommands) this.initModalCommands(config.modalCommands);
+        if (config.dropdownCommands) this.initDropdownCommands(config.dropdownCommands);
 
         /* if (config.reactionMessages) {
             this.initReactionMessages(config.reactionMessages);
         } */
 
-        if (config.onReady) {
+        this.initEvents(config);
+        this.init();
+    }
+
+    private initEvents(config: BotConfig) {
+        if (config.onReady)
             this.onReady = config.onReady;
-        }
-
-        if (config.onGuildMemberAdd) {
+        if (config.onGuildMemberAdd)
             this.onGuildMemberAdd = config.onGuildMemberAdd;
-        }
-
-        if (config.onReactionAdd) {
+        if (config.onReactionAdd)
             this.onReactionAdd = config.onReactionAdd;
-        }
-
-        if (config.onReactionRemove) {
+        if (config.onReactionRemove)
             this.onReactionRemove = config.onReactionRemove;
-        }
-
-        if (config.onInteractionCreate) {
+        if (config.onInteractionCreate)
             this.onInteractionCreate = config.onInteractionCreate;
-        }
+    }
 
+    private init() {
         this.initOnReady();
         this.initOnInteractionCreate();
         this.initOnGuildMemberAdd();
@@ -114,7 +119,7 @@ export class Bot {
         this.client.on('ready', async () => {
             const args: OnReadyArgs = {
                 client: this.client,
-                commands: this.commands,
+                commands: this.chatInputCommands,
                 db: this.db,
             };
 
@@ -127,18 +132,20 @@ export class Bot {
             const args: OnInteractionCreateArgs = {
                 client: this.client,
                 interaction: interaction,
-                commands: this.commands,
+                commands: this.chatInputCommands,
+                buttons: this.buttonCommands,
+                modals: this.modalCommands,
+                dropdown: this.dropdownCommands,
                 db: this.db,
                 mailer: this.mailer,
-                commandRegistration: this.registerSlashGuildCommands,
+                commandRegistration: this.registerChatInputGuildCommands,
             };
-
-            
 
             try {
                 await this.onInteractionCreate(args);
             } catch (err) {
                 console.error(err);
+                await replySilent(interaction)((err as Error).toString());
             }
         });
     }
@@ -164,7 +171,7 @@ export class Bot {
                 client: this.client,
                 reaction: messageReaction,
                 user: user,
-                commands: this.commands,
+                commands: this.chatInputCommands,
                 db: this.db,
             };
         
@@ -182,7 +189,7 @@ export class Bot {
                 client: this.client,
                 reaction: messageReaction,
                 user: user,
-                commands: this.commands,
+                commands: this.chatInputCommands,
                 db: this.db,
             };
     
@@ -194,9 +201,27 @@ export class Bot {
         });
     }
 
-    private initCommands(commands: Command[]) {
+    private initChatInputCommands(commands: ChatInputCommand[]) {
         commands.forEach((command) => {
-            this.commands.set(command.getName(), command);
+            this.chatInputCommands.set(command.getName(), command);
+        });
+    }
+
+    private initButtonCommands(commands: ButtonCommand[]) {
+        commands.forEach((command) => {
+            this.buttonCommands.set(command.getName(), command);
+        });
+    }
+
+    private initModalCommands(commands: ModalCommand[]) {
+        commands.forEach((command) => {
+            this.modalCommands.set(command.getName(), command);
+        });
+    }
+
+    private initDropdownCommands(commands: DropdownCommand[]) {
+        commands.forEach((command) => {
+            this.dropdownCommands.set(command.getName(), command);
         });
     }
 
@@ -208,7 +233,7 @@ export class Bot {
         this.isLogedIn = true;
     }
 
-    private async registerSlashCommands(commands: Command[], path: any) {
+    private async registerChatInputCommands(commands: ChatInputCommand[], path: any) {
         const slashCommands = commands.map((command) => {
             return command.getBuilder().toJSON()
         });
@@ -220,13 +245,13 @@ export class Bot {
         }
     }
 
-    public async registerSlashGuildCommands(commands: Command[]) {
+    public async registerChatInputGuildCommands(commands: ChatInputCommand[]) {
         const path = Routes.applicationGuildCommands(this.applicationId, this.guildId);
-        this.registerSlashCommands(commands, path)
+        this.registerChatInputCommands(commands, path)
     }
 
-    public async registerSlashGlobalCommands(commands: Command[]) {
+    public async registerChatInputGlobalCommands(commands: ChatInputCommand[]) {
         const path = Routes.applicationCommands(this.applicationId)
-        this.registerSlashCommands(commands, path)
+        this.registerChatInputCommands(commands, path)
     }
 }

@@ -14,13 +14,18 @@ import { DatabaseSource } from "./databaseSource";
 import { Bot } from "./bot";
 
 import {
-    validationCommand,
-    roleCommand,
-    everyRequest,
-    commandRegister,
-    commandHost,
+    addDepartmentRoleChatInputCommand,
     botMessage,
+    verificationFirewallButtonComamand,
+    hostFirewallButtonComamand,
+    departmentFirewallButtonComamand,
+    addRoleDropdownCommand,
+    verificationModalCommand,
+    addPhdRoleChatInputCommand,
+    everyRequestChatCommnad,
+    quoteRequestChatCommnad
 } from "./commands";
+
 import { Mailer } from "./mailer";
 import axios from "axios";
 import { MenzaDataResponse } from "./interfaces/menza";
@@ -75,14 +80,24 @@ const {
             onGuildMemberAdd: onGuildMemberAdd,
             onReactionRemove: onReactionRemove,
             onInteractionCreate: onInteractionCreate,
-            commands: [
-                validationCommand,
-                roleCommand,
-                everyRequest,
-                commandRegister,
-                commandHost,
+            chatInputCommands: [
+                everyRequestChatCommnad,
+                quoteRequestChatCommnad,
                 botMessage,
+                addDepartmentRoleChatInputCommand,
+                addPhdRoleChatInputCommand,
             ],
+            buttonCommands: [
+                hostFirewallButtonComamand,
+                verificationFirewallButtonComamand,
+                departmentFirewallButtonComamand,
+            ],
+            dropdownCommands: [
+                addRoleDropdownCommand,
+            ],
+            modalCommands: [
+                verificationModalCommand,
+            ]
         });
 
     const menzaJob = new CronJob(
@@ -128,6 +143,6 @@ const {
     )
     menzaJob.start()
 
-    await bot.registerSlashGuildCommands(Array.from(bot.commands.values()));
+    await bot.registerChatInputGuildCommands(Array.from(bot.chatInputCommands.values()));
     await bot.login();
 })();
