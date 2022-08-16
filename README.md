@@ -7,8 +7,8 @@ Student project for enhancing the quality of life on our Department's discord se
 
 - [ ] Web api
 - [x] Students verification
-- [ ] Basic commands
-- [ ] Integration with [@svickova](https://github.com/mikulatomas/svickova)
+- [x] Basic commands
+- [x] Integration with [@svickova](https://github.com/mikulatomas/svickova)
 - [ ] Event and date reminder
 
 <br />
