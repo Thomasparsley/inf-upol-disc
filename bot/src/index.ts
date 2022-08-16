@@ -12,15 +12,16 @@ import { DatabaseSource } from "./databaseSource";
 import { Bot } from "./bot";
 
 import {
-    roleCommand,
-    everyRequest,
     addDepartmentRoleChatInputCommand,
     botMessage,
     verificationFirewallButtonComamand,
     hostFirewallButtonComamand,
     departmentFirewallButtonComamand,
     addRoleDropdownCommand,
-    verificationModalCommand
+    verificationModalCommand,
+    addPhdRoleChatInputCommand,
+    everyRequestChatCommnad,
+    quoteRequestChatCommnad
 } from "./commands";
 
 import { Mailer } from "./mailer";
@@ -72,10 +73,11 @@ const {
             onReactionRemove: onReactionRemove,
             onInteractionCreate: onInteractionCreate,
             chatInputCommands: [
-                roleCommand,
-                everyRequest,
+                everyRequestChatCommnad,
+                quoteRequestChatCommnad,
                 botMessage,
                 addDepartmentRoleChatInputCommand,
+                addPhdRoleChatInputCommand,
             ],
             buttonCommands: [
                 hostFirewallButtonComamand,

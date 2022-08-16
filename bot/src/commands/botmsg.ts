@@ -16,12 +16,6 @@ import { CommandArgs, TextFile, TextFileMessage } from "../interfaces";
 import { ButtonBuilder, CacheType, ChatInputCommandInteraction, Client, Interaction, TextBasedChannel } from "discord.js";
 import { Roles } from "../enums";
 
-
-const maxMessageLength = 2000;
-const channelTagName = "channel";
-const roleTagName = "role";
-const mentionTagName = "mention";
-
 const slashCommandBuilder = new SlashCommandBuilder()
     .addSubcommand(subcommand => {
         return subcommand
@@ -87,15 +81,11 @@ export const botMessage = new ChatInputCommand(
     async (args) => {
         const { interaction, replySilent, hasRole: permissionRole } = args;
 
-
         const isRoot = permissionRole(Roles["Root"]);
         const isMod = permissionRole(Roles["Moderátor"]);
 
         if (!isRoot && !isMod)
             throw new UnauthorizedError();
-
-        if (!interaction.isChatInputCommand())
-            throw new BadInputForChatCommandError();
 
         const subCommand = interaction.options.getSubcommand();
         switch (subCommand) {
@@ -112,8 +102,9 @@ export const botMessage = new ChatInputCommand(
                 break;
 
             case cd.sub.load.name:
+                await replySilent("Příkaz load se vykonává");
                 await subCommandLoad(args);
-                break;
+                return;
 
             default:
                 throw new UnknownCommandError();
@@ -125,9 +116,6 @@ export const botMessage = new ChatInputCommand(
 
 async function subCommandAdd(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
     const { interaction } = args;
-
-    if (!interaction.isChatInputCommand())
-        throw new BadInputForChatCommandError();
 
     const channel = interaction.channel
     const text = interaction.options
@@ -143,9 +131,6 @@ async function subCommandAdd(args: CommandArgs<ChatInputCommandInteraction<Cache
 
 async function subCommandEdit(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
     const { client, interaction } = args;
-
-    if (!interaction.isChatInputCommand())
-        throw new BadInputForChatCommandError();
 
     const channel = interaction.channel;
     const messageID = interaction.options
@@ -169,11 +154,9 @@ async function subCommandEdit(args: CommandArgs<ChatInputCommandInteraction<Cach
     throw new Error("botmessage#3");
 }
 
+const maxMessageLength = 2000;
 async function subCommandFetch(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
     const { client, interaction } = args;
-
-    if (!interaction.isChatInputCommand())
-        throw new BadInputForChatCommandError();
 
     const channel = interaction.channel;
     const messageID = interaction.options
@@ -211,7 +194,7 @@ async function subCommandFetch(args: CommandArgs<ChatInputCommandInteraction<Cac
 }
 
 async function subCommandLoad(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
-    const { client, interaction, fetchChannelFromGuild } = args;
+    const { client, interaction, fetchChannelFromGuild, replySilent } = args;
 
     if (!interaction.isChatInputCommand())
         throw new BadInputForChatCommandError();
@@ -239,8 +222,6 @@ async function subCommandLoad(args: CommandArgs<ChatInputCommandInteraction<Cach
         await processOneMessage(rawMessage, channel, client, args);
 }
 
-
-
 async function processOneMessage(
     rawMessage: TextFileMessage,
     channel: TextBasedChannel,
@@ -254,28 +235,35 @@ async function processOneMessage(
     if (message.author !== client.user)
         throw new BotCanEditOnlySelfMessagesError();
 
-    const components = [];
+    const rows = [];
     // Dropdown
     if (rawMessage.components && rawMessage.components.dropdowns)
-        for (const raw of rawMessage.components.dropdowns)
-            components.push(createDropdownComponent(raw));
+        for (const raw of rawMessage.components.dropdowns) {
+            const component = createDropdownComponent(raw);
+            const row = new ActionRowBuilder().addComponents(component);
+            rows.push(row);
+        }
 
     // Buttons
-    if (rawMessage.components && rawMessage.components.buttons)
+    if (rawMessage.components && rawMessage.components.buttons) {
+        const components = [];
+
         for (const raw of rawMessage.components.buttons)
             components.push(createButtonComponent(raw));
+
+        const row = new ActionRowBuilder().addComponents(...components);
+        rows.push(row);
+    }
 
     const unparsedContent = rawMessage.content.join("\n");
     const content = handleMentions(unparsedContent, args as CommandArgs<Interaction<CacheType>>);
 
-    if (components.length > 0) {
-        const row = new ActionRowBuilder()
-            .addComponents(...components);
+    if (rows.length > 0) {
 
         await message.edit({
             content: content,
             // @ts-ignore
-            components: [row]
+            components: rows
         });
         return;
     }
@@ -313,6 +301,9 @@ function createDropdownComponent(raw: { id: string; flag: string; placeholder: s
     return component;
 }
 
+const channelTagName = "channel";
+const roleTagName = "role";
+const mentionTagName = "mention";
 function handleMentions(message: string, args: CommandArgs<Interaction<CacheType>>): string {
     const { interaction } = args;
 

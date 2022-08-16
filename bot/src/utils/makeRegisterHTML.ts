@@ -102,15 +102,13 @@ export function makeRegisterHTML(verificationCode: string) {
 
             <header>
                 <h1>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Ověřovací e-mail pro aktivaci účtu pro Discord katedry informatiky UP.
                 </h1>
             </header>
 
             <main>
                 <p class="text">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste, ratione molestias at accusamus
-                    soluta sint cumque fugiat porro sequi autem dolorem vero? Similique, velit officia eveniet dicta
-                    officiis ullam! Officia?
+                    Posledním krokem pro ověření tvého účtu je kliknout na následující verifikační odkaz. Poté ti bude přidělena role @Student a tvůj účet bude ověřen.
                 </p>
 
                 <div id="code">
@@ -126,8 +124,8 @@ export function makeRegisterHTML(verificationCode: string) {
 
             <footer>
                 <p class="text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus animi sint voluptatem
-                    necessitatibus architecto quos impedit modi.
+                    Vítej u nás a bav se!
+                    Pokud jste nezažádali o verifikaci, tento email ignorujte.
                 </p>
             </footer>
         </div>

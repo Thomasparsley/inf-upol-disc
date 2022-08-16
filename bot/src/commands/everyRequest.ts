@@ -8,7 +8,7 @@ import { ChatInputCommand } from "../command";
 
 const RequestChannelID = "961981948740386826";
 
-export const everyRequest = new ChatInputCommand(
+export const quoteRequestChatCommnad = new ChatInputCommand(
     cd.name,
     cd.description,
     new SlashCommandBuilder()

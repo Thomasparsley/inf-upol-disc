@@ -2,13 +2,11 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import { GuildMemberRoleManager, Role } from "discord.js";
 
 import { VOC_RoleAdded, VOC_RoleRemoved } from "../vocabulary";
-import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
+import { UnauthorizedError } from "../errors";
 import { ChatInputCommand } from "../command";
 import { CD_Role as cd} from "../cd";
-import { Roles } from "../enums"
+import { Roles, RoleColors } from "../enums"
 
-const everyoneRoleColors = cd.everyoneRoleColors;
-const studentOnlyRoleColors = cd.studentOnlyRoleColors;
 
 export const roleCommand = new ChatInputCommand(
     cd.name,
@@ -31,8 +29,8 @@ export const roleCommand = new ChatInputCommand(
             throw new UnauthorizedError();
             
         const isStudent = hasRole(Roles["Katedra"]); 
-        const isStudentColor = isStudent && studentOnlyRoleColors.includes(role.hexColor);
-        const isEveryoneColor = everyoneRoleColors.includes(role.hexColor);
+        const isStudentColor = isStudent && [RoleColors["Student"], ].includes(role.hexColor);
+        const isEveryoneColor = RoleColors["Everyone"].includes(role.hexColor);
 
         if (!isStudentColor && !isEveryoneColor) 
             throw "Tuto roli si zvolit nemůžeš.".toError();

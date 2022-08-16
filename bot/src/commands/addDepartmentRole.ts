@@ -4,7 +4,7 @@ import { Role, User } from "discord.js";
 import { VOC_RoleAdded } from "../vocabulary";
 import { UnauthorizedError } from "../errors";
 import { ChatInputCommand } from "../command";
-import { CD_Katedra as cd} from "../cd";
+import { CD_Katedra as cd } from "../cd";
 import { Roles } from "../enums";
 
 

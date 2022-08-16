@@ -47,6 +47,17 @@ export const CD_EveryRequest = {
     ]
 };
 
+export const CD_QuoteRequest = {
+    name: "quotereq",
+    description: "Žádost o přidání citátu do místnosti citáty.",
+    options: [
+        {
+            name: "quote",
+            description: "Formát: \"Text citátu. - Jméno učitele \""
+        },
+    ]
+};
+
 export const CD_Host = {
     name: "host",
     description: "Po odeslání obdržíš roli @Návštěvník.",
@@ -162,9 +173,7 @@ export const CD_Role = {
             name: "role",
             description: "Napiš jméno role."
         },
-    ],
-    everyoneRoleColors: ["#9b59b6", "#1abc9c"], // oznámení (zelená)
-    studentOnlyRoleColors: ["#9b59b6", "#33aadd", "#95a5a6"] // programovací jazyky (fialová), obory (modrá), předměty (šedá)
+    ]
 };
 
 export const CD_Validation = {
@@ -187,5 +196,17 @@ export const CD_Katedra = {
 			description: "Napiš jméno uživatele."
 		},
 	],
+
+};
+
+export const CD_PhD = {
+    name: "phd",
+    description: "Přidělí roli pro PhD.",
+    options: [
+        {
+            name: "user",
+            description: "Napiš jméno uživatele."
+        },
+    ],
 
 };

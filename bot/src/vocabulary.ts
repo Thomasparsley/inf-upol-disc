@@ -8,6 +8,7 @@ export const VOC_VerificationCodeSended = (email: string) => `Verifikační kod 
 export const VOC_RoleAdded = (role: Role | string) => `Role ${role} byla **přidána**.`;
 export const VOC_RoleRemoved = (role: Role) => `Role ${role} byla **odebrána**.`;
 export const VOC_EveryRequest = (sender: any, room: any, text: string) => `Uživatel ${sender} zažádal v ${room} o everyone. Důvod žádost: ${text}`;
+export const VOC_QuoteRequest = (sender: any, text: string) => `Uživatel ${sender} zažádal o citát.\n${text}`;
 
 
 
