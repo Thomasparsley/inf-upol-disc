@@ -11,8 +11,10 @@
                 " - V této kategorii najdeš veškeré základní informace ohledně fungování serveru. Nejdůležitější místnosti zde jsou <channel>oznámení-a-novinky</channel>a místnost <channel>návrhy-a-připomínky</channel>, která slouží jako zpětná vazba pro vylepšení serveru.",
                 "**GENERAL**",
                 " - Hlavní kategorie serveru. Najdeš zde #general (hlavní chat), <channel>memes</channel>, <channel>dotazy</channel> k fungování discordu a serveru, <channel>citáty</channel> učitelů.",
-                "**KATEDRA**",
+                "**INFORMAČNÍ TABULE**",
                 " - Místnosti s aktualitami, novinkami a různými aktivitami spojenými s katedrou.",
+                "**KATEDRA**",
+                " - Soukromá kategorie pro doktorandy a zaměstnance katedry.",
                 "**HLASOVÉ KANÁLY**",
                 " - Hlasové místnosti pro hlasovou komunikaci s tvými kamarády.",
                 "**STUDIUM**",
@@ -58,8 +60,8 @@
                 " - Než se na něco zeptáte, doporučujeme se podívat do připnutých zpráv, jestli se daný dotaz již nevyskytnul.",
                 "",
                 "**Příkazy**",
-                " - Pomocí příkazu **/everyrequest popisek** můžete poslat žádost o <role>@veryone</role>. Prosíme popište podrobně svoji žádost a odešlete. Žádost bude následně zpracována a následně schválena našimi <role>Moderátor</role>.",
-                " - Pomocí příkazu **/citát popisek** můžete poslat žádost o přidání citátu do místnosti citáty <channel>citáty</channel>. Prosíme posílejte citáty ve formátu \"Citát \n \". Citát bude následně zpracován a následně schválen našimi <role>Moderátor</role>."
+                " - Pomocí příkazu **/everyrequest popisek** můžete poslat žádost o <role>everyone</role>. Prosíme popište podrobně svoji žádost a odešlete. Žádost bude následně zpracována a následně schválena našimi <role>Moderátor</role>.",
+                " - Pomocí příkazu **/citát popisek** můžete poslat žádost o přidání citátu do místnosti <channel>citáty</channel>. Prosíme posílejte citáty ve formátu: \"Text citátu. - Jméno učitele \". Citát bude následně zpracován a následně schválen našimi <role>Moderátor</role>."
             ]
         },
         {
