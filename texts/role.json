@@ -123,7 +123,7 @@
                 "dropdowns": [
                     {
                         "id": "dropdownAddRole",
-                        "flag": "predmety_0o",
+                        "flag": "predmety_0n",
                         "placeholder": "Vyber si predmety (0 - N)",
                         "min": 1,
                         "max": -1,
@@ -146,7 +146,7 @@
                     },
                     {
                         "id": "dropdownAddRole",
-                        "flag": "predmety_pz",
+                        "flag": "predmety_oz",
                         "placeholder": "Vyber si predmety (O - Z)",
                         "min": 1,
                         "max": -1,
