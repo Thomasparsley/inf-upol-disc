@@ -1,77 +1,87 @@
-import { GuildMemberRoleManager } from "discord.js";
-import { OnInteractionCreateAction } from "../bot";
-import { CommandArgs } from "../command";
-import { VOC_HasNotPermission } from "../vocabulary";
+import { CacheType, GuildMemberRoleManager, Interaction } from "discord.js";
 
-const event: OnInteractionCreateAction = async (args) => {
-    const { client, interaction, commands, commandRegistration } = args;
+import { CommandArgs, OnInteractionCreateArgs } from "../interfaces";
+import { fetchChannelFromGuild, getGuild, reply, replySilent } from "../utils";
+import { UnknownCommandError } from "../errors";
+import { Command } from "../command";
 
-    if (!interaction.isCommand()) {
-        return;
+function makeCommandArgs(args: OnInteractionCreateArgs) {
+    const {
+        client,
+        interaction,
+        commands,
+        buttons,
+        dropdown,
+        modals,
+        db,
+        mailer,
+        commandRegistration,
+    } = args;
+
+    const commandArgs: CommandArgs<Interaction<CacheType>> = {
+        client,
+        interaction,
+        commands,
+        buttons,
+        dropdown,
+        modals,
+        db,
+        mailer,
+        commandRegistration,
+        getGuild: getGuild(interaction),
+        fetchChannelFromGuild: fetchChannelFromGuild(interaction),
+        reply: reply(interaction),
+        replySilent: replySilent(interaction),
+        permissionRolesCount: (predicate: Function): boolean => {
+            const roles = (interaction.member?.roles as GuildMemberRoleManager)
+            if (!roles) {
+                return false;
+            }
+
+            return predicate(roles.cache.size);
+        },
+        hasRole: (roleID: string): boolean => {
+            const roles = (interaction.member?.roles as GuildMemberRoleManager)
+            if (!roles) {
+                return false;
+            }
+
+            return roles.cache.has(roleID);
+        },
     }
 
-    const command = commands.get(interaction.commandName);
+    return commandArgs;
+}
 
-    const reply = async (content: string): Promise<void> => {
-        return await interaction.reply({
-            content,
-        });
+async function event(args: OnInteractionCreateArgs) {
+    const { interaction, commands, buttons, modals, dropdown } = args;
+    const commandArgs = makeCommandArgs(args)
+
+    let command: Command<any> | undefined;
+    if (interaction.isButton())
+        command = buttons.get(interaction.customId);
+
+    else if (interaction.isModalSubmit())
+        command = modals.get(interaction.customId);
+
+    else if (interaction.isSelectMenu()) {
+        const splited = interaction.customId.split("-");
+        const customId = splited[0];
+        const flag = splited[1];
+
+        command = dropdown.get(customId);
+        commandArgs.flag = flag;
     }
+    
+    else if (interaction.isChatInputCommand())
+        command = commands.get(interaction.commandName);
+    
+    if (!command)
+        throw new UnknownCommandError();
 
-    const replySilent = async (content: string): Promise<void> => {
-        return await interaction.reply({
-            content,
-            ephemeral: true,
-        });
-    }
-
-    try {
-        if (!command) {
-            await replySilent("Neznámý příkaz!");
-            return;
-        }
-
-        const commandArgs: CommandArgs = {
-            client,
-            interaction,
-            commands,
-            commandRegistration,
-            reply,
-            replySilent,
-            permissionRolesCount: async (predicate: Function): Promise<Boolean> => {
-                const roles = (interaction.member?.roles as GuildMemberRoleManager)
-                if (!roles) {
-                    await interaction.reply({
-                        content: "Error: permissionRolesCount#1",
-                        ephemeral: true,
-                    });
-
-                    return false;
-                }
-
-                return predicate(roles.cache.size);
-            },
-            permissionRole: async (roleID: string): Promise<Boolean> => {
-                const roles = (interaction.member?.roles as GuildMemberRoleManager)
-                if (!roles) {
-                    await interaction.reply({
-                        content: "Error: permissionRole#1",
-                        ephemeral: true,
-                    });
-
-                    return false;
-                }
-
-                return roles.cache.has(roleID);
-            },
-        }
-
-        await command.execute(commandArgs);
-
-    } catch (err) {
-        console.error(err);
-        await replySilent("Nastala chyba při vykonávání příkazu!");
-    }
+    await command.execute(commandArgs);
 }
 
 export default event
+
+

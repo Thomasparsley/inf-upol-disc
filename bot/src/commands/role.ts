@@ -1,61 +1,50 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { GuildMemberRoleManager, Role } from "discord.js";
 
-import { VOC_HasNotPermission } from "../vocabulary";
-import { Command } from "../command";
+import { VOC_RoleAdded, VOC_RoleRemoved } from "../vocabulary";
+import { UnauthorizedError } from "../errors";
+import { ChatInputCommand } from "../command";
+import { CD_Role as cd} from "../cd";
+import { Roles, RoleColors } from "../enums"
 
-const StudentID = "960478701684936734";
-const RequiredRoleOptionName = "role";
-const everyoneRoleColors = ["#9b59b6", "#1abc9c"] // programovací jazyky (fialová), oznámení (zelená)
-const studentOnlyRoleColors = ["#33aadd", "#95a5a6"] // obory (modrá), předměty (šedá)
 
-export const roleCommand = new Command(
-    "role",
-    "Přidělí (odebere) požadovanou roli.",
+export const roleCommand = new ChatInputCommand(
+    cd.name,
+    cd.description,
     new SlashCommandBuilder()
         .addRoleOption(option => {
             return option
-                .setName(RequiredRoleOptionName)
-                .setDescription("Napiš jméno role.")
+                .setName(cd.options[0].name)
+                .setDescription(cd.options[0].description)
                 .setRequired(true);
         }),
-    async ({ interaction, replySilent, permissionRole, permissionRolesCount }) => {
+    async ({ interaction, replySilent, hasRole, permissionRolesCount }) => {
 
-        const role = (interaction.options.getRole(RequiredRoleOptionName) as Role);
-        if (!role) {
-            await replySilent("Error: role#1");
-            return;
-        }
+        const role = (interaction.options.getRole(cd.options[0].name) as Role);
+        if (!role) 
+            throw "role#1".toError();
 
-        const hasPermission = await permissionRolesCount((size: Number) => size > 0);
-        if (!hasPermission) {
-            await replySilent(VOC_HasNotPermission);
-            return;
-        }
+        const hasPermission = permissionRolesCount((size: Number) => size > 0);
+        if (!hasPermission) 
+            throw new UnauthorizedError();
+            
+        const isStudent = hasRole(Roles["Katedra"]); 
+        const isStudentColor = isStudent && [RoleColors["Student"], ].includes(role.hexColor);
+        const isEveryoneColor = RoleColors["Everyone"].includes(role.hexColor);
 
-        const isStudent = await permissionRole(StudentID);
-        const isStudentColor = isStudent && studentOnlyRoleColors.includes(role.hexColor);
-        const isEveryoneColor = everyoneRoleColors.includes(role.hexColor);
-
-        if (!isStudentColor && !isEveryoneColor) {
-            await replySilent("Tuto roli si zvolit nemůžeš.");
-            return;
-        }
-
+        if (!isStudentColor && !isEveryoneColor) 
+            throw "Tuto roli si zvolit nemůžeš.".toError();
+        
         const roles = (interaction.member?.roles as GuildMemberRoleManager);
-        if (!roles) {
-            await replySilent("Error: role#2");
-            return;
-        }
+        if (!roles) 
+            throw "role#2".toError();
 
         if (!roles.cache.has(role.id)) {
-            roles.add(role.id);
-            await replySilent(`Role ${role} byla **přidána**.`);
-
-            return;
+            await roles.add(role.id);
+            await replySilent(VOC_RoleAdded(role));
+        } else {
+            await roles.remove(role.id);
+            await replySilent(VOC_RoleRemoved(role));
         }
-
-        roles.remove(role.id);
-        await replySilent(`Role ${role} byla **odebrána**.`);
     },
 );

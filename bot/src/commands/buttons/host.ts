@@ -1,0 +1,32 @@
+import { GuildMemberRoleManager } from "discord.js";
+import { ButtonCommand } from "../../command";
+import { Roles } from "../../enums";
+
+export const hostFirewallButtonComamand = new ButtonCommand(
+    "btnHost",
+    "Přidělí roli @host",
+    async ({ interaction, replySilent, hasRole, getGuild }) => {
+
+        if (hasRole(Roles["Student"])) {
+            await replySilent("Student nemůže být hostem.");
+            return;
+        }
+        if (hasRole(Roles["Katedra"])) {
+            await replySilent("Jelikož jste součástí Katedry, nemůžete být hostem.");
+            return;
+        }
+
+        const roles = (interaction.member?.roles as GuildMemberRoleManager);
+        const hostRole = await getGuild().roles.fetch(Roles["Návštěva"])
+        if (!hostRole)
+            return;
+
+        if (!roles.cache.has(hostRole.id)) {
+            await roles.add(hostRole.id);
+            await replySilent(`Děkujeme, že máte zájem navštívit náš server! Role ${hostRole} Vám byla přidělena.`);
+        } else {
+            await roles.remove(hostRole.id);
+            await replySilent(`Děkujeme, že jste navštívili náš server! Role ${hostRole} Vám byla odebrána.`);
+        }
+    },
+);

@@ -1,205 +1,327 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
 import axios from "axios";
-
-import { VOC_CantEditPermission, VOC_HasNotPermission } from "../vocabulary";
-import { Command, CommandArgs } from "../command";
-
-const RequiredOptionMessageID = "message";
-const RequiredOptionText = "text";
-const RequiredOptionURL = "url";
-const SubCommandAdd = "add";
-const SubCommandEdit = "edit";
-const SubCommandFetch = "fetch";
-const rootID = "960452395312234537";
-const modID = "960478652494118952";
-
-
-const maxMessageLength = 2000;
+import { ActionRowBuilder, SelectMenuBuilder, SlashCommandBuilder } from "@discordjs/builders";
+import { CD_Botmsg as cd } from "../cd";
+import { isHttpUrlWithFileExt, replaceTags, parseByTag, getButtonStyle } from "../utils";
+import { VOC_ActionSuccessful } from "../vocabulary";
+import { ChatInputCommand } from "../command";
+import {
+    BadInputForChatCommandError,
+    UnknownCommandError,
+    UnauthorizedError,
+    InvalidURLError,
+    BotCanEditOnlySelfMessagesError,
+    InvalidTextBasedChannel,
+} from "../errors";
+import { CommandArgs, TextFile, TextFileMessage } from "../interfaces";
+import { ButtonBuilder, CacheType, ChatInputCommandInteraction, Client, Interaction, TextBasedChannel } from "discord.js";
+import { Roles } from "../enums";
 
 const slashCommandBuilder = new SlashCommandBuilder()
-.addSubcommand(subcommand => {
-    return subcommand
-        .setName(SubCommandAdd)
-        .setDescription("Pošle zprávu pomocí bota.")
-        .addStringOption(option => {
-            return option
-                .setName(RequiredOptionText)
-                .setDescription("Text zprávy.")
-                .setRequired(true);
-        })
-})
-.addSubcommand(subcommand => {
-    return subcommand
-        .setName(SubCommandEdit)
-        .setDescription("Upraví zprávu pomocí bota.")
-        .addStringOption(option => {
-            return option
-                .setName(RequiredOptionMessageID)
-                .setDescription("ID zprávy, kterou chceš upravit.")
-                .setRequired(true);
-        })
-        .addStringOption(option => {
-            return option
-                .setName(RequiredOptionText)
-                .setDescription("Nový text zprávy.")
-                .setRequired(true);
-        })
-})
-.addSubcommand(subcommand => {
-    return subcommand
-        .setName(SubCommandFetch)
-        .setDescription("Načte z dané URL obsah zprávy.")
-        .addStringOption(option => {
-            return option
-                .setName(RequiredOptionMessageID)
-                .setDescription("ID zprávy, kterou chceš upravit.")
-                .setRequired(true);
-        })
-        .addStringOption(option => {
-            return option
-                .setName(RequiredOptionURL)
-                .setDescription("URL adresa.")
-                .setRequired(true);
-        })
-}); 
+    .addSubcommand(subcommand => {
+        return subcommand
+            .setName(cd.sub.add.name)
+            .setDescription(cd.sub.add.description)
+            .addStringOption(option => {
+                return option
+                    .setName(cd.sub.add.options.text.name)
+                    .setDescription(cd.sub.add.options.text.description)
+                    .setRequired(true);
+            })
+    })
+    .addSubcommand(subcommand => {
+        return subcommand
+            .setName(cd.sub.edit.name)
+            .setDescription(cd.sub.edit.description)
+            .addStringOption(option => {
+                return option
+                    .setName(cd.sub.edit.options.messageid.name)
+                    .setDescription(cd.sub.edit.options.messageid.description)
+                    .setRequired(true);
+            })
+            .addStringOption(option => {
+                return option
+                    .setName(cd.sub.edit.options.text.name)
+                    .setDescription(cd.sub.edit.options.text.description)
+                    .setRequired(true);
+            })
+    })
+    .addSubcommand(subcommand => {
+        return subcommand
+            .setName(cd.sub.fetch.name)
+            .setDescription(cd.sub.fetch.description)
+            .addStringOption(option => {
+                return option
+                    .setName(cd.sub.fetch.options.messageid.name)
+                    .setDescription(cd.sub.fetch.options.messageid.description)
+                    .setRequired(true);
+            })
+            .addStringOption(option => {
+                return option
+                    .setName(cd.sub.fetch.options.url.name)
+                    .setDescription(cd.sub.fetch.options.url.description)
+                    .setRequired(true);
+            })
+    })
+    .addSubcommand(subcommand => {
+        return subcommand
+            .setName(cd.sub.load.name)
+            .setDescription(cd.sub.load.description)
+            .addStringOption(option => {
+                return option
+                    .setName(cd.sub.load.options.url.name)
+                    .setDescription(cd.sub.load.options.url.description)
+                    .setRequired(true);
+            })
+    }); 
 
-export const botMessage = new Command(
-    "botmessage",
-    "Pošle nebo upraví zprávu pomocí bota.",
+export const botMessage = new ChatInputCommand(
+    cd.name,
+    cd.description,
     slashCommandBuilder,
     async (args) => {
-        const { interaction, replySilent, permissionRole } = args;
+        const { interaction, replySilent, hasRole: permissionRole } = args;
 
-        const isRoot = await permissionRole(rootID);
-        const isMod = await permissionRole(modID);
-        if (!isRoot && !isMod) {
-            await replySilent(VOC_HasNotPermission);
-            return;
-        }
+        const isRoot = permissionRole(Roles["Root"]);
+        const isMod = permissionRole(Roles["Moderátor"]);
+
+        if (!isRoot && !isMod)
+            throw new UnauthorizedError();
 
         const subCommand = interaction.options.getSubcommand();
         switch (subCommand) {
-            case SubCommandAdd:
-                await commandAdd(args);
+            case cd.sub.add.name:
+                await subCommandAdd(args);
                 break;
 
-            case SubCommandEdit:
-                await commandEdit(args);
+            case cd.sub.edit.name:
+                await subCommandEdit(args);
                 break;
 
-            case SubCommandFetch:
-                await commandFetch(args);
+            case cd.sub.fetch.name:
+                await subCommandFetch(args);
                 break;
+
+            case cd.sub.load.name:
+                await replySilent("Příkaz load se vykonává");
+                await subCommandLoad(args);
+                return;
 
             default:
-                await replySilent("Marek.") // WIP <--
-                return;
+                throw new UnknownCommandError();
         }
 
-        await replySilent("Akce byla provedena.")
+        await replySilent(VOC_ActionSuccessful);
     },
 );
 
-async function commandAdd(args: CommandArgs): Promise<void> {
-    const { interaction, replySilent } = args;
+async function subCommandAdd(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
+    const { interaction } = args;
 
     const channel = interaction.channel
-    const text = interaction.options.getString(RequiredOptionText);
+    const text = interaction.options
+        .getString(cd.sub.add.options.text.name);
 
     if (channel && text) {
         channel.send(text);
         return;
     }
 
-    await replySilent("Error botmessage#1");
+    throw "botmessage#1".toError();
 }
 
-async function commandEdit(args: CommandArgs): Promise<void> {
-    const { client, interaction, replySilent } = args;
+async function subCommandEdit(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
+    const { client, interaction } = args;
 
     const channel = interaction.channel;
-    const messageID = interaction.options.getString(RequiredOptionMessageID)?.trim();
-    const text = interaction.options.getString(RequiredOptionText);
+    const messageID = interaction.options
+        .getString(cd.sub.edit.options.messageid.name)?.trim();
+    const text = interaction.options
+        .getString(cd.sub.edit.options.text.name);
 
     if (channel && messageID && text) {
         const message = await channel.messages.fetch(messageID);
 
-        if (!message) {
-            await replySilent("Error botmessage#2");
-            return;
-        }
-
-        if (message.author !== client.user) {
-            await replySilent("Bot může upravovat jen svoje zprávy!"); // <-- Move into VOC
-        }
+        if (!message)
+            throw "botmessage#2".toError();
+        
+        if (message.author !== client.user)
+            throw new BotCanEditOnlySelfMessagesError();
 
         message.edit(text);
-
         return;
     }
 
-    await replySilent("Error botmessage#3");
+    throw new Error("botmessage#3");
 }
 
-function isHttpUrl(string: string): boolean {
-    let url;
-    
-    try {
-      url = new URL(string);
-    } catch (_) {
-      return false;  
-    }
-
-    if (!string.endsWith(".md")
-        && !string.endsWith(".markdown")
-        && !string.endsWith(".txt")
-    ) {
-        return false;
-    }
-  
-    return url.protocol === "http:" || url.protocol === "https:";
-  }
-
-async function commandFetch(args: CommandArgs): Promise<void> {
-    const { client, interaction, replySilent } = args;
+const maxMessageLength = 2000;
+async function subCommandFetch(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
+    const { client, interaction } = args;
 
     const channel = interaction.channel;
-    const messageID = interaction.options.getString(RequiredOptionMessageID)?.trim();
-    const url = interaction.options.getString(RequiredOptionURL);
+    const messageID = interaction.options
+        .getString(cd.sub.fetch.options.messageid.name)
+        ?.trim();
+    const url = interaction.options
+        .getString(cd.sub.fetch.options.url.name);
 
-    if (!channel || !messageID || !url) {
-        await replySilent("Error: botmsg#1")
-        return;
-    }
+    if (!channel || !messageID || !url)
+        throw "botmsg#1".toError();
 
-    if (!isHttpUrl(url)) {
-        await replySilent("Nepředal jsi validní URL.")
-        return;
-    }
+    if (!isHttpUrlWithFileExt(url, ["md", "markdown", "txt"]))
+        throw new InvalidURLError();
 
     const message = await channel.messages.fetch(messageID);
-
-    if (message.author !== client.user) {
-        await replySilent(VOC_CantEditPermission);
-        return;
-    }
+    if (message.author !== client.user)
+        throw new BotCanEditOnlySelfMessagesError();
 
     let data: string = "";
     try {
         const response = await axios.get(url);
         data = (response.data as string);
     } catch (err) {
-        console.error(err);
-        await replySilent("Error: botmsg#2")
+        throw `Error: botmsg#2: ${err}`.toError();
+    }
 
+    const messageContent = handleMentions(data, args as CommandArgs<Interaction<CacheType>>);
+    if (!messageContent)
+        throw "botmsg#5".toError();
+
+    if (messageContent.length > maxMessageLength)
+        throw `Požadavek nebyl zpracován, protože text překročil ${maxMessageLength} znaků.`.toError();
+
+    message.edit(messageContent);
+}
+
+async function subCommandLoad(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
+    const { client, interaction, fetchChannelFromGuild, replySilent } = args;
+
+    if (!interaction.isChatInputCommand())
+        throw new BadInputForChatCommandError();
+
+    const urlForFile = interaction.options
+        .getString(cd.sub.load.options.url.name);
+
+    if (!urlForFile || !isHttpUrlWithFileExt(urlForFile, ["json"]))
+        throw new InvalidURLError();
+
+    let data: TextFile | undefined;
+    try {
+        const response = await axios.get(urlForFile);
+        data = (response.data as TextFile);
+    } catch (err) {
+        throw `Error: botmsg#6: ${err}`.toError();
+    }
+
+    const channelID = data.channelID;
+    const channel = await fetchChannelFromGuild(channelID);
+    if (!channel.isTextBased())
+        throw new InvalidTextBasedChannel();
+
+    for (const rawMessage of data.messages)
+        await processOneMessage(rawMessage, channel, client, args);
+}
+
+async function processOneMessage(
+    rawMessage: TextFileMessage,
+    channel: TextBasedChannel,
+    client: Client<boolean>,
+    args: CommandArgs<ChatInputCommandInteraction<CacheType>>
+): Promise<void> {
+    const messageId = rawMessage.id;
+    const message = await channel.messages.fetch(messageId);
+    if (!message)
+        throw "".toError();
+    if (message.author !== client.user)
+        throw new BotCanEditOnlySelfMessagesError();
+
+    const rows = [];
+    // Dropdown
+    if (rawMessage.components && rawMessage.components.dropdowns)
+        for (const raw of rawMessage.components.dropdowns) {
+            const component = createDropdownComponent(raw);
+            const row = new ActionRowBuilder().addComponents(component);
+            rows.push(row);
+        }
+
+    // Buttons
+    if (rawMessage.components && rawMessage.components.buttons) {
+        const components = [];
+
+        for (const raw of rawMessage.components.buttons)
+            components.push(createButtonComponent(raw));
+
+        const row = new ActionRowBuilder().addComponents(...components);
+        rows.push(row);
+    }
+
+    const unparsedContent = rawMessage.content.join("\n");
+    const content = handleMentions(unparsedContent, args as CommandArgs<Interaction<CacheType>>);
+
+    if (rows.length > 0) {
+
+        await message.edit({
+            content: content,
+            // @ts-ignore
+            components: rows
+        });
         return;
     }
 
-    if (data.length > maxMessageLength) {
-        await replySilent(`Požadavek nebyl zpracován, protože text překročil ${maxMessageLength} znaků.`)
-        return;
-    }
+    await message.edit({ content: content });
+}
 
-    message.edit(data);
+function createButtonComponent(raw: { id: string; label: string; style: string; }) {
+    return new ButtonBuilder()
+        .setCustomId(raw.id)
+        .setLabel(raw.label)
+        .setStyle(getButtonStyle(raw.style));
+}
 
+function createDropdownComponent(raw: { id: string; flag: string; placeholder: string; min: number; max: number; options: string[]; }) {
+    const optionalValues: any[] = [];
+    for (const value of raw.options)
+        optionalValues.push({
+            label: value,
+            value: value,
+        });
+
+    let maxValue = (raw.max < 0) ? raw.options.length : raw.max;
+    if (maxValue > 25)
+        maxValue = 25;
+
+    const values = optionalValues.slice(0, 24);
+    const component = new SelectMenuBuilder()
+        .setCustomId(`${raw.id}-${raw.flag}`)
+        .setPlaceholder(raw.placeholder)
+        .setMinValues(raw.min)
+        .setMaxValues(maxValue)
+        .setOptions(...values);
+
+    return component;
+}
+
+const channelTagName = "channel";
+const roleTagName = "role";
+const mentionTagName = "mention";
+function handleMentions(message: string, args: CommandArgs<Interaction<CacheType>>): string {
+    const { interaction } = args;
+
+    const channels = parseByTag(message, channelTagName);
+    const roles = parseByTag(message, roleTagName);
+    const mentions = parseByTag(message, mentionTagName);
+
+    const guild = interaction.guild;
+    const roleManager = guild?.roles;
+    const channelManager = guild?.channels;
+    const memberManager = guild?.members;
+    
+    if (!guild || !roleManager || !channelManager || !memberManager)
+        throw "botmsg#4".toError();
+
+    message = replaceTags(message, roleTagName, roles, roleManager);
+    message = replaceTags(message, channelTagName, channels, channelManager);
+    message = replaceTags(message, mentionTagName, mentions, memberManager);
+
+    return message;
 }

@@ -1,38 +1,25 @@
-import { Awaitable, CacheType, Client, CommandInteraction } from "discord.js";
-import { SlashCommandBuilder, SlashCommandSubcommandsOnlyBuilder } from "@discordjs/builders";
+import { CommandAction } from "./types";
+import {
+    SlashCommandBuilder,
+    SlashCommandSubcommandsOnlyBuilder,
+    CacheType,
+    ButtonInteraction,
+    ChatInputCommandInteraction,
+    ModalSubmitInteraction,
+    SelectMenuInteraction
+} from "discord.js";
 
-export interface CommandArgs {
-    client: Client;
-    interaction: CommandInteraction<CacheType>;
-    commands: Map<string, Command>;
-    commandRegistration: (commands: Command[]) => Promise<void>;
-    reply: (content: string) => Promise<void>;
-    replySilent: (content: string) => Promise<void>;
-    permissionRolesCount: (predicate: Function) => Promise<Boolean>;
-    permissionRole: (roleID: string) => Promise<Boolean>;
-}
-export type CommandAction = (args: CommandArgs) => Awaitable<void>
 
-export class Command {
-    private name: string;
-    private description: string;
-    private builder: SlashCommandBuilder | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand"> | SlashCommandSubcommandsOnlyBuilder;
-    readonly execute: CommandAction;
+type BuilderType = SlashCommandBuilder
+    | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">
+    | SlashCommandSubcommandsOnlyBuilder
 
+export class Command<T> {
     constructor(
-        name: string,
-        description: string,
-        builder: SlashCommandBuilder | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand"> | SlashCommandSubcommandsOnlyBuilder,
-        action: CommandAction,
-    ) {
-        this.name = name;
-        this.description = description;
-        this.builder = builder;
-        this.execute = action;
-
-        this.builder.setName(this.name);
-        this.builder.setDescription(this.description);
-    }
+        protected name: string,
+        protected description: string,
+        public readonly execute: CommandAction<T>,
+    ) {}
 
     public getName(): string {
         return this.name;
@@ -41,8 +28,29 @@ export class Command {
     public getDescription(): string {
         return this.description;
     }
+}
 
-    public getBuilder(): SlashCommandBuilder | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand"> | SlashCommandSubcommandsOnlyBuilder {
+export class ChatInputCommand extends Command<ChatInputCommandInteraction<CacheType>> {
+    constructor(
+        name: string,
+        description: string,
+        private builder: BuilderType,
+        execute: CommandAction<ChatInputCommandInteraction<CacheType>>,
+    ) {
+        super(name, description, execute)
+
+        this.builder = builder;
+        this.builder.setName(this.name);
+        this.builder.setDescription(this.description);
+    }
+
+    public getBuilder(): BuilderType {
         return this.builder;
     }
 }
+
+export class ButtonCommand extends Command<ButtonInteraction<CacheType>> { }
+
+export class ModalCommand extends Command<ModalSubmitInteraction<CacheType>> { }
+
+export class DropdownCommand extends Command<SelectMenuInteraction<CacheType>> { }

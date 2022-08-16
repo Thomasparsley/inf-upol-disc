@@ -1,90 +1,167 @@
-import { Awaitable, CacheType, Client, Emoji, Intents, Interaction, Message, MessageReaction, PartialMessageReaction, PartialUser, Role, User } from "discord.js";
+import { DataSource } from "typeorm";
 import { Routes } from "discord-api-types/v9";
 import { REST } from "@discordjs/rest";
+import { 
+    GatewayIntentBits,
+    Message,
+    Client,
+    Role,
+    Partials,
+} from "discord.js";
 
-import { Command } from "./command";
+import { 
+    ChatInputCommand,
+    ButtonCommand,
+    ModalCommand,
+    DropdownCommand
+} from "./command";
+import { Mailer } from "./mailer";
+import { 
+    BotConfig,
+    OnGuildMemberAddArgs,
+    OnInteractionCreateArgs,
+    OnReactionAddArgs,
+    OnReactionRemoveArgs,
+    OnReadyArgs
+} from "./interfaces";
+import {
+    OnGuildMemberAddAction,
+    onReactionAddAction,
+    onReactionRemoveAction,
+} from "./types";
+import { replySilent } from "./utils";
 
-const REST_VERSION = '9';
+const REST_VERSION = "10";
 
 export class Bot {
     client: Client;
     rest: REST;
-    commands: Map<string, Command>;
-    reactionMessages: Map<Message, Map<String, Role>>;
-    private applicationId: string;
-    private guildId: string;
-    private token: string;
-    private onReady: OnReadyAction
-        = async (args: OnReadyArgs) => {}
+    chatInputCommands = new Map<string, ChatInputCommand>();
+    buttonCommands = new Map<string, ButtonCommand>();
+    modalCommands = new Map<string, ModalCommand>();
+    dropdownCommands = new Map<string, DropdownCommand>();
+    reactionMessages = new Map<Message, Map<String, Role>>();
+    private async onReady(args: OnReadyArgs): Promise<void> {
+        throw new Error("Event 'onReady' is not implementet");
+    }
+    private onGuildMemberAdd: OnGuildMemberAddAction
+        = async (args: OnGuildMemberAddArgs) => {}
     private onReactionAdd: onReactionAddAction
         = async (args: OnReactionAddArgs) => {}
     private onReactionRemove: onReactionRemoveAction
         = async (args: OnReactionRemoveArgs) => {}
-    private onInteractionCreate: OnInteractionCreateAction
-        = async (args: OnInteractionCreateArgs) => { }
+    private async onInteractionCreate(args: OnInteractionCreateArgs): Promise<void> {
+        throw new Error("Empty on interaction create event");
+    }
+    private isLogedIn: boolean = false;
 
-
-    constructor(config: BotConfig) {
-        this.commands = new Map<string, Command>();
-        this.reactionMessages = new Map<Message, Map<String, Role>>();
-        this.applicationId = config.applicationId;
-        this.guildId = config.guildId;
-        this.token = config.token;
-
+    constructor(
+        private readonly applicationId: string,
+        private readonly guildId: string,
+        private readonly token: string,
+        private readonly mailer: Mailer,
+        public db: DataSource,
+        config: BotConfig
+    ) {
         this.client = new Client({
             intents: [
-                Intents.FLAGS.GUILDS,
-                Intents.FLAGS.GUILD_MESSAGES,
-                Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.GuildMessageReactions,
+                GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.DirectMessages,
             ],
             partials : [
-                'MESSAGE', 
-                'CHANNEL', 
-                'REACTION',
+                Partials.Message, 
+                Partials.Channel, 
+                Partials.Reaction,
             ],
         });
 
         this.rest = new REST({ version: REST_VERSION })
             .setToken(this.token);
 
-        if (config.commands) {
-            this.initCommands(config.commands);
-        }
+        if (config.chatInputCommands) this.initChatInputCommands(config.chatInputCommands);
+        if (config.buttonCommands) this.initButtonCommands(config.buttonCommands);
+        if (config.modalCommands) this.initModalCommands(config.modalCommands);
+        if (config.dropdownCommands) this.initDropdownCommands(config.dropdownCommands);
 
-        // if (config.reactionMessages) {
-        //     this.initReactionMessages(config.reactionMessages);
-        // }
+        /* if (config.reactionMessages) {
+            this.initReactionMessages(config.reactionMessages);
+        } */
 
-        if (config.onReady) {
+        this.initEvents(config);
+        this.init();
+    }
+
+    private initEvents(config: BotConfig) {
+        if (config.onReady)
             this.onReady = config.onReady;
-        }
-
-        if (config.onReactionAdd) {
+        if (config.onGuildMemberAdd)
+            this.onGuildMemberAdd = config.onGuildMemberAdd;
+        if (config.onReactionAdd)
             this.onReactionAdd = config.onReactionAdd;
-        }
-
-        if (config.onReactionRemove) {
+        if (config.onReactionRemove)
             this.onReactionRemove = config.onReactionRemove;
-        }
-
-        if (config.onInteractionCreate) {
+        if (config.onInteractionCreate)
             this.onInteractionCreate = config.onInteractionCreate;
-        }
+    }
 
+    private init() {
         this.initOnReady();
+        this.initOnInteractionCreate();
+        this.initOnGuildMemberAdd();
         this.initOnReactionAdd();
         this.initOnReactionRemove();
-        this.initOnInteractionCreate();
     }
 
     private initOnReady() {
         this.client.on('ready', async () => {
             const args: OnReadyArgs = {
                 client: this.client,
-                commands: this.commands,
+                commands: this.chatInputCommands,
+                db: this.db,
             };
 
             await this.onReady(args);
+        });
+    }
+
+    private initOnInteractionCreate() {
+        this.client.on('interactionCreate', async (interaction) => {
+            const args: OnInteractionCreateArgs = {
+                client: this.client,
+                interaction: interaction,
+                commands: this.chatInputCommands,
+                buttons: this.buttonCommands,
+                modals: this.modalCommands,
+                dropdown: this.dropdownCommands,
+                db: this.db,
+                mailer: this.mailer,
+                commandRegistration: this.registerChatInputGuildCommands,
+            };
+
+            try {
+                await this.onInteractionCreate(args);
+            } catch (err) {
+                console.error(err);
+                await replySilent(interaction)((err as Error).toString());
+            }
+        });
+    }
+
+    private initOnGuildMemberAdd() {
+        this.client.on('guildMemberAdd', async (member) => {
+            const args: OnGuildMemberAddArgs = {
+                client: this.client,
+                member: member,
+            };
+            
+            try {
+                await this.onGuildMemberAdd(args);
+            } catch (err) {
+                console.error(err);
+            }
         });
     }
 
@@ -94,10 +171,15 @@ export class Bot {
                 client: this.client,
                 reaction: messageReaction,
                 user: user,
-                commands: this.commands,
+                commands: this.chatInputCommands,
+                db: this.db,
             };
         
-            await this.onReactionAdd(args);
+            try {
+                await this.onReactionAdd(args);
+            } catch (err) {
+                console.error(err);
+            }
         });
     }
 
@@ -107,44 +189,54 @@ export class Bot {
                 client: this.client,
                 reaction: messageReaction,
                 user: user,
-                commands: this.commands,
+                commands: this.chatInputCommands,
+                db: this.db,
             };
     
-            await this.onReactionRemove(args);
+            try {
+                await this.onReactionRemove(args);
+            } catch (err) {
+                console.error(err);
+            }
         });
     }
 
-    private initOnInteractionCreate() {
-        this.client.on('interactionCreate', async (interaction) => {
-            const args: OnInteractionCreateArgs = {
-                client: this.client,
-                interaction: interaction,
-                commands: this.commands,
-                commandRegistration: this.registerSlashCommands,
-            };
-
-            await this.onInteractionCreate(args);
-        });
-    }
-
-    private initCommands(commands: Command[]) {
+    private initChatInputCommands(commands: ChatInputCommand[]) {
         commands.forEach((command) => {
-            this.commands.set(command.getName(), command);
+            this.chatInputCommands.set(command.getName(), command);
         });
     }
 
-    // private initReactionMessages() {}
+    private initButtonCommands(commands: ButtonCommand[]) {
+        commands.forEach((command) => {
+            this.buttonCommands.set(command.getName(), command);
+        });
+    }
+
+    private initModalCommands(commands: ModalCommand[]) {
+        commands.forEach((command) => {
+            this.modalCommands.set(command.getName(), command);
+        });
+    }
+
+    private initDropdownCommands(commands: DropdownCommand[]) {
+        commands.forEach((command) => {
+            this.dropdownCommands.set(command.getName(), command);
+        });
+    }
 
     public async login() {
+        if (this.isLogedIn)
+            return
+
         await this.client.login(this.token);
+        this.isLogedIn = true;
     }
 
-    public async registerSlashCommands(commands: Command[]) {
+    private async registerChatInputCommands(commands: ChatInputCommand[], path: any) {
         const slashCommands = commands.map((command) => {
             return command.getBuilder().toJSON()
         });
-
-        const path = Routes.applicationGuildCommands(this.applicationId, this.guildId);
 
         try {
             await this.rest.put(path, { body: slashCommands });
@@ -152,50 +244,14 @@ export class Bot {
             console.error(err);
         }
     }
+
+    public async registerChatInputGuildCommands(commands: ChatInputCommand[]) {
+        const path = Routes.applicationGuildCommands(this.applicationId, this.guildId);
+        this.registerChatInputCommands(commands, path)
+    }
+
+    public async registerChatInputGlobalCommands(commands: ChatInputCommand[]) {
+        const path = Routes.applicationCommands(this.applicationId)
+        this.registerChatInputCommands(commands, path)
+    }
 }
-
-interface BotConfig {
-    token: string;
-    applicationId: string;
-    guildId: string;
-    // reactionMessages: Map<Message, Map<String, Role>>;
-    commands?: Command[];
-    onReady?: OnReadyAction;
-    onReactionAdd?: onReactionAddAction;
-    onReactionRemove?: onReactionRemoveAction;
-    onInteractionCreate?: OnInteractionCreateAction;
-}
-
-export interface OnReadyArgs {
-    client: Client;
-    commands: Map<string, Command>;
-}
-
-export type OnReadyAction = (args: OnReadyArgs) => Awaitable<void>
-
-export interface OnReactionAddArgs {
-    client: Client;
-    reaction: MessageReaction | PartialMessageReaction; 
-    user: User | PartialUser;
-    commands: Map<string, Command>;
-}
-
-export type onReactionAddAction = (args: OnReactionAddArgs) => Awaitable<void>
-
-export interface OnReactionRemoveArgs {
-    client: Client;
-    reaction: MessageReaction | PartialMessageReaction; 
-    user: User | PartialUser;
-    commands: Map<string, Command>;
-}
-
-export type onReactionRemoveAction = (args: OnReactionRemoveArgs) => Awaitable<void>
-
-export interface OnInteractionCreateArgs {
-    client: Client;
-    interaction: Interaction<CacheType>;
-    commands: Map<string, Command>;
-    commandRegistration: (commands: Command[]) => Promise<void>;
-}
-
-export type OnInteractionCreateAction = (args: OnInteractionCreateArgs) => Awaitable<void>
