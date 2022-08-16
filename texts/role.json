@@ -13,7 +13,7 @@
             "content": [
                 "⠀",
                 "**Výběr oborů**",
-                "Nejprve si vyber obor, který tě zajímá. Tím se ti zobrazí v kategorii letní semestr a zimní semestr všechny místnosti k povinným předmětům (A) pro daný obor za celé studium.",
+                "Nejprve si vyber obor, který tě zajímá. Po výběru oboru se ti zobrazí, v kategorii letní semestr a zimní semestr, všechny místnosti s povinnými předměty (A) pro daný obor za celé studium. Volba je volná, takže si klidně můžeš vybrat všechny obory.",
                 "",
                 "(Role <role>Bc. Informatika</role> přidělí předměty jen z prvního ročníku. Poté je nutné vybrat specializaci.)",
                 "",
@@ -38,7 +38,8 @@
                             "Mgr. Počítačové systémy a technologie",
                             "Mgr. Vývoj software",
                             "Mgr. Umělá inteligence",
-                            "Mgr. Učitelství informatiky pro střední školy"
+                            "Mgr. Učitelství informatiky pro střední školy",
+                            "Phd."
                         ]
                     }
                 ]
@@ -49,7 +50,7 @@
             "content": [
                 "⠀",
                 "**Speciální role**",
-                "Chceš dostávat info o novinkách nebo **pivních srazech**? Po výběru role budeš dostávat upozornění na tag.",
+                "Chceš dostávat info o novinkách nebo pivních srazech? Po výběru role budeš dostávat upozornění na tagy této role.",
                 "",
                 "**Na výběr máme:**"
             ],
@@ -78,7 +79,7 @@
             "content": [
                 "⠀",
                 "**Programovací jazyky**",
-                "Pro všechny zájemce o daný jazyk máme speciální role. Role také @Studentům zpřístupní místnosti s výukou daného jazyka v kategorii programovací jazyky.",
+                "Pro všechny zájemce o daný jazyk máme speciální role. Role také <role>Student</role> zpřístupní místnosti s výukou daného jazyka v kategorii programovací jazyky.",
                 "",
                 "**Na výběr máme:**"
             ],
@@ -112,10 +113,10 @@
             "content": [
                 "⠀",
                 "**Výběr předmětů**",
-                "Aby se ti otevřely i místností pro Povinně volitelné a Volitelné předměty, vyber si z těchto rolí ty předměty, k jejímž místnostem chceš mít přístup. Navolené předměty si také můžeš kdykoliv změnit. Třeba před dalším semestrem.", 
+                "Aby se ti otevřely i místností pro povinně volitelné a volitelné předměty, vyber si z těchto rolí ty předměty, k jejímž místnostem chceš mít přístup. Navolené předměty si také můžeš kdykoliv změnit.", 
                 "",
                 "Některé předměty se stejným obsahem mají napříč studijními obory jiné názvy a zkratky. Vždy jsme z nich vybrali jednu a ostatní pod ní sjednotili. Při vyhledávání jsou jména všech zkratek pospolu.", 
-                "Příklad: <role>pp1</role> (papr1)",
+                "Příklad: pp1 (papr1)",
                 "",
                 "Všechny předměty týkající se bakalářské práce / diplomové práce naleznete v kategorii STUDIUM v příslušných místnostech."
             ],
@@ -123,8 +124,8 @@
                 "dropdowns": [
                     {
                         "id": "dropdownAddRole",
-                        "flag": "predmety",
-                        "placeholder": "Vyber si predmety",
+                        "flag": "predmety_0o",
+                        "placeholder": "Vyber si predmety (0 - N)",
                         "min": 1,
                         "max": -1,
                         "options": [
@@ -141,9 +142,18 @@
                             "infos", 
                             "kombi", 
                             "mr", 
-                            "napvs", 
+                            "napvs"
+                        ]
+                    },
+                    {
+                        "id": "dropdownAddRole",
+                        "flag": "predmety_pz",
+                        "placeholder": "Vyber si predmety (O - Z)",
+                        "min": 1,
+                        "max": -1,
+                        "options": [
                             "os1", 
-                            "os2", 
+                            "os2",
                             "pmv", 
                             "pogr (pg)", 
                             "pois", 
