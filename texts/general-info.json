@@ -59,7 +59,7 @@
                 "",
                 "**Příkazy**",
                 " - Pomocí příkazu **/everyrequest popisek** můžete poslat žádost o <role>@veryone</role>. Prosíme popište podrobně svoji žádost a odešlete. Žádost bude následně zpracována a následně schválena našimi <role>Moderátor</role>.",
-                " - Pomocí příkazu **/citát popisek** můžete poslat žádost o přidání citátu do místnosti citáty <channel>citáty</channel>. Prosíme popište podrobně svoji žádost a odešlete. Žádost bude následně zpracována a následně schválena našimi <role>Moderátor</role>."
+                " - Pomocí příkazu **/citát popisek** můžete poslat žádost o přidání citátu do místnosti citáty <channel>citáty</channel>. Prosíme posílejte citáty ve formátu \"Citát \n \". Citát bude následně zpracován a následně schválen našimi <role>Moderátor</role>."
             ]
         },
         {
