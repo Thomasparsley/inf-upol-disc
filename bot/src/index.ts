@@ -14,11 +14,13 @@ import { Bot } from "./bot";
 import {
     roleCommand,
     everyRequest,
+    addDepartmentRoleChatInputCommand,
     botMessage,
-    verificationFirewallButtonComamand as verificationStudentFirewallButtonComamand,
+    verificationFirewallButtonComamand,
     hostFirewallButtonComamand,
     departmentFirewallButtonComamand,
-    addRoleDropdownCommand
+    addRoleDropdownCommand,
+    verificationModalCommand
 } from "./commands";
 
 import { Mailer } from "./mailer";
@@ -73,14 +75,18 @@ const {
                 roleCommand,
                 everyRequest,
                 botMessage,
+                addDepartmentRoleChatInputCommand,
             ],
             buttonCommands: [
                 hostFirewallButtonComamand,
-                verificationStudentFirewallButtonComamand,
+                verificationFirewallButtonComamand,
                 departmentFirewallButtonComamand,
             ],
             dropdownCommands: [
                 addRoleDropdownCommand,
+            ],
+            modalCommands: [
+                verificationModalCommand,
             ]
         });
 

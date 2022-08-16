@@ -34,6 +34,8 @@ export const CD_Cmdreg = {
     ]
 };
 
+
+
 export const CD_EveryRequest = {
     name: "everyreq",
     description: "Žádost o @everyone. Prosíme popište podrobně svoji žádost. Zneužití se trestá.",
@@ -133,7 +135,12 @@ export const CD_Botmsg = {
                 },
             },
         },
-    },
+    }
+    // ,
+    // maxMessageLength: 2000,
+    // channelTagName: "channel",
+    // roleTagName: "role",
+    // mentionTagName: "mention",
 };
 
 export const CD_Register = {
@@ -155,7 +162,9 @@ export const CD_Role = {
             name: "role",
             description: "Napiš jméno role."
         },
-    ]
+    ],
+    everyoneRoleColors: ["#9b59b6", "#1abc9c"], // oznámení (zelená)
+    studentOnlyRoleColors: ["#9b59b6", "#33aadd", "#95a5a6"] // programovací jazyky (fialová), obory (modrá), předměty (šedá)
 };
 
 export const CD_Validation = {
@@ -167,4 +176,16 @@ export const CD_Validation = {
             description: "Zadejte validační klíč. Pokud nemáš klíč tak použí příkaz register."
         },
     ]
+};
+
+export const CD_Katedra = {
+	name: "katedra",
+	description: "Přidělí roli pro katedru.",
+	options: [
+		{
+			name: "user",
+			description: "Napiš jméno uživatele."
+		},
+	],
+
 };

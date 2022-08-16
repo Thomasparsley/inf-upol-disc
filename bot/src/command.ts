@@ -49,15 +49,7 @@ export class ChatInputCommand extends Command<ChatInputCommandInteraction<CacheT
     }
 }
 
-export class ButtonCommand extends Command<ButtonInteraction<CacheType>> {
-    constructor(
-        name: string,
-        description: string,
-        execute: CommandAction<ButtonInteraction<CacheType>>,
-    ) {
-        super(name, description, execute);
-    }
-}
+export class ButtonCommand extends Command<ButtonInteraction<CacheType>> { }
 
 export class ModalCommand extends Command<ModalSubmitInteraction<CacheType>> { }
 

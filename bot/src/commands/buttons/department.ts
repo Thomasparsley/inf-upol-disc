@@ -4,7 +4,7 @@ import { Roles } from "../../enums";
 export const departmentFirewallButtonComamand = new ButtonCommand(
     "bntDepartment",
     "cd.description",
-    async ({ replySilent, hasRole, client }) => {
+    async ({ replySilent, hasRole, getGuild }) => {
 
         if (hasRole(Roles["Student"])) {
             await replySilent("Student nemůže být součástí Katedry.");
@@ -19,18 +19,14 @@ export const departmentFirewallButtonComamand = new ButtonCommand(
             return;
         }
 
-        const guild = await client.guilds.fetch("960452395312234536");
-        const katedraRole = await guild.roles.fetch(Roles["Katedra"]);
-        const rootRole = await guild.roles.fetch(Roles["Root"]);
+        await getGuild().members.fetch({ withPresences: true })
+        const users = (await getGuild().roles.fetch())
+            .filter((role) => [Roles["Katedra"], Roles["Root"]].includes(role.id))
+            .map((role) => role.members.map(member => member))
+            .reduce((acc, members) => acc.concat(members), [])
+            .sort((member) => member.roles.highest.id === Roles["Katedra"] ? -1 : 1)
+            .map((member) => member.user);
 
-        if (!katedraRole || !rootRole) {
-            return; // TODO:
-        }
-
-        const katedraUsers = katedraRole.members.map(member => member.user.tag);
-        const rootUsers = rootRole.members.map(member => member.user.tag);
-        const users = [...katedraUsers, ...rootUsers];
-
-        await replySilent(`Děkujeme že máte zájem se stát součástí @Katedry, prosím kontaktuje někoho z ${users}.`);
+        await replySilent(`Pro přidělení této role kontaktujte jednoho z těchto uživatelů ${users}.`);
     },
 );

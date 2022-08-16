@@ -5,11 +5,10 @@ import { VOC_RoleAdded, VOC_RoleRemoved } from "../vocabulary";
 import { BadInputForChatCommandError, UnauthorizedError } from "../errors";
 import { ChatInputCommand } from "../command";
 import { CD_Role as cd} from "../cd";
+import { Roles } from "../enums"
 
-const StudentID = "960478701684936734";
-const RequiredRoleOptionName = "role";
-const everyoneRoleColors = ["#9b59b6", "#1abc9c"] // oznámení (zelená)
-const studentOnlyRoleColors = ["#9b59b6", "#33aadd", "#95a5a6"] // programovací jazyky (fialová), obory (modrá), předměty (šedá)
+const everyoneRoleColors = cd.everyoneRoleColors;
+const studentOnlyRoleColors = cd.studentOnlyRoleColors;
 
 export const roleCommand = new ChatInputCommand(
     cd.name,
@@ -22,24 +21,22 @@ export const roleCommand = new ChatInputCommand(
                 .setRequired(true);
         }),
     async ({ interaction, replySilent, hasRole, permissionRolesCount }) => {
-        if (!interaction.isChatInputCommand())
-            throw new BadInputForChatCommandError();
 
-        const role = (interaction.options.getRole(RequiredRoleOptionName) as Role);
+        const role = (interaction.options.getRole(cd.options[0].name) as Role);
         if (!role) 
             throw "role#1".toError();
 
         const hasPermission = permissionRolesCount((size: Number) => size > 0);
         if (!hasPermission) 
             throw new UnauthorizedError();
-
-        const isStudent = hasRole(StudentID);
+            
+        const isStudent = hasRole(Roles["Katedra"]); 
         const isStudentColor = isStudent && studentOnlyRoleColors.includes(role.hexColor);
         const isEveryoneColor = everyoneRoleColors.includes(role.hexColor);
 
         if (!isStudentColor && !isEveryoneColor) 
             throw "Tuto roli si zvolit nemůžeš.".toError();
-
+        
         const roles = (interaction.member?.roles as GuildMemberRoleManager);
         if (!roles) 
             throw "role#2".toError();
