@@ -4,6 +4,6 @@ import { Command } from "../command";
 
 export interface OnReadyArgs {
     client: Client;
-    commands: Map<string, Command>;
+    commands: Map<string, Command<any>>;
     db: DataSource;
 }
