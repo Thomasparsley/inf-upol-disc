@@ -22,7 +22,7 @@ services:
       
   discord-bot-service:
     container_name: discord-bot
-    image: inf_upol_discord-bot
+    image: ghcr.io/thomasparsley/inf-upol-disc/inf_upol_discord-bot:release
     environment:
       TOKEN: ""
       APPLICATION_ID: ""
@@ -45,7 +45,7 @@ services:
 
   menza-service:
     container_name: menza
-    image: inf_upol_menza
+    image: ghcr.io/thomasparsley/inf-upol-disc/inf_upol_menza:release
     expose:
       - "8000"
     deploy:
