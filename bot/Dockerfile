@@ -19,9 +19,9 @@ RUN apk update
 RUN mkdir /app
 WORKDIR /app
 
-COPY --from=build ./dist /app
-COPY ./package.json /app
-COPY ./package-lock.json /app
+COPY --from=build /app/dist /app
+COPY --from=build /app/package.json /app
+COPY --from=build /app/package-lock.json /app
 
 RUN npm install --production
 
