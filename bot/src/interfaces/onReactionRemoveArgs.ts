@@ -6,6 +6,6 @@ export interface OnReactionRemoveArgs {
     client: Client;
     reaction: MessageReaction | PartialMessageReaction;
     user: User | PartialUser;
-    commands: Map<string, Command>;
+    commands: Map<string, Command<any>>;
     db: DataSource;
 }

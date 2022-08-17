@@ -1,3 +1,3 @@
-import { OnInteractionCreateArgs } from "../interfaces/onInteractionCreateArgs";
+import { OnInteractionCreateArgs } from "../interfaces";
 
 export type OnInteractionCreateAction = (args: OnInteractionCreateArgs) => Promise<void>
