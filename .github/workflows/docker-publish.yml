@@ -26,8 +26,10 @@ jobs:
         include:
           - dockerfile: ./bot/Dockerfile
             image_name: inf_upol_discord-bot
+            context: ./bot
           - dockerfile: ./menza/Dockerfile
             image_name: inf_upol_menza
+            context: ./menza
     permissions:
       contents: read
       packages: write
@@ -76,7 +78,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
-          context: .
+          context: ${{ matrix.context }}
           file: ${{ matrix.dockerfile }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
