@@ -13,12 +13,15 @@ from svickova.engine import download_menu # type: ignore
 from svickova.enums import Canteen # type: ignore
 from svickova.meal import Meal # type: ignore
 
-SATURDAY = 5
-N_OF_DAYS_IN_WEEK = 7
-
 app = FastAPI()
 
-chromer_driver_path = os.getcwd() + "/chromedriver_win32.exe"
+import platform
+
+if platform.system() == "Windows":
+    chromer_driver_path = os.getcwd() + "/chromedriver_win32.exe"
+else:
+    chromer_driver_path = os.getcwd() + "/chromedriver"
+
 os.chmod(chromer_driver_path, 0o777)
 
 options = Options()
