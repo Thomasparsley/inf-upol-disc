@@ -20,7 +20,7 @@ export function addRoleToTarget(interaction: Interaction<CacheType>) {
         const hasRole = hasRoleMaker(interaction);
         const replySilent = replySilentMaker(interaction);
 
-        const hasOneOfAllowedRoles = allowedRoles.every((roleName) => hasRole(roleName))
+        const hasOneOfAllowedRoles = allowedRoles.some((roleName) => hasRole(roleName))
         if (!hasOneOfAllowedRoles)
             throw new UnauthorizedError();
 
