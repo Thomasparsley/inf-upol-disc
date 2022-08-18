@@ -5,7 +5,7 @@ import { VOC_RoleAdded, VOC_RoleRemoved } from "../vocabulary";
 import { UnauthorizedError } from "../errors";
 import { ChatInputCommand } from "../command";
 import { CD_Role as cd} from "../cd";
-import { Roles, RoleColors } from "../enums"
+import { RoleIds, RoleColors } from "../enums"
 
 
 export const roleCommand = new ChatInputCommand(
@@ -28,7 +28,7 @@ export const roleCommand = new ChatInputCommand(
         if (!hasPermission) 
             throw new UnauthorizedError();
             
-        const isStudent = hasRole(Roles["Katedra"]); 
+        const isStudent = hasRole("Katedra"); 
         const isStudentColor = isStudent && [RoleColors["Student"], ].includes(role.hexColor);
         const isEveryoneColor = RoleColors["Everyone"].includes(role.hexColor);
 

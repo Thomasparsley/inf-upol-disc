@@ -1,4 +1,4 @@
-import { GuildMemberRoleManager, Role } from "discord.js";
+import { GuildMemberRoleManager } from "discord.js";
 import { DropdownCommand } from "../../command";
 
 

@@ -1,7 +1,7 @@
 import { CacheType, GuildMemberRoleManager, Interaction } from "discord.js";
 
 import { CommandArgs, OnInteractionCreateArgs } from "../interfaces";
-import { fetchChannelFromGuild, getGuild, reply, replySilent } from "../utils";
+import { fetchChannelFromGuild, getGuild, reply, replySilent, hasRole, addRoleToTarget } from "../utils";
 import { UnknownCommandError } from "../errors";
 import { Command } from "../command";
 
@@ -40,14 +40,8 @@ function makeCommandArgs(args: OnInteractionCreateArgs) {
 
             return predicate(roles.cache.size);
         },
-        hasRole: (roleID: string): boolean => {
-            const roles = (interaction.member?.roles as GuildMemberRoleManager)
-            if (!roles) {
-                return false;
-            }
-
-            return roles.cache.has(roleID);
-        },
+        addRoleToTarget: addRoleToTarget(interaction),
+        hasRole: hasRole(interaction),
     }
 
     return commandArgs;

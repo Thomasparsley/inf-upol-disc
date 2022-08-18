@@ -1,6 +1,5 @@
 import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 import { ButtonCommand } from "../../command";
-import { Roles } from "../../enums";
 
 
 const modalRow = new ActionRowBuilder()
@@ -19,7 +18,7 @@ export const verificationFirewallButtonComamand = new ButtonCommand(
     "btnStuden",
     "Vrátí formulář pro verifikaci studenta",
     async ({ interaction, hasRole, replySilent }) => {
-        if (hasRole(Roles["Student"])) {
+        if (hasRole("Student")) {
             await replySilent("Již jste oveřený.");
             return;
         }

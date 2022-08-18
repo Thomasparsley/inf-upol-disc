@@ -4,3 +4,4 @@ export * from "./onInteractionCreateAction";
 export * from "./onReactionAddAction";
 export * from "./onReactionRemoveAction";
 export * from "./onReadyAction";
+export * from "./rolesName";

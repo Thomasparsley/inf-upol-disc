@@ -14,7 +14,7 @@ import {
 } from "../errors";
 import { CommandArgs, TextFile, TextFileMessage } from "../interfaces";
 import { ButtonBuilder, CacheType, ChatInputCommandInteraction, Client, Interaction, TextBasedChannel } from "discord.js";
-import { Roles } from "../enums";
+import { RoleIds } from "../enums";
 
 const slashCommandBuilder = new SlashCommandBuilder()
     .addSubcommand(subcommand => {
@@ -81,8 +81,8 @@ export const botMessage = new ChatInputCommand(
     async (args) => {
         const { interaction, replySilent, hasRole: permissionRole } = args;
 
-        const isRoot = permissionRole(Roles["Root"]);
-        const isMod = permissionRole(Roles["Moderátor"]);
+        const isRoot = permissionRole("Root");
+        const isMod = permissionRole("Moderátor");
 
         if (!isRoot && !isMod)
             throw new UnauthorizedError();

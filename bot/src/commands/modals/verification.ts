@@ -1,6 +1,6 @@
 import { VOC_VerificationCodeSended } from "../../vocabulary";
-import { Validation } from "../../models";
 import { ModalCommand } from "../../command";
+import { Validation } from "../../models";
 
 import {
     isValidateEmail,
@@ -31,23 +31,25 @@ export const verificationModalCommand = new ModalCommand(
         const verificationCode = Math.floor(Math.random() * 900000) + 100000;
 
         console.log(`Nové vygenerované heslo je: ${verificationCode}`);
-        await replySilent("Fridrich nám nedal přístup do SMTP, takže email Ti nepošleme. :)")
-        return;
 
-        const validation = new Validation();
+        /* const validation = new Validation();
         validation.user = interaction.user.id;
         validation.key = verificationCode.toString();
         validation.createdAt = new Date();
         validation.expiresAt = new Date();
         validation.expiresAt.setHours(validation.expiresAt.getHours() + 1);
 
-        await validation.save();
-        await mailer.send({
-            subject: "Validační kód pro discord server katedry informatiky - UPOL",
-            to: email,
-            text: makeRegisterText(),
-            html: makeRegisterHTML(verificationCode.toString()),
-        });
+        await validation.save(); */
         await replySilent(VOC_VerificationCodeSended(email));
+        try {
+            await mailer.send({
+                subject: "Validační kód pro discord server katedry informatiky - UPOL",
+                to: email,
+                text: makeRegisterText(),
+                html: makeRegisterHTML(verificationCode.toString()),
+            });
+        } catch (error) {
+            console.log(error);
+        }
     },
 );

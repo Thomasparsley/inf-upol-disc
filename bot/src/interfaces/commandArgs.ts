@@ -2,11 +2,18 @@ import {
     Client,
     Guild,
     InteractionResponse,
-    NonThreadGuildBasedChannel
+    NonThreadGuildBasedChannel,
+    User
 } from "discord.js";
 import { DataSource } from "typeorm";
-import { ButtonCommand, ChatInputCommand, Command, DropdownCommand, ModalCommand } from "../command";
+import { 
+    ButtonCommand,
+    ChatInputCommand,
+    DropdownCommand,
+    ModalCommand,
+} from "../command";
 import { Mailer } from "../mailer";
+import { RoleName } from "../types";
 
 export interface CommandArgs<T> {
     client: Client;
@@ -23,6 +30,7 @@ export interface CommandArgs<T> {
     reply: (content: string) => Promise<void | InteractionResponse<boolean>>;
     replySilent: (content: string) => Promise<void | InteractionResponse<boolean>>;
     permissionRolesCount: (predicate: Function) => boolean;
-    hasRole: (roleID: string) => boolean;
+    addRoleToTarget: (fieldNameOfTarget: string, nameOfRoleToAdd: RoleName, allowedRoles: RoleName[]) => Promise<void>;
+    hasRole: (roleName: RoleName) => boolean;
     flag?: string;
 }
