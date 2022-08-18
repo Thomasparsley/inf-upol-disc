@@ -1,4 +1,4 @@
-require('dotenv');
+require('dotenv').config({ path: "../.env" });
 
 import "./string.ext";
 
@@ -31,6 +31,8 @@ const {
     TOKEN,
     APPLICATION_ID,
     GUILD_ID,
+    MAILER_HOST,
+    MAILER_PORT,
     MAILER_PASS,
     MENZA_API,
 } = process.env;
@@ -45,6 +47,12 @@ const {
     if (!TOKEN)
         throw "TOKEN was not provided".toError();
 
+    if (!MAILER_HOST)
+        throw "Host for mailer was not provided".toError();
+
+    if (!MAILER_PORT)
+        throw "Port for mailer was not provided".toError();
+
     if (!MAILER_PASS)
         throw "Password for mailer was not provided".toError();
 
@@ -55,10 +63,10 @@ const {
 (async () => {
     await DatabaseSource.initialize();
     const mailer = new Mailer(
-        "mail.inf.upol.cz",
-        465,
+        MAILER_HOST,
+        parseInt(MAILER_PORT),
         `"Discord Katedry Informatiky" <discord@inf.upol.cz>`,
-        true,
+        false,
         "discord@inf.upol.cz",
         MAILER_PASS,
     );
