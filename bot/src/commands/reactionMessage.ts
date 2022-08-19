@@ -45,9 +45,6 @@ export const reactionMessage = new ChatInputCommand(
                 })
         }),
     async ({ interaction, replySilent }) => {
-        if (!interaction.isChatInputCommand())
-            throw new BadInputForChatCommandError();
-
         if (interaction.options.getSubcommand() === subAdd.name) {
             const guild = interaction.guild
             const channel = interaction.channel;

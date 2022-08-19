@@ -1,4 +1,4 @@
-import { Role, User, CacheType, Interaction, ChatInputCommandInteraction } from "discord.js";
+import { CacheType, Interaction, ChatInputCommandInteraction } from "discord.js";
 
 import { hasRole as hasRoleMaker } from "./hasRole";
 import { replySilent as replySilentMaker } from "./replySilent";
@@ -13,12 +13,11 @@ export function addRoleToTarget(interaction: Interaction<CacheType>) {
     return async function (fieldNameOfTarget: string, nameOfRoleToAdd: RoleName, allowedRoles: RoleName[]) {
         interaction = interaction as ChatInputCommandInteraction<CacheType>;
 
-        const target = (interaction.options.getUser(fieldNameOfTarget) as User);
+        const target = interaction.options.getUser(fieldNameOfTarget);
         if (!target)
             throw "addRole#1".toError();
 
         const hasRole = hasRoleMaker(interaction);
-        const replySilent = replySilentMaker(interaction);
 
         const hasOneOfAllowedRoles = allowedRoles.some((roleName) => hasRole(roleName))
         if (!hasOneOfAllowedRoles)
@@ -28,15 +27,18 @@ export function addRoleToTarget(interaction: Interaction<CacheType>) {
         if (!targetAsMember)
             throw "addRole#2".toError();
 
-        const roleToAdd = interaction.guild?.roles.cache.get(RoleIds[nameOfRoleToAdd]) as Role;
+        const roleToAdd = interaction.guild?.roles.cache.get(RoleIds[nameOfRoleToAdd]);
         if (!roleToAdd)
             throw "addRole#3".toError();
 
-        if (!targetAsMember.roles.cache.has(roleToAdd.id)) {
-            await targetAsMember.roles.add(roleToAdd);
-            await replySilent(VOC_RoleAdded(roleToAdd));
-        } else {
-            await replySilent("Tento uživatel roli katedra již má.");
+        const replySilent = replySilentMaker(interaction);
+
+        if (hasRole(roleToAdd.name as RoleName, targetAsMember)) {
+            await replySilent(`Uživatel ${targetAsMember} roli ${roleToAdd} již má.`);
+            return;
         }
+
+        await targetAsMember.roles.add(roleToAdd);
+        await replySilent(VOC_RoleAdded(roleToAdd));
     }
 }

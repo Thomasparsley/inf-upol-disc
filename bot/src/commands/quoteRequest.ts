@@ -27,7 +27,7 @@ export const everyRequestChatCommnad = new ChatInputCommand(
             throw new BadInputForChatCommandError();
 
         const sender = interaction.member;
-        const senderRoom = interaction.channel;
+        // const senderRoom = interaction.channel;
         const requestText = interaction.options.getString(cd.options[0].name);
 
         if (!requestText)

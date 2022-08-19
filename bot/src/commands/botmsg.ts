@@ -79,12 +79,9 @@ export const botMessage = new ChatInputCommand(
     cd.description,
     slashCommandBuilder,
     async (args) => {
-        const { interaction, replySilent, hasRole: permissionRole } = args;
+        const { interaction, replySilent, hasRole } = args;
 
-        const isRoot = permissionRole("Root");
-        const isMod = permissionRole("Moderátor");
-
-        if (!isRoot && !isMod)
+        if (!hasRole("Root") && !hasRole("Moderátor"))
             throw new UnauthorizedError();
 
         const subCommand = interaction.options.getSubcommand();
@@ -134,7 +131,8 @@ async function subCommandEdit(args: CommandArgs<ChatInputCommandInteraction<Cach
 
     const channel = interaction.channel;
     const messageID = interaction.options
-        .getString(cd.sub.edit.options.messageid.name)?.trim();
+        .getString(cd.sub.edit.options.messageid.name)
+        ?.trim();
     const text = interaction.options
         .getString(cd.sub.edit.options.text.name);
 
@@ -194,7 +192,7 @@ async function subCommandFetch(args: CommandArgs<ChatInputCommandInteraction<Cac
 }
 
 async function subCommandLoad(args: CommandArgs<ChatInputCommandInteraction<CacheType>>): Promise<void> {
-    const { client, interaction, fetchChannelFromGuild, replySilent } = args;
+    const { client, interaction, fetchChannelFromGuild } = args;
 
     if (!interaction.isChatInputCommand())
         throw new BadInputForChatCommandError();

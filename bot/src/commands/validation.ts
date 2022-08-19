@@ -19,9 +19,6 @@ export const validationCommand = new ChatInputCommand(
                 .setRequired(true);
         }),
     async ({ interaction, replySilent, permissionRolesCount }) => {
-        if (!interaction.isChatInputCommand())
-            throw new BadInputForChatCommandError();
-
         const hasPermission = permissionRolesCount((size: Number) => size === 1);
         if (!hasPermission) 
             throw new UnauthorizedError();

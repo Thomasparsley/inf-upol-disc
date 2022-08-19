@@ -6,6 +6,7 @@ import { UnauthorizedError } from "../errors";
 import { ChatInputCommand } from "../command";
 import { CD_Role as cd} from "../cd";
 import { RoleIds, RoleColors } from "../enums"
+import { RoleName } from "../types";
 
 
 export const roleCommand = new ChatInputCommand(
@@ -19,7 +20,6 @@ export const roleCommand = new ChatInputCommand(
                 .setRequired(true);
         }),
     async ({ interaction, replySilent, hasRole, permissionRolesCount }) => {
-
         const role = (interaction.options.getRole(cd.options[0].name) as Role);
         if (!role) 
             throw "role#1".toError();
@@ -39,7 +39,7 @@ export const roleCommand = new ChatInputCommand(
         if (!roles) 
             throw "role#2".toError();
 
-        if (!roles.cache.has(role.id)) {
+        if (!hasRole(role.name as RoleName)) {
             await roles.add(role.id);
             await replySilent(VOC_RoleAdded(role));
         } else {
