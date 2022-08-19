@@ -1,25 +1,19 @@
-import { CommandAction } from "./types";
 import {
-    SlashCommandBuilder,
-    SlashCommandSubcommandsOnlyBuilder,
     CacheType,
     ButtonInteraction,
     ChatInputCommandInteraction,
     ModalSubmitInteraction,
-    SelectMenuInteraction
+    SelectMenuInteraction,
+    SlashCommandBuilder,
+    SlashCommandSubcommandsOnlyBuilder,
 } from "discord.js";
 
+import { UnrepliableInteractionError } from "./errors";
 
-type BuilderType = SlashCommandBuilder
-    | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">
-    | SlashCommandSubcommandsOnlyBuilder
 
-export class Command<T> {
-    constructor(
-        protected name: string,
-        protected description: string,
-        public readonly execute: CommandAction<T>,
-    ) {}
+class Command {
+    protected name: string = "";
+    protected description: string = "";
 
     public getName(): string {
         return this.name;
@@ -28,29 +22,62 @@ export class Command<T> {
     public getDescription(): string {
         return this.description;
     }
+
+    public execute(): void {}
 }
 
-export class ChatInputCommand extends Command<ChatInputCommandInteraction<CacheType>> {
+class InteractionCommand<T> extends Command {
     constructor(
-        name: string,
-        description: string,
-        private builder: BuilderType,
-        execute: CommandAction<ChatInputCommandInteraction<CacheType>>,
+        protected interaction: T,
     ) {
-        super(name, description, execute)
+        super();
+    }
+}
 
-        this.builder = builder;
-        this.builder.setName(this.name);
-        this.builder.setDescription(this.description);
+
+type BuilderType = SlashCommandBuilder
+    | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">
+    | SlashCommandSubcommandsOnlyBuilder
+
+export class ChatInputCommand extends InteractionCommand<ChatInputCommandInteraction<CacheType>> {
+    protected builder: BuilderType | undefined = undefined;
+
+    constructor(
+        interaction: ChatInputCommandInteraction<CacheType>,
+    ) {
+        super(interaction);
+
+        if (this.builder) {
+            this.builder.setName(this.name);
+            this.builder.setDescription(this.description);
+        }
     }
 
     public getBuilder(): BuilderType {
         return this.builder;
     }
+
+    protected async sendReply(content: string, silent: boolean) {
+        if (this.interaction.isRepliable())
+            return await this.interaction.reply({
+                content,
+                ephemeral: false,
+            });
+
+        throw new UnrepliableInteractionError();
+    }
+
+    async reply(content: string) {
+        return await this.sendReply(content, false);
+    }
+
+    async replySilent(content: string) {
+        return await this.sendReply(content, true);
+    }
 }
 
-export class ButtonCommand extends Command<ButtonInteraction<CacheType>> { }
+/* export class ButtonCommand extends Command<ButtonInteraction<CacheType>> { }
 
 export class ModalCommand extends Command<ModalSubmitInteraction<CacheType>> { }
 
-export class DropdownCommand extends Command<SelectMenuInteraction<CacheType>> { }
+export class DropdownCommand extends Command<SelectMenuInteraction<CacheType>> { } */
