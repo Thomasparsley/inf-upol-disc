@@ -8,36 +8,37 @@ import { ChatInputCommand } from "../command";
 
 const RequestChannelID = "961981948740386826";
 
-export const quoteRequestChatCommnad = new ChatInputCommand(
-    cd.name,
-    cd.description,
-    new SlashCommandBuilder()
+export class EveryoneRequestCommand extends ChatInputCommand {
+    name = cd.name;
+    description = cd.description;
+    builder = new SlashCommandBuilder()
         .addStringOption(option => {
             return option
                 .setName(cd.options[0].name)
                 .setDescription(cd.options[0].description)
                 .setRequired(true);
-        }),
-    async ({ interaction, client, replySilent, permissionRolesCount }) => {
-        const hasPermission = permissionRolesCount((size: Number) => size > 0);
+        });
+
+    async executable(): Promise<void> {
+        const hasPermission = this.permissionRolesCount((size: Number) => size > 0);
         if (!hasPermission)
             throw new UnauthorizedError();
 
-        if (!interaction.isChatInputCommand())
+        if (!this.interaction.isChatInputCommand())
             throw new BadInputForChatCommandError();
 
-        const sender = interaction.member;
-        const senderRoom = interaction.channel;
-        const requestText = interaction.options.getString(cd.options[0].name);
+        const sender = this.interaction.member;
+        const senderRoom = this.interaction.channel;
+        const requestText = this.interaction.options.getString(cd.options[0].name);
 
         if (!requestText)
             throw "Popisek žádosti nemůže být prázdný.".toError();
 
-        const channel = (client.channels.cache.get(RequestChannelID) as TextChannel);
+        const channel = (this.client.channels.cache.get(RequestChannelID) as TextChannel);
         if (!channel)
             throw "everyoneRequest#1".toError();
 
         await channel.send(VOC_EveryRequest(sender, senderRoom, requestText));
-        await replySilent(VOC_RequestSended);
-    },
-);
+        await this.replySilent(VOC_RequestSended);
+    }
+}

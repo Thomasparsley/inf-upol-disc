@@ -1,9 +1,6 @@
-export * from "./addRoleToTarget";
 export * from "./fetchChannelFromGuild";
 export * from "./getBinds";
 export * from "./getButtonStyle";
-export * from "./getGuild";
-export * from "./hasRole";
 export * from "./isHttp";
 export * from "./isHttpUrlWithFileExt";
 export * from "./isUpolEmail";
@@ -12,5 +9,3 @@ export * from "./makeRegisterHTML";
 export * from "./makeRegisterText";
 export * from "./parseByTag";
 export * from "./replaceTags";
-export * from "./reply";
-export * from "./replySilent";

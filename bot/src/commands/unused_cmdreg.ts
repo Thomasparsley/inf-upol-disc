@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
+/* import { SlashCommandBuilder } from "@discordjs/builders";
 
 import { UnknownCommandError } from "../errors";
 import { ChatInputCommand } from "../command";
@@ -13,14 +13,14 @@ export class RegistrationCommand extends ChatInputCommand {
                 .setName(cd.options[0].name)
                 .setDescription(cd.options[0].description)
                 .setRequired(true);
-        })
+        });
 
-    public execute(): void {
-        const cmd = this.commands.get(cd.options[0].name);
+    async executable() {
+        const cmd = chatInputCommands.get(cd.options[0].name);
 
         if (!cmd)
             throw new UnknownCommandError();
 
         await this.commandRegistration([cmd]);
     }
-}
+} */

@@ -29,7 +29,6 @@ import {
     onReactionAddAction,
     onReactionRemoveAction,
 } from "./types";
-import { replySilent } from "./utils";
 
 const REST_VERSION = "10";
 
@@ -141,12 +140,7 @@ export class Bot {
                 commandRegistration: this.registerChatInputGuildCommands,
             };
 
-            try {
-                await this.onInteractionCreate(args);
-            } catch (err) {
-                console.error(err);
-                await replySilent(interaction)((err as Error).toString());
-            }
+            await this.onInteractionCreate(args);
         });
     }
 
@@ -203,31 +197,31 @@ export class Bot {
 
     private initChatInputCommands(commands: ChatInputCommand[]) {
         commands.forEach((command) => {
-            this.chatInputCommands.set(command.getName(), command);
+            this.chatInputCommands.set(command.name, command);
         });
     }
 
     private initButtonCommands(commands: ButtonCommand[]) {
         commands.forEach((command) => {
-            this.buttonCommands.set(command.getName(), command);
+            this.buttonCommands.set(command.name, command);
         });
     }
 
     private initModalCommands(commands: ModalCommand[]) {
         commands.forEach((command) => {
-            this.modalCommands.set(command.getName(), command);
+            this.modalCommands.set(command.name, command);
         });
     }
 
     private initDropdownCommands(commands: DropdownCommand[]) {
         commands.forEach((command) => {
-            this.dropdownCommands.set(command.getName(), command);
+            this.dropdownCommands.set(command.name, command);
         });
     }
 
     public async login() {
         if (this.isLogedIn)
-            return
+            return;
 
         await this.client.login(this.token);
         this.isLogedIn = true;
@@ -235,7 +229,7 @@ export class Bot {
 
     private async registerChatInputCommands(commands: ChatInputCommand[], path: any) {
         const slashCommands = commands.map((command) => {
-            return command.getBuilder().toJSON()
+            return command.builder.toJSON()
         });
 
         try {

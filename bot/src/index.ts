@@ -12,16 +12,12 @@ import { DatabaseSource } from "./databaseSource";
 import { Bot } from "./bot";
 
 import {
-    addDepartmentRoleChatInputCommand,
-    botMessage,
-    verificationFirewallButtonComamand,
-    hostFirewallButtonComamand,
-    departmentFirewallButtonComamand,
-    addRoleDropdownCommand,
-    verificationModalCommand,
-    addPhdRoleChatInputCommand,
-    everyRequestChatCommnad,
-    quoteRequestChatCommnad
+    HostFirewallButtonComamand,
+    DepartmentFirewallButtonComamand,
+    VerificationFirewallButtonComamand,
+    PhdRoleManagerCommand,
+    DepartmentRoleManagerCommand,
+    AddRoleDropdownCommand
 } from "./commands";
 
 import { Mailer } from "./mailer";
@@ -84,19 +80,18 @@ const {
             onReactionRemove: onReactionRemove,
             onInteractionCreate: onInteractionCreate,
             chatInputCommands: [
-                everyRequestChatCommnad,
+                new PhdRoleManagerCommand(),
+                new DepartmentRoleManagerCommand(),
                 quoteRequestChatCommnad,
                 botMessage,
-                addDepartmentRoleChatInputCommand,
-                addPhdRoleChatInputCommand,
             ],
             buttonCommands: [
-                hostFirewallButtonComamand,
-                verificationFirewallButtonComamand,
-                departmentFirewallButtonComamand,
+                new HostFirewallButtonComamand(),
+                new DepartmentFirewallButtonComamand(),
+                new VerificationFirewallButtonComamand(),
             ],
             dropdownCommands: [
-                addRoleDropdownCommand,
+                new AddRoleDropdownCommand(),
             ],
             modalCommands: [
                 verificationModalCommand,

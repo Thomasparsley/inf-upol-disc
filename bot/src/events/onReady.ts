@@ -33,7 +33,6 @@ const event: OnReadyAction = async ({ client }) => {
             const menzaChannelID = "1008760191594016829";
             const guild = client.guilds.cache.get("960452395312234536");
             const menzaChannel = await guild?.channels.fetch(menzaChannelID);
-
             if (menzaChannel)
                 if (menzaChannel.isTextBased())
                     await menzaChannel.send(message);

@@ -1,32 +1,37 @@
-import { GuildMemberRoleManager } from "discord.js";
+import { Role } from "discord.js";
 import { DropdownCommand } from "../../command";
 
 
-export const addRoleDropdownCommand = new DropdownCommand(
-    "dropdownAddRole",
-    "Přidá nebo odebere role",
-    async ({ client, interaction, replySilent, flag }) => {
-        const guild = await client.guilds.fetch("960452395312234536");
-        
-        const roles = interaction.values;
+export class AddRoleDropdownCommand extends DropdownCommand {
+    name = "dropdownAddRole";
+
+    async executable(): Promise<void> {
+        const addedRoles: Role[] = [];
+        const removedRoles: Role[] = [];
+
+        const roles = this.interaction.values;
         for (const roleNameRaw of roles) {
             let roleName: string;
-            if (flag && ["predmety_0n", "predmety_pz"].includes(flag))
+            if (this.flag && ["predmety_0n", "predmety_pz"].includes(this.flag))
                 roleName = roleNameRaw.split(" ")[0];
             else
                 roleName = roleNameRaw;
 
-            const role = guild.roles.cache.find(r => r.name === roleName);
+            const role = this.guild().roles.cache.find(r => r.name === roleName);
             if (!role)
                 throw `${roleName} role neexistuje `.toError();
 
-            const roles = (interaction.member?.roles as GuildMemberRoleManager);
-            if (!roles.cache.has(role.id))
-                await roles.add(role.id);
-            else
-                await roles.remove(role.id);
+            const roleID = role.id;
+            if (!this.hasRoleByID(roleID)) {
+                await this.addRoleByID(roleID);
+                addedRoles.push(role);
+            } else {
+                await this.removeRoleByID(roleID);
+                removedRoles.push(role);
+            }
         }
 
-        await replySilent("Vybrané role Vám byly přidělěny.");
+        await this.replySilent(`Role ${addedRoles} Vám byli přideleny`);
+        await this.replySilent(`Role ${removedRoles} Vám byli odebrány`);
     }
-);
+}

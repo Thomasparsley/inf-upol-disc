@@ -1,32 +1,30 @@
 import { ButtonCommand } from "../../command";
-import { RoleIds } from "../../enums";
 
-export const departmentFirewallButtonComamand = new ButtonCommand(
-    "bntDepartment",
-    "cd.description",
-    async ({ replySilent, hasRole, getGuild }) => {
+export class DepartmentFirewallButtonComamand extends ButtonCommand {
+    name = "bntDepartment";
 
-        if (hasRole("Student")) {
-            await replySilent("Student nemůže být součástí Katedry.");
+    async executable(): Promise<void> {
+        if (this.hasRole("Student")) {
+            await this.replySilent("Student nemůže být součástí Katedry.");
             return;
 
-        } else if (hasRole("Návštěva")) {
-            await replySilent("Host nemůže být součástí Katedry.");
+        } else if (this.hasRole("Návštěva")) {
+            await this.replySilent("Host nemůže být součástí Katedry.");
             return;
 
-        }  else if (hasRole("Katedra")) {
-            await replySilent("Již jste součástí Katedry.");
+        } else if (this.hasRole("Katedra")) {
+            await this.replySilent("Již jste součástí Katedry.");
             return;
         }
 
-        await getGuild().members.fetch({ withPresences: true })
-        const users = (await getGuild().roles.fetch())
-            .filter((role) => [RoleIds["Katedra"], RoleIds["Root"]].includes(role.id))
+        await this.guild().members.fetch({ withPresences: true })
+        const users = (await this.guild().roles.fetch())
+            .filter((role) => [this.getRoleID("Katedra"), this.getRoleID("Root")].includes(role.id))
             .map((role) => role.members.map(member => member))
             .reduce((acc, members) => acc.concat(members), [])
-            .sort((member) => member.roles.highest.id === RoleIds["Katedra"] ? -1 : 1)
+            .sort((member) => member.roles.highest.id === this.getRoleID("Katedra") ? -1 : 1)
             .map((member) => member.user);
 
-        await replySilent(`Pro přidělení této role kontaktujte jednoho z těchto uživatelů ${users}.`);
-    },
-);
+        await this.replySilent(`Pro přidělení této role kontaktujte jednoho z těchto uživatelů ${users}.`);
+    }
+}

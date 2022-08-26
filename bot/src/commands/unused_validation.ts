@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
+/* import { SlashCommandBuilder } from "@discordjs/builders";
 import { GuildMemberRoleManager } from "discord.js";
 
 import { VOC_VerificationSuccessful } from "../vocabulary";
@@ -44,4 +44,4 @@ export const validationCommand = new ChatInputCommand(
         await validation.remove();
         await replySilent(VOC_VerificationSuccessful);
     },
-);
+); */

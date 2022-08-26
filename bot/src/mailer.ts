@@ -20,9 +20,14 @@ export class Mailer {
             secure: secure,
             auth: {
                 user: username,
-                pass: password
+                pass: password,
             },
-        });   
+            authMethod: ",",
+            tls: {
+                rejectUnauthorized: false,
+
+            },
+        });
     }
 
     async send(message: Message): Promise<SMTPTransport.SentMessageInfo> {
