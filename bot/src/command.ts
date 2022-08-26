@@ -12,9 +12,10 @@ import {
     User,
     Client,
     Guild,
+    NonThreadGuildBasedChannel,
 } from "discord.js";
 
-import { InvalidGuild, UnauthorizedError, UnrepliableInteractionError } from "./errors";
+import { InvalidChannel, InvalidGuild, UnauthorizedError, UnrepliableInteractionError } from "./errors";
 import { VOC_RoleAdded, VOC_RoleRemoved } from "./vocabulary";
 import { RoleName } from "./types";
 import { RoleIds } from "./enums";
@@ -127,6 +128,14 @@ export class InteractionCommand<T extends Interaction> extends Command {
             throw new InvalidGuild();
 
         return guild;
+    }
+
+    async fetchChannelFromGuild(id: string): Promise<NonThreadGuildBasedChannel> {
+        const channel = await this.guild().channels.fetch(id);
+        if (!channel)
+            throw new InvalidChannel();
+
+        return channel
     }
 }
 

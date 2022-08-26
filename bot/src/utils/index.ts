@@ -1,4 +1,3 @@
-export * from "./fetchChannelFromGuild";
 export * from "./getBinds";
 export * from "./getButtonStyle";
 export * from "./isHttp";
