@@ -36,7 +36,7 @@ class Command {
     }
 
     protected async executable(): Promise<void> {
-        throw "Unimplementet executable".toError()
+        throw "Unimplemented executable".toError()
     }
 }
 
