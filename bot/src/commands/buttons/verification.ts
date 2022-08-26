@@ -1,8 +1,8 @@
-import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
-import { ButtonCommand } from "../../command";
+import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js"
+import { ButtonCommand } from "../../command"
 
 export class VerificationFirewallButtonComamand extends ButtonCommand {
-    name = "btnStuden";
+    name = "btnStuden"
     modal = new ModalBuilder()
         .setCustomId("verificationStudentModal")
         .setTitle("Verifikace studenta")
@@ -14,14 +14,14 @@ export class VerificationFirewallButtonComamand extends ButtonCommand {
                         .setLabel("Zadejte Váš studentský email v rámci UPOL")
                         .setStyle(TextInputStyle.Short),
                 ) as ActionRowBuilder<TextInputBuilder>
-        );
+        )
 
     async executable(): Promise<void> {
         if (this.hasRole("Student")) {
-            await this.replySilent("Již jste oveřený.");
-            return;
+            await this.replySilent("Již jste oveřený.")
+            return
         }
 
-        await this.interaction.showModal(this.modal);
+        await this.interaction.showModal(this.modal)
     }
 }

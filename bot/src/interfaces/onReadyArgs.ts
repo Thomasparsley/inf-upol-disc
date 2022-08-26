@@ -1,6 +1,6 @@
-import { Client } from "discord.js";
-import { DataSource } from "typeorm";
-import { Command } from "../command";
+import { Client } from "discord.js"
+import { DataSource } from "typeorm"
+import { Command } from "../command"
 
 export interface OnReadyArgs {
     client: Client;

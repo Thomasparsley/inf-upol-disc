@@ -1,20 +1,20 @@
-import { ButtonCommand } from "../../command";
+import { ButtonCommand } from "../../command"
 
 export class DepartmentFirewallButtonComamand extends ButtonCommand {
-    name = "bntDepartment";
+    name = "bntDepartment"
 
     async executable(): Promise<void> {
         if (this.hasRole("Student")) {
-            await this.replySilent("Student nemůže být součástí Katedry.");
-            return;
+            await this.replySilent("Student nemůže být součástí Katedry.")
+            return
 
         } else if (this.hasRole("Návštěva")) {
-            await this.replySilent("Host nemůže být součástí Katedry.");
-            return;
+            await this.replySilent("Host nemůže být součástí Katedry.")
+            return
 
         } else if (this.hasRole("Katedra")) {
-            await this.replySilent("Již jste součástí Katedry.");
-            return;
+            await this.replySilent("Již jste součástí Katedry.")
+            return
         }
 
         await this.guild().members.fetch({ withPresences: true })
@@ -23,8 +23,8 @@ export class DepartmentFirewallButtonComamand extends ButtonCommand {
             .map((role) => role.members.map(member => member))
             .reduce((acc, members) => acc.concat(members), [])
             .sort((member) => member.roles.highest.id === this.getRoleID("Katedra") ? -1 : 1)
-            .map((member) => member.user);
+            .map((member) => member.user)
 
-        await this.replySilent(`Pro přidělení této role kontaktujte jednoho z těchto uživatelů ${users}.`);
+        await this.replySilent(`Pro přidělení této role kontaktujte jednoho z těchto uživatelů ${users}.`)
     }
 }

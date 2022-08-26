@@ -17,7 +17,7 @@ export const verificationModalCommand = new ModalCommand(
     "verificationStudentModal",
     "Zpracování verifikace studenta",
     async ({ interaction, replySilent, mailer }) => {
-        
+
         const email = interaction.fields.getTextInputValue("verificationStudentUpolEmail")
         // validace emailu
         if (email === null || !isValidateEmail(email))

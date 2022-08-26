@@ -1,4 +1,4 @@
-import { Guild, Role } from "discord.js";
+import { Guild, Role } from "discord.js"
 
 export function getBinds(input: string, guild: Guild): Map<String, Role> | null {
     const binds = input.split(",")
@@ -9,7 +9,7 @@ export function getBinds(input: string, guild: Guild): Map<String, Role> | null 
         const inputEmote: string = arr[0].trim()
         const inputRole: string = arr[1].trim().replace("@", "")
 
-        const role = guild.roles.cache.find((r: Role) => r.name === inputRole);
+        const role = guild.roles.cache.find((r: Role) => r.name === inputRole)
 
         if (!role)
             return null

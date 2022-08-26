@@ -4,22 +4,24 @@ import {
     BaseEntity,
     Entity,
     Column,
-} from "typeorm";
+} from "typeorm"
 
+/* eslint-disable */
 @Entity()
 export class Validation extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id!: number;
+    id!: number
 
     @Column("varchar", { length: 40 })
-    user!: string;
+    user!: string
 
     @Column("varchar", { length: 6 })
-    key!: string;
+    key!: string
 
     @CreateDateColumn()
-    createdAt!: Date;
+    createdAt!: Date
 
     @Column()
-    expiresAt!: Date;
+    expiresAt!: Date
 }
+/* eslint-enable */

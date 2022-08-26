@@ -1,10 +1,10 @@
-import { createTransport, Transporter } from "nodemailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
-import { Message } from "./interfaces";
+import { createTransport, Transporter } from "nodemailer"
+import SMTPTransport from "nodemailer/lib/smtp-transport"
+import { Message } from "./interfaces"
 
 export class Mailer {
-    private ctx: Transporter<SMTPTransport.SentMessageInfo>;
-    
+    private readonly ctx: Transporter<SMTPTransport.SentMessageInfo>
+
     constructor(
         private readonly host: string,
         private readonly port: number,
@@ -13,11 +13,10 @@ export class Mailer {
         username: string,
         password: string,
     ) {
-
         this.ctx = createTransport({
             host: this.host,
             port: this.port,
-            secure: secure,
+            secure,
             auth: {
                 user: username,
                 pass: password,
@@ -25,9 +24,8 @@ export class Mailer {
             authMethod: ",",
             tls: {
                 rejectUnauthorized: false,
-
             },
-        });
+        })
     }
 
     async send(message: Message): Promise<SMTPTransport.SentMessageInfo> {
@@ -36,7 +34,7 @@ export class Mailer {
             to: message.to,
             subject: message.subject,
             text: message.text,
-            html: message.html
-        });
+            html: message.html,
+        })
     }
 }

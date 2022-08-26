@@ -4,4 +4,4 @@ export type RoleName =
     "Student" |
     "Katedra" |
     "Návštěva" |
-    "PhD.";
+    "PhD."

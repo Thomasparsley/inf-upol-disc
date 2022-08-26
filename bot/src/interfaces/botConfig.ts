@@ -5,16 +5,16 @@ import {
     onReactionAddAction,
     onReactionRemoveAction,
     OnReadyAction
-} from "../types";
+} from "../types"
 
 export interface BotConfig {
-    chatInputCommands?: ChatInputCommand[];
-    buttonCommands?: ButtonCommand[];
-    modalCommands?: ModalCommand[];
-    dropdownCommands?: DropdownCommand[];
-    onReady?: OnReadyAction;
-    onReactionAdd?: onReactionAddAction;
-    onReactionRemove?: onReactionRemoveAction;
-    onInteractionCreate?: OnInteractionCreateAction;
-    onGuildMemberAdd?: OnGuildMemberAddAction;
+    chatInputCommands?: ChatInputCommand[]
+    buttonCommands?: ButtonCommand[]
+    modalCommands?: ModalCommand[]
+    dropdownCommands?: DropdownCommand[]
+    onReady?: OnReadyAction
+    onReactionAdd?: onReactionAddAction
+    onReactionRemove?: onReactionRemoveAction
+    onInteractionCreate?: OnInteractionCreateAction
+    onGuildMemberAdd?: OnGuildMemberAddAction
 }

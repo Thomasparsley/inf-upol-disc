@@ -4,16 +4,18 @@ import {
     BaseEntity,
     Column,
     Entity,
-} from "typeorm";
+} from "typeorm"
 
+/* eslint-disable */
 @Entity()
 export class Error extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id!: number;
+    id!: number
 
     @CreateDateColumn()
-    createdAt!: Date;
+    createdAt!: Date
 
     @Column("text")
-    error!: string;
+    error!: string
 }
+/* eslint-enable */

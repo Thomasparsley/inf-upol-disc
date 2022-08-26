@@ -1,7 +1,7 @@
-import { onReactionRemoveAction } from "../types";
+import { onReactionRemoveAction } from "../types"
 
 const event: onReactionRemoveAction = async ({ reaction, user }) => {
-    console.log(`${user.username} smazal reakci ${reaction.emoji}!`);
+    console.log(`${user.username} smazal reakci ${reaction.emoji}!`)
 }
 
 export default event

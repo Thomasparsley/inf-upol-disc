@@ -1,33 +1,33 @@
-import { CacheType, Interaction } from "discord.js";
+import { CacheType, Interaction } from "discord.js"
 
-import { OnInteractionCreateArgs } from "../interfaces";
-import { UnknownCommandError } from "../errors";
-import { DropdownCommand, InteractionCommand } from "../command";
+import { OnInteractionCreateArgs } from "../interfaces"
+import { UnknownCommandError } from "../errors"
+import { DropdownCommand, InteractionCommand } from "../command"
 
 async function event(args: OnInteractionCreateArgs) {
-    const { client, interaction, commands, buttons, modals, dropdown } = args;
+    const { client, interaction, commands, buttons, modals, dropdown } = args
 
-    let command: InteractionCommand<Interaction<CacheType>> | undefined;
+    let command: InteractionCommand<Interaction<CacheType>> | undefined
     if (interaction.isButton()) {
-        command = buttons.get(interaction.customId);
+        command = buttons.get(interaction.customId)
     } else if (interaction.isModalSubmit()) {
-        command = modals.get(interaction.customId);
+        command = modals.get(interaction.customId)
     } else if (interaction.isSelectMenu()) {
-        const splited = interaction.customId.split("-");
-        const customId = splited[0];
-        const flag = splited[1];
+        const splited = interaction.customId.split("-")
+        const customId = splited[0]
+        const flag = splited[1]
 
         command = dropdown.get(customId);
-        (command as DropdownCommand).flag = flag;
+        (command as DropdownCommand).flag = flag
     } else if (interaction.isChatInputCommand()) {
-        command = commands.get(interaction.commandName);
+        command = commands.get(interaction.commandName)
     }
-    
-    
-    if (!command)
-        throw new UnknownCommandError();
 
-    await command.execute(client, interaction);
+
+    if (!command)
+        throw new UnknownCommandError()
+
+    await command.execute(client, interaction)
 }
 
 export default event
