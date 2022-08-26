@@ -19,15 +19,18 @@ import { InvalidChannel, InvalidGuild, UnauthorizedError, UnrepliableInteraction
 import { VOC_RoleAdded, VOC_RoleRemoved } from "./vocabulary"
 import { RoleName } from "./types"
 import { RoleIds } from "./enums"
+import { Mailer } from "./mailer"
 
 
 class Command {
     name!: string
     description!: string
     client!: Client
+    mailer!: Mailer
 
-    async execute(client: Client): Promise<void> {
+    async execute(client: Client, mailer: Mailer): Promise<void> {
         this.client = client
+        this.mailer = mailer
 
         await this.executable()
     }
@@ -41,8 +44,9 @@ export class InteractionCommand<T extends Interaction> extends Command {
     interaction!: T
 
     // @ts-ignore
-    async execute(client: Client, interaction: T): Promise<void> {
+    async execute(client: Client, mailer: Mailer, interaction: T): Promise<void> {
         this.client = client
+        this.mailer = mailer
         this.interaction = interaction
 
         try {

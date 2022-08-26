@@ -13,12 +13,12 @@ import {
     UnknownUpolEmailError,
 } from "../../errors";
 
-export const verificationModalCommand = new ModalCommand(
-    "verificationStudentModal",
-    "Zpracování verifikace studenta",
-    async ({ interaction, replySilent, mailer }) => {
 
-        const email = interaction.fields.getTextInputValue("verificationStudentUpolEmail")
+export class VerificationModalCommand extends ModalCommand {
+    name = "verificationStudentModal"
+
+    protected async executable(): Promise<void> {
+        const email = this.interaction.fields.getTextInputValue("verificationStudentUpolEmail")
         // validace emailu
         if (email === null || !isValidateEmail(email))
             throw new InvalidEmailFormatError(email as string);
@@ -40,9 +40,9 @@ export const verificationModalCommand = new ModalCommand(
         validation.expiresAt.setHours(validation.expiresAt.getHours() + 1);
 
         await validation.save(); */
-        await replySilent(VOC_VerificationCodeSended(email));
+        await this.replySilent(VOC_VerificationCodeSended(email));
         try {
-            await mailer.send({
+            await this.mailer.send({
                 subject: "Validační kód pro discord server katedry informatiky - UPOL",
                 to: email,
                 text: makeRegisterText(),
@@ -51,5 +51,5 @@ export const verificationModalCommand = new ModalCommand(
         } catch (error) {
             console.log(error);
         }
-    },
-);
+    }
+}
