@@ -123,6 +123,10 @@ export class InteractionCommand<T extends Interaction> extends Command {
         return predicate(roles.cache.size)
     }
 
+    protected hasAtleastOneRole(): boolean {
+        return this.permissionRolesCount((size: Number) => size > 0)
+    }
+
     protected guild(): Guild {
         const guild = this.interaction.guild
         if (!guild)
@@ -163,11 +167,6 @@ export class ChatInputCommand extends InteractionCommand<ChatInputCommandInterac
         if (!roleToAdd)
             throw "addRoleToTarget#2".toError()
 
-        if (this.hasRole(roleToAdd.name as RoleName, targetAsMember)) {
-            await this.replySilent(`Uživatel ${targetAsMember} roli ${roleToAdd} již má.`)
-            return
-        }
-
         await targetAsMember.roles.add(roleToAdd)
         await this.replySilent(VOC_RoleAdded(roleToAdd))
     }
@@ -187,11 +186,6 @@ export class ChatInputCommand extends InteractionCommand<ChatInputCommandInterac
         const roleToAdd = this.guild().roles.cache.get(RoleIds[nameOfRoleToRemove])
         if (!roleToAdd)
             throw "addRoleToTarget#2".toError()
-
-        if (!this.hasRole(roleToAdd.name as RoleName, targetAsMember)) {
-            await this.replySilent(`Uživatel ${targetAsMember} roli ${roleToAdd} nemá.`)
-            return
-        }
 
         await targetAsMember.roles.remove(roleToAdd)
         await this.replySilent(VOC_RoleRemoved(roleToAdd))

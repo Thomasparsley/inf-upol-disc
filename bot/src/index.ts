@@ -17,7 +17,10 @@ import {
     VerificationFirewallButtonComamand,
     PhdRoleManagerCommand,
     DepartmentRoleManagerCommand,
-    AddRoleDropdownCommand
+    AddRoleDropdownCommand,
+    MessageManagerCommand,
+    EveryoneRequestCommand,
+    QuoteRequestChatCommnad
 } from "./commands"
 
 import { Mailer } from "./mailer"
@@ -82,8 +85,9 @@ const {
             chatInputCommands: [
                 new PhdRoleManagerCommand(),
                 new DepartmentRoleManagerCommand(),
-                quoteRequestChatCommnad,
-                botMessage,
+                new MessageManagerCommand(),
+                new EveryoneRequestCommand(),
+                new QuoteRequestChatCommnad(),
             ],
             buttonCommands: [
                 new HostFirewallButtonComamand(),
