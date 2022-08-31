@@ -9,14 +9,13 @@ export class Mailer {
         private readonly host: string,
         private readonly port: number,
         private readonly from: string,
-        secure: boolean,
         username: string,
         password: string,
     ) {
         this.ctx = createTransport({
             host: this.host,
             port: this.port,
-            secure,
+            secure: false,
             auth: {
                 user: username,
                 pass: password,
@@ -25,6 +24,14 @@ export class Mailer {
             tls: {
                 rejectUnauthorized: false,
             },
+            tls: {
+                rejectUnauthorized: false,
+            },
+        });
+
+        this.ctx.verify((err, _) => {
+            if (err)
+                throw err
         })
     }
 

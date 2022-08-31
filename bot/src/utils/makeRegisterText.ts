@@ -1,10 +1,10 @@
-export function makeRegisterText() {
-    return `
-    Ověřovací e-mail pro aktivaci účtu pro Discord katedry informatiky UP
+import { readFileSync } from "fs";
 
-    Posledním krokem pro ověření tvého účtu je kliknout na následující verifikační odkaz. Poté ti bude přidělena role @Student a tvůj účet bude ověřen.
+import { compile } from "handlebars";
 
-    Vítej u nás a bav se!
-    Pokud jste nezažádali o verifikaci, tento email ignorujte.
-    `
+const content = readFileSync("../templates/verification-email.txt");
+const template = compile(content.toString());
+
+export function makeRegisterText(code: string[]) {
+    return template({ code: code });
 }

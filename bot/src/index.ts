@@ -65,9 +65,8 @@ const {
     const mailer = new Mailer(
         MAILER_HOST,
         MAILER_PORT.toInt(),
-        "\"Discord Katedry Informatiky\" <discord@inf.upol.cz>",
-        false,
-        "discord@inf.upol.cz",
+        `"Discord Katedry Informatiky" <discord@inf.upol.cz>`,
+        "discord",
         MAILER_PASS,
     )
 
