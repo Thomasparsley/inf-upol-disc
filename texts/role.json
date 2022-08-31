@@ -22,7 +22,7 @@
             "components": {
                 "dropdowns": [
                     {
-                        "id": "dropdownAddRole",
+                        "id": "dropdownAddRoleOnlyStudent",
                         "flag": "obor",
                         "placeholder": "Vyber si obory",
                         "min": 1,
@@ -78,14 +78,14 @@
             "content": [
                 "⠀",
                 "**Programovací jazyky**",
-                "Pro všechny zájemce o daný jazyk máme speciální role. Role také <role>Student</role> zpřístupní místnosti s výukou daného jazyka v kategorii programovací jazyky.",
+                "Roli <role>Student</role> také zpřístupní místnosti s výukou daného jazyka v kategorii programovací jazyky.",
                 "",
                 "**Na výběr máme:**"
             ],
             "components": {
                 "dropdowns": [
                     {
-                        "id": "dropdownAddRole",
+                        "id": "dropdownAddRoleOnlyStudent",
                         "flag": "jazyky",
                         "placeholder": "Vyber si jaké programovací jazyky tě zajímají",
                         "min": 1,
@@ -112,63 +112,63 @@
             "content": [
                 "⠀",
                 "**Výběr předmětů**",
-                "Aby se ti otevřely i místností pro povinně volitelné a volitelné předměty, vyber si z těchto rolí ty předměty, k jejímž místnostem chceš mít přístup. Navolené předměty si také můžeš kdykoliv změnit.", 
+                "Aby se ti otevřely i místností pro povinně volitelné a volitelné předměty, vyber si z těchto rolí ty předměty, k jejímž místnostem chceš mít přístup. Navolené předměty si také můžeš kdykoliv změnit.",
                 "",
-                "Některé předměty se stejným obsahem mají napříč studijními obory jiné názvy a zkratky. Vždy jsme z nich vybrali jednu a ostatní pod ní sjednotili. Při vyhledávání jsou jména všech zkratek pospolu.", 
+                "Některé předměty se stejným obsahem mají napříč studijními obory jiné názvy a zkratky. Vždy jsme z nich vybrali jednu a ostatní pod ní sjednotili. Při vyhledávání jsou jména všech zkratek pospolu.",
                 "Příklad: pp1 (papr1)",
                 "",
-                "Všechny předměty týkající se bakalářské práce / diplomové práce naleznete v kategorii STUDIUM v příslušných místnostech."
+                "Všechny předměty týkající se bakalářské práce / diplomové práce naleznete v kategorii **STUDIUM** v příslušných místnostech."
             ],
             "components": {
                 "dropdowns": [
                     {
-                        "id": "dropdownAddRole",
+                        "id": "dropdownAddRoleOnlyStudent",
                         "flag": "predmety_0n",
                         "placeholder": "Vyber si predmety (0 - N)",
                         "min": 1,
                         "max": -1,
                         "options": [
-                            "3dt", 
-                            "aiii1", 
-                            "aiii2", 
-                            "akti", 
-                            "algo1 (algo)", 
-                            "algo2 (zads)", 
-                            "algo3 (alm3)", 
-                            "bmtkq", 
+                            "3dt",
+                            "aiii1",
+                            "aiii2",
+                            "akti",
+                            "algo1 (algo)",
+                            "algo2 (zads)",
+                            "algo3 (alm3)",
+                            "bmtkq",
                             "dastr",
-                            "grafa", 
-                            "infos", 
-                            "kombi", 
-                            "mr", 
+                            "grafa",
+                            "infos",
+                            "kombi",
+                            "mr",
                             "napvs"
                         ]
                     },
                     {
-                        "id": "dropdownAddRole",
+                        "id": "dropdownAddRoleOnlyStudent",
                         "flag": "predmety_oz",
                         "placeholder": "Vyber si predmety (O - Z)",
                         "min": 1,
                         "max": -1,
                         "options": [
-                            "os1", 
+                            "os1",
                             "os2",
-                            "pmv", 
-                            "pogr (pg)", 
-                            "pois", 
-                            "pos1 (pos)", 
-                            "pos2", 
-                            "pp1 (papr1)", 
-                            "pp2 (papr2)", 
-                            "pp3 (papr3)", 
-                            "pp4", 
-                            "prast", 
-                            "soft", 
-                            "sprda", 
-                            "texza", 
-                            "unixs", 
-                            "uroz (uro)", 
-                            "vytal", 
+                            "pmv",
+                            "pogr (pg)",
+                            "pois",
+                            "pos1 (pos)",
+                            "pos2",
+                            "pp1 (papr1)",
+                            "pp2 (papr2)",
+                            "pp3 (papr3)",
+                            "pp4",
+                            "prast",
+                            "soft",
+                            "sprda",
+                            "texza",
+                            "unixs",
+                            "uroz (uro)",
+                            "vytal",
                             "znm"
                         ]
                     }
@@ -177,4 +177,3 @@
         }
     ]
 }
-

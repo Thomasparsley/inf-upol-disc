@@ -1,4 +1,4 @@
-import { RoleName } from "../types";
+import { RoleName } from "../types"
 
 type RoleIdMap = {
     [role in RoleName]: string;
@@ -11,4 +11,4 @@ export const RoleIds: RoleIdMap = {
     "Katedra": "960478879686991872",
     "Návštěva": "960478789161320448",
     "PhD.": "962390039168442419",
-};
+}

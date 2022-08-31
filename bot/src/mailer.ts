@@ -1,9 +1,9 @@
-import { createTransport, Transporter } from "nodemailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
-import { Message } from "./interfaces";
+import { createTransport, Transporter } from "nodemailer"
+import SMTPTransport from "nodemailer/lib/smtp-transport"
+import { Message } from "./interfaces"
 
 export class Mailer {
-    private ctx: Transporter<SMTPTransport.SentMessageInfo>;
+    private readonly ctx: Transporter<SMTPTransport.SentMessageInfo>
 
     constructor(
         private readonly host: string,
@@ -18,7 +18,7 @@ export class Mailer {
             secure: false,
             auth: {
                 user: username,
-                pass: password
+                pass: password,
             },
             tls: {
                 rejectUnauthorized: false,
@@ -37,7 +37,7 @@ export class Mailer {
             to: message.to,
             subject: message.subject,
             text: message.text,
-            html: message.html
-        });
+            html: message.html,
+        })
     }
 }

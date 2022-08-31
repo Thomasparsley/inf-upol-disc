@@ -31,7 +31,7 @@
                 "⠀",
                 "<role>Student</role> - student katedry informatiky",
                 "1. Klikni na tlačítko **\"Jsem student\"**.",
-                "2. Do kolonky email zadej tvůj univerzitní email ve tvaru **uzivatel@upol.cz** a zašli formulář.",
+                "2. Do kolonky email zadej tvůj univerzitní email v úplném tvaru **jmeno.prijmeniXX@upol.cz** a zašli formulář.",
                 "3. Na zadaný email přijde ověřovací URL odkaz, kterým ověříš svůj účet."
             ],
             "components": {

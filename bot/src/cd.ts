@@ -32,7 +32,7 @@ export const CD_Cmdreg = {
             description: "Jméno příkazu k registraci."
         },
     ]
-};
+}
 
 
 
@@ -45,7 +45,7 @@ export const CD_EveryRequest = {
             description: "Zadej popisek žádosti o everyone."
         },
     ]
-};
+}
 
 export const CD_QuoteRequest = {
     name: "quotereq",
@@ -56,20 +56,20 @@ export const CD_QuoteRequest = {
             description: "Formát: \"Text citátu. - Jméno učitele \""
         },
     ]
-};
+}
 
 export const CD_Host = {
     name: "host",
     description: "Po odeslání obdržíš roli @Návštěvník.",
-};
+}
 
 export const CD_RM = {
-	name: "rm",
-	description: "Správa přidělování reakcí na zprávu.",
-	sub: { 
+    name: "rm",
+    description: "Správa přidělování reakcí na zprávu.",
+    sub: {
         add: {
-			name: "add", 
-			description: "Navaž přidělování reakcí na zprávu.",
+            name: "add",
+            description: "Navaž přidělování reakcí na zprávu.",
             options: [
                 {
                     name: "messageid",
@@ -80,19 +80,19 @@ export const CD_RM = {
                     description: "Formát: (emote role),(emote role)"
                 },
             ]
-		},
+        },
         remove: {
-			name: "remove",
-			description: "Smaž přiřazování reakcí navázané na zprávu.",
+            name: "remove",
+            description: "Smaž přiřazování reakcí navázané na zprávu.",
             options: [
                 {
                     name: "messageid",
                     description: "ID zprávy, kterou chceš smazat."
                 },
             ]
-		},
+        },
     }
-};
+}
 
 export const CD_Botmsg = {
     name: "botmessage",
@@ -101,7 +101,7 @@ export const CD_Botmsg = {
         add: {
             name: "add",
             description: "Pošle zprávu pomocí bota.",
-            options:  {
+            options: {
                 text: {
                     name: "text",
                     description: "Text zprávy.",
@@ -152,7 +152,7 @@ export const CD_Botmsg = {
     // channelTagName: "channel",
     // roleTagName: "role",
     // mentionTagName: "mention",
-};
+}
 
 export const CD_Register = {
     name: "registrace",
@@ -163,7 +163,7 @@ export const CD_Register = {
             description: "Zadejte validní email."
         },
     ]
-};
+}
 
 export const CD_Role = {
     name: "role",
@@ -174,7 +174,7 @@ export const CD_Role = {
             description: "Napiš jméno role."
         },
     ]
-};
+}
 
 export const CD_Validation = {
     name: "validace",
@@ -185,19 +185,19 @@ export const CD_Validation = {
             description: "Zadejte validační klíč. Pokud nemáš klíč tak použí příkaz register."
         },
     ]
-};
+}
 
 export const CD_Katedra = {
-	name: "katedra",
-	description: "Přidělí roli pro katedru.",
-	options: [
-		{
-			name: "user",
-			description: "Napiš jméno uživatele."
-		},
-	],
+    name: "katedra",
+    description: "Přidělí roli pro katedru.",
+    options: [
+        {
+            name: "user",
+            description: "Napiš jméno uživatele."
+        },
+    ],
 
-};
+}
 
 export const CD_PhD = {
     name: "phd",
@@ -209,4 +209,4 @@ export const CD_PhD = {
         },
     ],
 
-};
+}

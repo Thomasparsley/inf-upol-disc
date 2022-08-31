@@ -1,0 +1,6 @@
+{
+    "typescript.tsdk": "bot\\node_modules\\typescript\\lib",
+    "eslint.workingDirectories": [
+        "bot/src"
+    ]
+}

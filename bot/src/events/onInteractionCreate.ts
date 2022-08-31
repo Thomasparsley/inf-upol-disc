@@ -1,79 +1,46 @@
-import { CacheType, GuildMemberRoleManager, Interaction } from "discord.js";
+import { CacheType, Interaction } from "discord.js"
 
-import { CommandArgs, OnInteractionCreateArgs } from "../interfaces";
-import { fetchChannelFromGuild, getGuild, reply, replySilent, hasRole, addRoleToTarget } from "../utils";
-import { UnknownCommandError } from "../errors";
-import { Command } from "../command";
-
-function makeCommandArgs(args: OnInteractionCreateArgs) {
-    const {
-        client,
-        interaction,
-        commands,
-        buttons,
-        dropdown,
-        modals,
-        db,
-        mailer,
-        commandRegistration,
-    } = args;
-
-    const commandArgs: CommandArgs<Interaction<CacheType>> = {
-        client,
-        interaction,
-        commands,
-        buttons,
-        dropdown,
-        modals,
-        db,
-        mailer,
-        commandRegistration,
-        getGuild: getGuild(interaction),
-        fetchChannelFromGuild: fetchChannelFromGuild(interaction),
-        reply: reply(interaction),
-        replySilent: replySilent(interaction),
-        permissionRolesCount: (predicate: Function): boolean => {
-            const roles = (interaction.member?.roles as GuildMemberRoleManager)
-            if (!roles) {
-                return false;
-            }
-
-            return predicate(roles.cache.size);
-        },
-        addRoleToTarget: addRoleToTarget(interaction),
-        hasRole: hasRole(interaction),
-    }
-
-    return commandArgs;
-}
+import { OnInteractionCreateArgs } from "../interfaces"
+import { UnknownCommandError } from "../errors"
+import { InteractionCommand } from "../command"
 
 async function event(args: OnInteractionCreateArgs) {
-    const { interaction, commands, buttons, modals, dropdown } = args;
-    const commandArgs = makeCommandArgs(args)
+    const { client, interaction, mailer, commands, buttons, modals, dropdown } = args
+    let command: InteractionCommand<Interaction<CacheType>> | undefined
 
-    let command: Command<any> | undefined;
-    if (interaction.isButton())
-        command = buttons.get(interaction.customId);
+    if (interaction.isButton()) {
+        const commandMaker = buttons.get(interaction.customId)
 
-    else if (interaction.isModalSubmit())
-        command = modals.get(interaction.customId);
+        if (commandMaker)
+            command = new commandMaker()
 
-    else if (interaction.isSelectMenu()) {
-        const splited = interaction.customId.split("-");
-        const customId = splited[0];
-        const flag = splited[1];
+    } else if (interaction.isModalSubmit()) {
+        const commandMaker = modals.get(interaction.customId)
 
-        command = dropdown.get(customId);
-        commandArgs.flag = flag;
+        if (commandMaker)
+            command = new commandMaker()
+
+    } else if (interaction.isSelectMenu()) {
+        const splited = interaction.customId.split("-")
+        const customId = splited[0]
+        const flag = splited[1]
+
+        const commandMaker = dropdown.get(customId)
+        if (commandMaker)
+            command = new commandMaker(flag)
+
+    } else if (interaction.isChatInputCommand()) {
+        const commandMaker = commands.get(interaction.commandName)
+
+        if (commandMaker)
+            command = new commandMaker()
     }
-    
-    else if (interaction.isChatInputCommand())
-        command = commands.get(interaction.commandName);
-    
-    if (!command)
-        throw new UnknownCommandError();
 
-    await command.execute(commandArgs);
+    if (!command) {
+        throw new UnknownCommandError()
+    }
+
+    await command.execute(client, mailer, interaction)
 }
 
 export default event
