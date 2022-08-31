@@ -1,0 +1,7 @@
+Verifikační klíč pro aktivaci role @Student na Discordu - Katedra informatiky | UP
+
+Vaším posledním krokem pro ověření, že jste studentem katedry informatiky, je zadání verifikační
+klíče do formuláře. Ten se zobrazí po kliknutí na tlačítko "TLAČÍTKO", které se nachází v odpovědi
+při zažádání o roli @Student.
+
+{{#each code}} {{this}} {{/each}}
