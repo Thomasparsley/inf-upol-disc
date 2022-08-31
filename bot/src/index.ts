@@ -21,7 +21,8 @@ import {
     MessageManagerCommand,
     EveryoneRequestCommand,
     QuoteRequestChatCommnad,
-    AddRoleOnlyStudentDropdownCommand
+    AddRoleOnlyStudentDropdownCommand,
+    VerificationModalCommand
 } from "./commands"
 
 import { Mailer } from "./mailer"
@@ -99,7 +100,7 @@ const {
                 AddRoleOnlyStudentDropdownCommand,
             ],
             modalCommands: [
-                /* verificationModalCommand, */
+                VerificationModalCommand
             ]
         })
 

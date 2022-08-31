@@ -30,8 +30,6 @@ export interface IDropdownCommand<T> {
     new(flag?: string): T;
 }
 
-export type CommandMaker<T> = ICommand<T> | IDropdownCommand<T>
-
 class Command {
     name!: string
     description!: string
@@ -163,7 +161,16 @@ type BuilderType = SlashCommandBuilder
     | SlashCommandSubcommandsOnlyBuilder
 
 export class ChatInputCommand extends InteractionCommand<ChatInputCommandInteraction<CacheType>> {
-    builder!: BuilderType
+    protected builder!: BuilderType
+
+    getBuilder(): BuilderType {
+        // @ts-ignore
+        this.builder.name = this.name
+        // @ts-ignore
+        this.builder.description = this.description
+
+        return this.builder
+    }
 
     protected async addRoleToTarget(
         target: User,

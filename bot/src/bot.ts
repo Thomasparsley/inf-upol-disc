@@ -233,7 +233,7 @@ export class Bot {
     private async registerChatInputCommands(commands: ICommand<ChatInputCommand>[], path: any) {
         const slashCommands = commands.map((command) => {
             const cmd = new command()
-            return cmd.builder.toJSON()
+            return cmd.getBuilder().toJSON()
         })
 
         try {

@@ -42,12 +42,12 @@ export class VerificationModalCommand extends ModalCommand {
 
         await validation.save() */
 
-        await mailer.send({
+        await this.mailer.send({
             subject: "Validační kód pro discord server katedry informatiky - UPOL",
             to: email,
             text: makeRegisterText(verificationCode.toString().split("")),
             html: makeRegisterHTML(verificationCode.toString().split("")),
         });
-        await replySilent(VOC_VerificationCodeSended(email))
-    },
-);
+        await this.replySilent(VOC_VerificationCodeSended(email))
+    }
+}

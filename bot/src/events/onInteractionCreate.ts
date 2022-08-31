@@ -44,5 +44,3 @@ async function event(args: OnInteractionCreateArgs) {
 }
 
 export default event
-
-
