@@ -5,7 +5,7 @@
             "id": "1008780553497096304",
             "content": [
                 "**Vítáme Tě na oficiálním discord serveru Katedry informatiky UP. **",
-                "Dříve, než začneš na serveru fungovat, jdi do místnosti <channel>firewall</channel>, kde podle návodu ověříš svůj účet. Bez, tohoto kroku ti nebudou zpřístupněny žádné funkce. Poté navštiv místnost <channel>role</channel> a podle návodu si nastav role tak, aby se ti zpřístupnili místnosti a ostatní funkce. Server máme rozdělen na několik kategorií.", 
+                "Dříve, než začneš na serveru fungovat, jdi do místnosti <channel>firewall</channel>, kde podle návodu ověříš svůj účet. Bez, tohoto kroku ti nebudou zpřístupněny žádné funkce. Poté navštiv místnost <channel>role</channel> a podle návodu si nastav role tak, aby se ti zpřístupnili místnosti a ostatní funkce. Server máme rozdělen na několik kategorií.",
                 "",
                 "**SERVER**",
                 " - V této kategorii najdeš veškeré základní informace ohledně fungování serveru. Nejdůležitější místnosti zde jsou <channel>oznámení-a-novinky</channel>a místnost <channel>návrhy-a-připomínky</channel>, která slouží jako zpětná vazba pro vylepšení serveru.",
@@ -50,7 +50,7 @@
                 "**Neznalost pravidel se neomlouvá.**"
             ]
         },
-        { 
+        {
             "id": "1008780575965970562",
             "content": [
                 "**Tipy a příkazy**",
@@ -60,10 +60,18 @@
                 " - Než se na něco zeptáte, doporučujeme se podívat do připnutých zpráv, jestli se daný dotaz již nevyskytnul.",
                 "",
                 "**Příkazy**",
-                " - Pomocí příkazu **/everyrequest popisek** můžete poslat žádost o <role>everyone</role>. Prosíme popište podrobně svoji žádost a odešlete. Žádost bude následně zpracována a následně schválena našimi <role>Moderátor</role>.",
+                " - Pomocí příkazu **/everyrequest popisek** můžete poslat žádost o everyone. Prosíme popište podrobně svoji žádost a odešlete. Žádost bude následně zpracována a následně schválena našimi <role>Moderátor</role>.",
                 " - Pomocí příkazu **/citát popisek** můžete poslat žádost o přidání citátu do místnosti <channel>citáty</channel>. Prosíme posílejte citáty ve formátu: \"Text citátu. - Jméno učitele \". Citát bude následně zpracován a následně schválen našimi <role>Moderátor</role>.",
                 "",
                 "Doufáme, že na serveru najdeš všechny potřebné informace a taky skvělou komunitu studentů. V případě jakýchkoliv dotazů, napiš do <channel>dotazy</channel>.",
+                "",
+                "",
+                "Základní příručka pro Discord:",
+                "https://support.discord.com/hc/en-us/articles/360045138571-Beginner-s-Guide-to-Discord",
+                "Co to jsou vlákna a jak fungují?",
+                "https://support.discord.com/hc/en-us/articles/4403205878423-Threads-FAQ",
+                "Jak vypnu notifikace konkrétní místnosti?",
+                "https://support.discord.com/hc/en-us/articles/209791877-How-do-I-mute-and-disable-notifications-for-specific-channels-",
                 "",
                 "**Enjoy!**"
             ]

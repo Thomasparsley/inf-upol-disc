@@ -1,0 +1,122 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+    .discord-inf-upol {
+        max-width: 520px;
+
+        padding: 0 10px;
+        padding-top: 1px;
+        margin: 0 auto;
+
+        font-family: 'Nunito', sans-serif;
+    }
+
+    .discord-inf-upol .image {
+        width: 100%;
+        height: 300px;
+
+        object-fit: contain;
+    }
+
+    .discord-inf-upol p {
+        margin: 0;
+    }
+
+    .discord-inf-upol .mb {
+        margin-bottom: 16px;
+    }
+
+    .discord-inf-upol .mb-2 {
+        margin-bottom: 32px;
+    }
+
+    .discord-inf-upol .text-center {
+        text-align: center;
+    }
+
+    .discord-inf-upol .header h1 {
+        margin: 0;
+
+        color: #3b3b3b;
+        font-size: 1.6rem;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .discord-inf-upol .code {
+        display: flex;
+    }
+
+    .discord-inf-upol .code>div {
+        margin: 0 auto;
+    }
+
+    .discord-inf-upol .code span {
+        padding: 8px 16px;
+        margin-right: 8px;
+
+        color: white;
+        font-size: 2rem;
+        font-weight: bold;
+
+        background-color: #016bab;
+        border: solid 2px #00598e;
+        border-radius: 10px;
+    }
+
+    .discord-inf-upol .code span:last-child {
+        margin-right: 0;
+    }
+
+    .discord-inf-upol .role {
+        padding: 0 3px;
+        border-radius: 3px;
+
+        color: #1f8b4c;
+        background-color: rgba(31, 139, 76, 0.15);
+    }
+
+    .discord-inf-upol .role:hover {
+        background-color: rgba(31, 139, 76, 0.3);
+    }
+</style>
+
+<div style="padding: 25px 0;">
+    <div class="discord-inf-upol">
+        <img class="image"
+            src="https://raw.githubusercontent.com/Thomasparsley/inf-upol-disc/main/graphics/Email%20verification%20cover%403x.png">
+
+        <div class="mb-2">
+            <h1>
+                Verifikační klíč pro aktivaci role <span class="role">@Student</span> na Discordu - Katedra
+                informatiky | UP
+            </h1>
+        </div>
+
+        <div class="mb-2">
+            <div class="mb-2">
+                <p class="text mb">
+                    Vaším posledním krokem pro ověření, že jste studentem katedry informatiky,
+                    je zadání verifikační klíče do formuláře. Ten se zobrazí po kliknutí na
+                    tlačítko "TLAČÍTKO", které se nachází v odpovědi při zažádání o roli
+                    <span class="role">@Student</span>.
+                </p>
+            </div>
+
+            <div class="code">
+                <div>
+                    {{#each code}}
+                    <span>{{this}}</span>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p class="text">
+                Vítej u nás a bav se!
+                Pokud jste nezažádali o verifikaci, tento email ignorujte.
+            </p>
+        </div class="footer">
+    </div>
+</div>

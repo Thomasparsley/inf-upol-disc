@@ -64,10 +64,16 @@ const {
     await DatabaseSource.initialize()
     const mailer = new Mailer(
         MAILER_HOST,
+<<<<<<< HEAD
         MAILER_PORT.toInt(),
         "\"Discord Katedry Informatiky\" <discord@inf.upol.cz>",
         false,
         "discord@inf.upol.cz",
+=======
+        parseInt(MAILER_PORT),
+        `"Discord Katedry Informatiky" <discord@inf.upol.cz>`,
+        "discord",
+>>>>>>> main
         MAILER_PASS,
     )
 
