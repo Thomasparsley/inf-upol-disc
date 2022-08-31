@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
+/* import { SlashCommandBuilder } from "@discordjs/builders";
 
 import { BadInputForChatCommandError } from "../errors";
 import { VOC_ActionSuccessful } from "../vocabulary";
@@ -82,4 +82,4 @@ export const reactionMessage = new ChatInputCommand(
 
         await replySilent(VOC_ActionSuccessful);
     },
-);
+); */

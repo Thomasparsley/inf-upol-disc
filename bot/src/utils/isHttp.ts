@@ -1,10 +1,10 @@
 export function isHttpUrl(string: string): boolean {
-    let url;
+    let url
     try {
-        url = new URL(string);
+        url = new URL(string)
     } catch (_) {
-        return false;
+        return false
     }
 
-    return url.protocol === "http:" || url.protocol === "https:";
+    return url.protocol === "http:" || url.protocol === "https:"
 }

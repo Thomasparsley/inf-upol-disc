@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
+/* import { SlashCommandBuilder } from "@discordjs/builders";
 import { GuildMemberRoleManager, Role } from "discord.js";
 
 import { VOC_RoleAdded, VOC_RoleRemoved } from "../vocabulary";
@@ -47,4 +47,4 @@ export const roleCommand = new ChatInputCommand(
             await replySilent(VOC_RoleRemoved(role));
         }
     },
-);
+); */

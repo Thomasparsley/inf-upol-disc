@@ -4,16 +4,18 @@ import {
     BaseEntity,
     Entity,
     Column,
-} from "typeorm";
+} from "typeorm"
 
+/* eslint-disable */
 @Entity()
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id!: number;
+    id!: number
 
     @Column("varchar", { length: 320 })
-    email!: number;
+    email!: number
 
     @CreateDateColumn()
-    createdAt!: Date;
+    createdAt!: Date
 }
+/* eslint-enable */

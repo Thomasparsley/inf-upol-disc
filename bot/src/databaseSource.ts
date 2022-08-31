@@ -1,12 +1,12 @@
-import "reflect-metadata";
+import "reflect-metadata"
 
-import { DataSource } from "typeorm";
+import { DataSource } from "typeorm"
 
-import { 
+import {
     Validation,
     Error,
     User
-} from "./models";
+} from "./models"
 
 const {
     DATABASE_HOST,
@@ -14,7 +14,7 @@ const {
     DATABASE_USERNAME,
     DATABASE_PASSWORD,
     DATABASE_NAME,
-} = process.env;
+} = process.env
 
 export const DatabaseSource = new DataSource({
     type: "postgres",
@@ -30,4 +30,4 @@ export const DatabaseSource = new DataSource({
     ],
     synchronize: true,
     logging: false,
-});
+})

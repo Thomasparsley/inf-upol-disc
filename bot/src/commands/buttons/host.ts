@@ -1,32 +1,28 @@
-import { GuildMemberRoleManager } from "discord.js";
-import { ButtonCommand } from "../../command";
-import { RoleIds } from "../../enums";
+import { ButtonCommand } from "../../command"
 
-export const hostFirewallButtonComamand = new ButtonCommand(
-    "btnHost",
-    "Přidělí roli @host",
-    async ({ interaction, replySilent, hasRole, getGuild }) => {
+export class HostFirewallButtonComamand extends ButtonCommand {
+    name = "btnHost"
 
-        if (hasRole("Student")) {
-            await replySilent("Student nemůže být hostem.");
-            return;
+    async executable(): Promise<void> {
+        if (this.hasRole("Student")) {
+            await this.replySilent("Student nemůže být hostem.")
+            return
         }
-        if (hasRole("Katedra")) {
-            await replySilent("Jelikož jste součástí Katedry, nemůžete být hostem.");
-            return;
+        if (this.hasRole("Katedra")) {
+            await this.replySilent("Jelikož jste součástí Katedry, nemůžete být hostem.")
+            return
         }
 
-        const roles = (interaction.member?.roles as GuildMemberRoleManager);
-        const hostRole = await getGuild().roles.fetch(RoleIds["Návštěva"])
-        if (!hostRole)
-            return;
+        const roleHost = await this.guild().roles.fetch(this.getRoleID("Návštěva"))
+        if (!roleHost)
+            return
 
-        if (!roles.cache.has(hostRole.id)) {
-            await roles.add(hostRole.id);
-            await replySilent(`Děkujeme, že máte zájem navštívit náš server! Role ${hostRole} Vám byla přidělena.`);
+        if (!this.hasRole("Návštěva")) {
+            await this.addRole("Návštěva")
+            await this.replySilent(`Děkujeme, že máte zájem navštívit náš server! Role ${roleHost} Vám byla přidělena.`)
         } else {
-            await roles.remove(hostRole.id);
-            await replySilent(`Děkujeme, že jste navštívili náš server! Role ${hostRole} Vám byla odebrána.`);
+            await this.removeRole("Návštěva")
+            await this.replySilent(`Děkujeme, že jste navštívili náš server! Role ${roleHost} Vám byla odebrána.`)
         }
-    },
-);
+    }
+}
