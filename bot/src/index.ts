@@ -66,8 +66,7 @@ const {
         MAILER_HOST,
         parseInt(MAILER_PORT),
         `"Discord Katedry Informatiky" <discord@inf.upol.cz>`,
-        false,
-        "discord@inf.upol.cz",
+        "discord",
         MAILER_PASS,
     );
 
