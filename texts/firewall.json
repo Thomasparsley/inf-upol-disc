@@ -48,14 +48,14 @@
             "id": "1008779106680328324",
             "content": [
                 "⠀",
-                "<role>Katedra</role> - učitel nebo doktorand naší katedry",
+                "<role>Katedra</role> - učitel naší katedry",
                 "Pro přidělení této role kontaktujte libovolného uživatele s rolí <role>Katedra</role> nebo <role>Root</role>."
             ],
             "components": {
                 "buttons": [
                     {
                         "id": "bntDepartment",
-                        "label": "Jsem z katedry",
+                        "label": "Jsem učitel",
                         "style": "Danger"
                     }
                 ]
@@ -68,5 +68,5 @@
                 "_Použitím následujících tlačítek souhlasíte se zpracováním Vašich osobních/školních údajů a s pravidly serveru. (školní email)_"
             ]
         }
-    ] 
+    ]
 }
