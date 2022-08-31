@@ -20,10 +20,6 @@ export class Mailer {
                 user: username,
                 pass: password,
             },
-            authMethod: ",",
-            tls: {
-                rejectUnauthorized: false,
-            },
             tls: {
                 rejectUnauthorized: false,
             },

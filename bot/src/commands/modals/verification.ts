@@ -13,11 +13,13 @@ import {
     UnknownUpolEmailError,
 } from "../../errors";
 
+
 export class VerificationModalCommand extends ModalCommand {
     name = "verificationStudentModal"
 
     protected async executable(): Promise<void> {
         const email = this.interaction.fields.getTextInputValue("verificationStudentUpolEmail")
+
         // validace emailu
         if (email === null || !isValidateEmail(email))
             throw new InvalidEmailFormatError(email as string)
