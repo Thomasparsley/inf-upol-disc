@@ -20,7 +20,8 @@ import {
     AddRoleDropdownCommand,
     MessageManagerCommand,
     EveryoneRequestCommand,
-    QuoteRequestChatCommnad
+    QuoteRequestChatCommnad,
+    AddRoleOnlyStudentDropdownCommand
 } from "./commands"
 
 import { Mailer } from "./mailer"
@@ -83,22 +84,23 @@ const {
             onReactionRemove: onReactionRemove,
             onInteractionCreate: onInteractionCreate,
             chatInputCommands: [
-                new PhdRoleManagerCommand(),
-                new DepartmentRoleManagerCommand(),
-                new MessageManagerCommand(),
-                new EveryoneRequestCommand(),
-                new QuoteRequestChatCommnad(),
+                PhdRoleManagerCommand,
+                DepartmentRoleManagerCommand,
+                MessageManagerCommand,
+                EveryoneRequestCommand,
+                QuoteRequestChatCommnad,
             ],
             buttonCommands: [
-                new HostFirewallButtonComamand(),
-                new DepartmentFirewallButtonComamand(),
-                new VerificationFirewallButtonComamand(),
+                HostFirewallButtonComamand,
+                DepartmentFirewallButtonComamand,
+                VerificationFirewallButtonComamand,
             ],
             dropdownCommands: [
-                new AddRoleDropdownCommand(),
+                AddRoleDropdownCommand,
+                AddRoleOnlyStudentDropdownCommand,
             ],
             modalCommands: [
-                verificationModalCommand,
+                /* verificationModalCommand, */
             ]
         })
 

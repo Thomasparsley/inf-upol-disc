@@ -22,6 +22,16 @@ import { RoleIds } from "./enums"
 import { Mailer } from "./mailer"
 
 
+export interface ICommand<T> {
+    new(): T;
+}
+
+export interface IDropdownCommand<T> {
+    new(flag?: string): T;
+}
+
+export type CommandMaker<T> = ICommand<T> | IDropdownCommand<T>
+
 class Command {
     name!: string
     description!: string
@@ -201,7 +211,7 @@ export class ButtonCommand extends InteractionCommand<ButtonInteraction<CacheTyp
 export class ModalCommand extends InteractionCommand<ModalSubmitInteraction<CacheType>> { }
 
 export class DropdownCommand extends InteractionCommand<SelectMenuInteraction<CacheType>> {
-    description: string = ""
+    constructor(public flag?: string) { super() }
 
-    flag?: string
+    description: string = ""
 }

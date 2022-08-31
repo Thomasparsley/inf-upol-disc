@@ -13,7 +13,9 @@ import {
     ChatInputCommand,
     ButtonCommand,
     ModalCommand,
-    DropdownCommand
+    DropdownCommand,
+    ICommand,
+    IDropdownCommand
 } from "./command"
 import { Mailer } from "./mailer"
 import {
@@ -35,10 +37,10 @@ const REST_VERSION = "10"
 export class Bot {
     client: Client
     rest: REST
-    chatInputCommands = new Map<string, ChatInputCommand>()
-    buttonCommands = new Map<string, ButtonCommand>()
-    modalCommands = new Map<string, ModalCommand>()
-    dropdownCommands = new Map<string, DropdownCommand>()
+    chatInputCommands = new Map<string, ICommand<ChatInputCommand>>()
+    buttonCommands = new Map<string, ICommand<ButtonCommand>>()
+    modalCommands = new Map<string, ICommand<ModalCommand>>()
+    dropdownCommands = new Map<string, IDropdownCommand<DropdownCommand>>()
     reactionMessages = new Map<Message, Map<String, Role>>()
     private async onReady(args: OnReadyArgs): Promise<void> {
         throw new Error("Event 'onReady' is not implementet")
@@ -118,7 +120,6 @@ export class Bot {
         this.client.on("ready", async () => {
             const args: OnReadyArgs = {
                 client: this.client,
-                commands: this.chatInputCommands,
                 db: this.db,
             }
 
@@ -165,7 +166,6 @@ export class Bot {
                 client: this.client,
                 reaction: messageReaction,
                 user: user,
-                commands: this.chatInputCommands,
                 db: this.db,
             }
 
@@ -183,7 +183,6 @@ export class Bot {
                 client: this.client,
                 reaction: messageReaction,
                 user: user,
-                commands: this.chatInputCommands,
                 db: this.db,
             }
 
@@ -195,27 +194,31 @@ export class Bot {
         })
     }
 
-    private initChatInputCommands(commands: ChatInputCommand[]) {
+    private initChatInputCommands(commands: ICommand<ChatInputCommand>[]) {
         commands.forEach((command) => {
-            this.chatInputCommands.set(command.name, command)
+            const cmd = new command()
+            this.chatInputCommands.set(cmd.name, command)
         })
     }
 
-    private initButtonCommands(commands: ButtonCommand[]) {
+    private initButtonCommands(commands: ICommand<ButtonCommand>[]) {
         commands.forEach((command) => {
-            this.buttonCommands.set(command.name, command)
+            const cmd = new command()
+            this.buttonCommands.set(cmd.name, command)
         })
     }
 
-    private initModalCommands(commands: ModalCommand[]) {
+    private initModalCommands(commands: ICommand<ModalCommand>[]) {
         commands.forEach((command) => {
-            this.modalCommands.set(command.name, command)
+            const cmd = new command()
+            this.modalCommands.set(cmd.name, command)
         })
     }
 
-    private initDropdownCommands(commands: DropdownCommand[]) {
+    private initDropdownCommands(commands: IDropdownCommand<DropdownCommand>[]) {
         commands.forEach((command) => {
-            this.dropdownCommands.set(command.name, command)
+            const cmd = new command()
+            this.dropdownCommands.set(cmd.name, command)
         })
     }
 
@@ -227,9 +230,10 @@ export class Bot {
         this.isLogedIn = true
     }
 
-    private async registerChatInputCommands(commands: ChatInputCommand[], path: any) {
+    private async registerChatInputCommands(commands: ICommand<ChatInputCommand>[], path: any) {
         const slashCommands = commands.map((command) => {
-            return command.builder.toJSON()
+            const cmd = new command()
+            return cmd.builder.toJSON()
         })
 
         try {
@@ -239,12 +243,12 @@ export class Bot {
         }
     }
 
-    public async registerChatInputGuildCommands(commands: ChatInputCommand[]) {
+    public async registerChatInputGuildCommands(commands: ICommand<ChatInputCommand>[]) {
         const path = Routes.applicationGuildCommands(this.applicationId, this.guildId)
         this.registerChatInputCommands(commands, path)
     }
 
-    public async registerChatInputGlobalCommands(commands: ChatInputCommand[]) {
+    public async registerChatInputGlobalCommands(commands: ICommand<ChatInputCommand>[]) {
         const path = Routes.applicationCommands(this.applicationId)
         this.registerChatInputCommands(commands, path)
     }

@@ -1,6 +1,6 @@
 import axios from "axios"
 import { OnReadyAction } from "../types"
-import { MenzaDataResponse, MenzaMeal } from "../interfaces"
+import { MenzaDataResponse } from "../interfaces"
 import { CronJob } from "cron"
 
 const event: OnReadyAction = async ({ client }) => {

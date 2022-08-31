@@ -1,5 +1,4 @@
 export * from "./botConfig"
-export * from "./commandArgs"
 export * from "./menza"
 export * from "./message"
 export * from "./onGuildMemberAddArgs"

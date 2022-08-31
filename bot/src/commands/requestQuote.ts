@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders"
 import { TextChannel } from "discord.js"
 
 import { VOC_QuoteRequest, VOC_RequestSended } from "../vocabulary"
-import { BadInputForChatCommandError, UnauthorizedError } from "../errors"
+import { UnauthorizedError } from "../errors"
 import { CD_QuoteRequest as cd } from "../cd"
 import { ChatInputCommand } from "../command"
 

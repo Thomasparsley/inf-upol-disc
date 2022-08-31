@@ -2,30 +2,43 @@ import { CacheType, Interaction } from "discord.js"
 
 import { OnInteractionCreateArgs } from "../interfaces"
 import { UnknownCommandError } from "../errors"
-import { DropdownCommand, InteractionCommand } from "../command"
+import { InteractionCommand } from "../command"
 
 async function event(args: OnInteractionCreateArgs) {
     const { client, interaction, mailer, commands, buttons, modals, dropdown } = args
-
     let command: InteractionCommand<Interaction<CacheType>> | undefined
+
     if (interaction.isButton()) {
-        command = buttons.get(interaction.customId)
+        const commandMaker = buttons.get(interaction.customId)
+
+        if (commandMaker)
+            command = new commandMaker()
+
     } else if (interaction.isModalSubmit()) {
-        command = modals.get(interaction.customId)
+        const commandMaker = modals.get(interaction.customId)
+
+        if (commandMaker)
+            command = new commandMaker()
+
     } else if (interaction.isSelectMenu()) {
         const splited = interaction.customId.split("-")
         const customId = splited[0]
         const flag = splited[1]
 
-        command = dropdown.get(customId);
-        (command as DropdownCommand).flag = flag
+        const commandMaker = dropdown.get(customId)
+        if (commandMaker)
+            command = new commandMaker(flag)
+
     } else if (interaction.isChatInputCommand()) {
-        command = commands.get(interaction.commandName)
+        const commandMaker = commands.get(interaction.commandName)
+
+        if (commandMaker)
+            command = new commandMaker()
     }
 
-
-    if (!command)
+    if (!command) {
         throw new UnknownCommandError()
+    }
 
     await command.execute(client, mailer, interaction)
 }
