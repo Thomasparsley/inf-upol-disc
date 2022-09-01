@@ -141,20 +141,46 @@ export class InteractionCommand<T extends Interaction> extends Command {
         return allowedRoles.some((roleName) => this.hasRole(roleName))
     }
 
+    protected async addRolesByID(rolesID: string[]): Promise<void> {
+        await this.getMemberRoleManager().add(rolesID)
+    }
+
     protected async addRoleByID(roleID: string): Promise<void> {
-        await this.getMemberRoleManager().add(roleID)
+        await this.addRolesByID([roleID])
+    }
+
+    protected async addRoles(roleNames: RoleName[]): Promise<void> {
+        const ids: string[] = []
+
+        for (const roleName of roleNames)
+            ids.push(this.getRoleID(roleName))
+
+        await this.addRolesByID(ids)
     }
 
     protected async addRole(roleName: RoleName): Promise<void> {
-        await this.addRoleByID(this.getRoleID(roleName))
+        await this.addRoles([roleName])
+    }
+
+    protected async removeRolesByID(rolesID: string[]): Promise<void> {
+        await this.getMemberRoleManager().remove(rolesID)
     }
 
     protected async removeRoleByID(roleID: string): Promise<void> {
-        await this.getMemberRoleManager().remove(roleID)
+        await this.removeRolesByID([roleID])
+    }
+
+    protected async removeRoles(roleNames: RoleName[]): Promise<void> {
+        const ids: string[] = []
+
+        for (const roleName of roleNames)
+            ids.push(this.getRoleID(roleName))
+
+        await this.removeRolesByID(ids)
     }
 
     protected async removeRole(roleName: RoleName): Promise<void> {
-        await this.removeRoleByID(this.getRoleID(roleName))
+        await this.removeRoles([roleName])
     }
 
     protected permissionRolesCount(predicate: Function): boolean {

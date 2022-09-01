@@ -4,7 +4,7 @@ import { OnInteractionCreateArgs } from "../interfaces"
 import { UnknownCommandError } from "../errors"
 import { InteractionCommand } from "../command"
 
-async function event(args: OnInteractionCreateArgs) {
+export async function onInteractionCreate(args: OnInteractionCreateArgs) {
     const { client, interaction, mailer, commands, buttons, modals, dropdown } = args
     let command: InteractionCommand<Interaction<CacheType>> | undefined
 
@@ -42,5 +42,3 @@ async function event(args: OnInteractionCreateArgs) {
 
     await command.execute(client, mailer, interaction)
 }
-
-export default event

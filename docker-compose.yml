@@ -26,10 +26,12 @@ services:
       context: ./
       dockerfile: ./bot/Dockerfile
     environment:
-      TOKEN: ""
-      APPLICATION_ID: ""
-      GUILD_ID: ""
-      MAILER_PASS: ""
+      TOKEN: "OTYwNTk2OTU0Mzk0NTUwMzcy.G0QGFL.SGL4Z1Av0K8-h3c2uW-O5YFLNDawyS7SX6XCV4"
+      APPLICATION_ID: "960596954394550372"
+      GUILD_ID: "960452395312234536"
+      MAILER_HOST: "mail.inf.upol.cz"
+      MAILER_PORT: "25"
+      MAILER_PASS: "Rib[Bodov0"
       DATABASE_HOST: "database"
       DATABASE_PORT: "5432"
       DATABASE_USERNAME: "root"

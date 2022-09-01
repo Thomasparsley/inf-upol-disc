@@ -1,7 +1,5 @@
-import { onReactionAddAction } from "../types"
+import { OnReactionAddAction } from "../types"
 
-const event: onReactionAddAction = async ({ reaction, user }) => {
+export const onReactionAdd: OnReactionAddAction = async ({ reaction, user }) => {
     console.log(`${user.username} použil reakci ${reaction.emoji}!`)
 }
-
-export default event
