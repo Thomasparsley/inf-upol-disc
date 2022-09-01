@@ -13,6 +13,10 @@ import {
     Client,
     Guild,
     NonThreadGuildBasedChannel,
+    MessagePayload,
+    InteractionReplyOptions,
+    ButtonBuilder,
+    ActionRowBuilder,
 } from "discord.js"
 
 import { InvalidChannel, InvalidGuild, UnauthorizedError, UnrepliableInteractionError } from "./errors"
@@ -28,6 +32,12 @@ export interface ICommand<T> {
 
 export interface IDropdownCommand<T> {
     new(flag?: string): T;
+}
+
+interface IReply {
+    content: string
+    silent: boolean
+    component?: any
 }
 
 class Command {
@@ -65,22 +75,43 @@ export class InteractionCommand<T extends Interaction> extends Command {
         }
     }
 
-    protected async sendReply(content: string, silent: boolean) {
-        if (this.interaction.isRepliable())
+    protected async sendReply(options: IReply) {
+        if (this.interaction.isRepliable()) {
+            const rows: any[] = []
+
+            if (options.component)
+                rows.push(new ActionRowBuilder().addComponents(options.component))
+
             return await this.interaction.reply({
-                content,
-                ephemeral: silent,
+                content: options.content,
+                ephemeral: options.silent,
+                components: rows,
             })
+        }
 
         throw new UnrepliableInteractionError()
     }
 
     protected async reply(content: string) {
-        return await this.sendReply(content, false)
+        return await this.sendReply({
+            content,
+            silent: false,
+        })
     }
 
     protected async replySilent(content: string) {
-        return await this.sendReply(content, true)
+        return await this.sendReply({
+            content,
+            silent: true,
+        })
+    }
+
+    protected async replySilentWithButton(content: string, btn: ButtonBuilder) {
+        return await this.sendReply({
+            content,
+            silent: true,
+            component: btn,
+        })
     }
 
     protected getRoleID(roleName: RoleName): string {

@@ -141,7 +141,16 @@ export class Bot {
                 commandRegistration: this.registerChatInputGuildCommands,
             }
 
-            await this.onInteractionCreate(args)
+            try {
+                await this.onInteractionCreate(args)
+            } catch (error) {
+                if (interaction.isRepliable()) {
+                    await interaction.reply({
+                        content: `Error: ${error}`,
+                        ephemeral: true,
+                    })
+                }
+            }
         })
     }
 

@@ -39,7 +39,14 @@ export class AddRoleManagerDropdownCommand extends DropdownCommand {
             }
         }
 
-        await this.replySilent(`Role ${addedRoles} Vám byli přideleny`)
-        await this.replySilent(`Role ${removedRoles} Vám byli odebrány`)
+        if (addedRoles.length > 0 && removedRoles.length > 0) {
+            await this.replySilent(`Role ${addedRoles} Vám byli přideleny. Role ${removedRoles} Vám byli odebrány.`)
+        } else if (addedRoles.length > 0) {
+            await this.replySilent(`Role ${addedRoles} Vám byli přideleny.`)
+        } else if (removedRoles.length > 0) {
+            await this.replySilent(`Role ${removedRoles} Vám byli odebrány`)
+        } else {
+            await this.replySilent(`K žádným změnám nedošlo`)
+        }
     }
 }

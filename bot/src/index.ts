@@ -26,6 +26,8 @@ import {
 } from "./commands"
 
 import { Mailer } from "./mailer"
+import { VerificationCodeButtonComamand } from "./commands/buttons/verificationCode"
+import { VerificationCodeModalCommand } from "./commands/modals/verificationCode"
 
 
 const {
@@ -94,13 +96,15 @@ const {
                 HostFirewallButtonComamand,
                 DepartmentFirewallButtonComamand,
                 VerificationFirewallButtonComamand,
+                VerificationCodeButtonComamand,
             ],
             dropdownCommands: [
                 AddRoleDropdownCommand,
                 AddRoleOnlyStudentDropdownCommand,
             ],
             modalCommands: [
-                VerificationModalCommand
+                VerificationModalCommand,
+                VerificationCodeModalCommand,
             ]
         })
 
