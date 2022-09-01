@@ -7,18 +7,25 @@
                 "**Vítáme Tě na oficiálním discord serveru Katedry informatiky UP. **",
                 "Dříve, než začneš na serveru fungovat, jdi do místnosti <channel>firewall</channel>, kde podle návodu ověříš svůj účet. Bez, tohoto kroku ti nebudou zpřístupněny žádné funkce. Poté navštiv místnost <channel>role</channel> a podle návodu si nastav role tak, aby se ti zpřístupnili místnosti a ostatní funkce. Server máme rozdělen na několik kategorií.",
                 "",
+                "",
                 "**SERVER**",
                 " - V této kategorii najdeš veškeré základní informace ohledně fungování serveru. Nejdůležitější místnosti zde jsou <channel>oznámení-a-novinky</channel>a místnost <channel>návrhy-a-připomínky</channel>, která slouží jako zpětná vazba pro vylepšení serveru.",
+                "",
                 "**GENERAL**",
                 " - Hlavní kategorie serveru. Najdeš zde #general (hlavní chat), <channel>memes</channel>, <channel>dotazy</channel> k fungování discordu a serveru, <channel>citáty</channel> učitelů.",
+                "",
                 "**INFORMAČNÍ TABULE**",
                 " - Místnosti s aktualitami, novinkami a různými aktivitami spojenými s katedrou.",
+                "",
                 "**KATEDRA**",
                 " - Soukromá kategorie pro doktorandy a zaměstnance katedry.",
+                "",
                 "**HLASOVÉ KANÁLY**",
                 " - Hlasové místnosti pro hlasovou komunikaci s tvými kamarády.",
+                "",
                 "**STUDIUM**",
                 " - Tady najdeš veškeré věci týkající se studia, dále místnosti pro bakalářské a diplomové práce, <channel>rozvrhy</channel> pro dotazy k rozvrhům a výměně předmětů s ostatními studenty.",
+                "",
                 "**TECHNOLOGIE**",
                 " - Diskuzní místnosti týkajících daných technologií. Pokud máš nějaký technický dotaz nebo zajímavost, piš sem. Dotazy přímo ke konkrétnímu předmětům piš do místnosti pro daný předmět, který patří do kategoríí ZIMNÍ/LETNÍ SEMESTR nebo PROGRAMOVACÍ JAZYKY.",
                 "**ZÁBAVA**",
@@ -26,13 +33,14 @@
                 "**BOT**",
                 " - Kategorie pro našeho bota.",
                 "**PROGRAMOVACÍ JAZYKY, ZIMNÍ SEMESTR, LETNÍ SEMESTR**",
-                " - Do těchto místností mají přístup pouze <role>Student</role>. Podrobné informace k těmto kategoriím najdeš v místnosti <channel>role</channel>."
+                " - Do těchto místností mají přístup pouze <role>Student</role>. Podrobné informace k těmto kategoriím najdeš v místnosti <channel>role</channel>.",
+                "⠀",
+                "⠀"
             ]
         },
         {
             "id": "1008780560325423175",
             "content": [
-                "⠀",
                 "**Pravidla**",
                 "1. Zákaz nesmyslného tagování rolí. ",
                 "2. Není povoleno jakékoliv fake news.",
@@ -47,7 +55,8 @@
                 "12. Pokud si všimnete jakéhokoliv porušení pravidel informuj jednoho z našich <role>Moderátor</role> nebo <role>Root</role>.",
                 "",
                 "Spolu s těmito pravidly také souhlasíte s pravidly discordu, které naleznete na discord.com.",
-                "**Neznalost pravidel se neomlouvá.**"
+                "**Neznalost pravidel se neomlouvá.**",
+                "⠀"
             ]
         },
         {

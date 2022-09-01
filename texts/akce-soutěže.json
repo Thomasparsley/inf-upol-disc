@@ -1,0 +1,30 @@
+{
+    "channelID": "960459476119482390",
+    "messages": [
+        {
+            "id": "1014809706029666324",
+            "content": [
+                "Formát pro přidávání akcí:",
+                "Název Vaší události",
+                "Popisek akce. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada. Nullam eget nisl. Praesent dapibus. Donec iaculis gravida nulla. Ut tempus purus at lorem. Nunc dapibus tortor vel mi dapibus sollicitudin. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Etiam posuere lacus quis dolor. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Suspendisse nisl. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Quisque porta. Integer tempor. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat. Integer vulputate sem a nibh rutrum consequat.",
+                "",
+                "Kdy: datum akce",
+                "Kde: místo konání",
+                "*volitelný obrázek*"
+            ]
+        },
+        {
+            "id": "1014809736144769125",
+            "content": [
+                "⠀",
+                "Formát pro přidávání soutěží:",
+                "Název Vaší soutěže",
+                "Popisek soutěže. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie malesuada. Nullam eget nisl. Praesent dapibus. Donec iaculis gravida nulla. Ut tempus purus at lorem. Nunc dapibus tortor vel mi dapibus sollicitudin. Curabitur ligula sapien, pulvinar a vestibulum quis, facilisis vel sapien. Etiam posuere lacus quis dolor. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Suspendisse nisl. Nullam justo enim, consectetuer nec, ullamcorper ac, vestibulum in, elit. Vestibulum erat nulla, ullamcorper nec, rutrum non, nonummy ac, erat. Quisque porta. Integer tempor. Fusce tellus odio, dapibus id fermentum quis, suscipit id erat. Integer vulputate sem a nibh rutrum consequat.",
+                "",
+                "Kdy: datum soutěže",
+                "Kde: místo konání",
+                "*volitelný obrázek*"
+            ]
+        }
+    ]
+}
