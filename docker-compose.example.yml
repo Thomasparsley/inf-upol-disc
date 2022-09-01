@@ -19,12 +19,10 @@ services:
       placement:
         max_replicas_per_node: 2
     restart: always
-
+      
   discord-bot-service:
     container_name: discord-bot
-    build:
-      context: ./
-      dockerfile: ./bot/Dockerfile
+    image: ghcr.io/thomasparsley/inf-upol-disc/inf_upol_discord-bot:release
     environment:
       TOKEN: ""
       APPLICATION_ID: ""
@@ -47,9 +45,7 @@ services:
 
   menza-service:
     container_name: menza
-    build:
-      context: ./menza
-      dockerfile: ./Dockerfile
+    image: ghcr.io/thomasparsley/inf-upol-disc/inf_upol_menza:release
     expose:
       - "8000"
     deploy:
@@ -57,3 +53,4 @@ services:
       placement:
         max_replicas_per_node: 2
     restart: always
+
