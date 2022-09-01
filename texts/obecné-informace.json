@@ -33,14 +33,14 @@
                 "**BOT**",
                 " - Kategorie pro našeho bota.",
                 "**PROGRAMOVACÍ JAZYKY, ZIMNÍ SEMESTR, LETNÍ SEMESTR**",
-                " - Do těchto místností mají přístup pouze <role>Student</role>. Podrobné informace k těmto kategoriím najdeš v místnosti <channel>role</channel>.",
-                "⠀",
-                "⠀"
+                " - Do těchto místností mají přístup pouze <role>Student</role>. Podrobné informace k těmto kategoriím najdeš v místnosti <channel>role</channel>."
             ]
         },
         {
             "id": "1008780560325423175",
             "content": [
+                "⠀",
+                "⠀",
                 "**Pravidla**",
                 "1. Zákaz nesmyslného tagování rolí. ",
                 "2. Není povoleno jakékoliv fake news.",
@@ -55,13 +55,13 @@
                 "12. Pokud si všimnete jakéhokoliv porušení pravidel informuj jednoho z našich <role>Moderátor</role> nebo <role>Root</role>.",
                 "",
                 "Spolu s těmito pravidly také souhlasíte s pravidly discordu, které naleznete na discord.com.",
-                "**Neznalost pravidel se neomlouvá.**",
-                "⠀"
+                "**Neznalost pravidel se neomlouvá.**"
             ]
         },
         {
             "id": "1008780575965970562",
             "content": [
+                "⠀",
                 "**Tipy a příkazy**",
                 "",
                 "**Tipy**",

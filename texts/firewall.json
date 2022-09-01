@@ -7,14 +7,12 @@
                 "V této místnosti si ověříš svůj účet. Můžeš zažádat jednu z rolí <role>Student</role> ,<role>Návštěva</role> nebo <role>Katedra</role>.",
                 "",
                 "**Postup při žádosti o jednotlivé role:**",
-                "⠀"
             ]
         },
         {
             "id": "1008779057917345862",
             "content": [
-                "<role>Návštěva</role> - pokud jsi přišel jen na návštěvu nebo nejsi student naší katedry, klikni na tlačítko **\"Jsem návštěvník\"**. Následně se ti přidá nebo odstraní role <role>Návštěva</role>.",
-                "⠀"
+                "<role>Návštěva</role> - pokud jsi přišel jen na návštěvu nebo nejsi student naší katedry, klikni na tlačítko **\"Jsem návštěvník\"**. Následně se ti přidá nebo odstraní role <role>Návštěva</role>."
             ],
             "components": {
                 "buttons": [
@@ -29,11 +27,11 @@
         {
             "id": "1008779079270535198",
             "content": [
+                "⠀",
                 "<role>Student</role> - student katedry informatiky",
                 "1. Klikni na tlačítko **\"Jsem student\"**.",
-                "2. Do kolonky email zadej tvůj univerzitní email v úplném tvaru **jmeno.prijmeniXX@upol.cz** a zašli formulář.",
-                "3. Na zadaný email přijde ověřovací URL odkaz, kterým ověříš svůj účet.",
-                "⠀"
+                "2. Do kolonky email zadej tvůj univerzitní email v úplném tvaru **jmeno.prijmeniXX@upol.cz** a zašli formulář. př. tomas.marny01@upol.cz",
+                "3. Na zadaný email přijde ověřovací URL odkaz, kterým ověříš svůj účet."
             ],
             "components": {
                 "buttons": [
@@ -48,9 +46,9 @@
         {
             "id": "1008779106680328324",
             "content": [
+                "⠀",
                 "<role>Katedra</role> - učitel naší katedry",
-                "Pro přidělení této role kontaktujte libovolného uživatele s rolí <role>Katedra</role> nebo <role>Root</role>.",
-                "⠀"
+                "Pro přidělení této role kontaktujte libovolného uživatele s rolí <role>Katedra</role> nebo <role>Root</role>."
             ],
             "components": {
                 "buttons": [
@@ -65,6 +63,7 @@
         {
             "id": "1008779124032147558",
             "content": [
+                "⠀",
                 "_Použitím těchto tlačítek souhlasíte se zpracováním Vašich osobních/školních údajů a s pravidly serveru. (školní email)_"
             ]
         }

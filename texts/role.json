@@ -5,20 +5,19 @@
             "id": "964816468346822666",
             "content": [
                 "**Výběr rolí**",
-                "V této místnosti si můžeš vybrat role. Role ti zpřístupní mnoho funkcí, umožní ti vstup do speciálních místností a zobrazí se ti na profilu, takže každý ví co tě zajímá. Pro výber role stačí zakliknout příslušné role v \"dropdown menu\", který je vždy pod výpisem možností.",
-                "⠀"
+                "V této místnosti si můžeš vybrat role. Role ti zpřístupní mnoho funkcí, umožní ti vstup do speciálních místností a zobrazí se ti na profilu, takže každý ví co tě zajímá. Pro výber role stačí zakliknout příslušné role v \"dropdown menu\", který je vždy pod výpisem možností."
             ]
         },
         {
             "id": "964816519647342632",
             "content": [
+                "⠀",
                 "**Výběr oborů**",
                 "Nejprve si vyber obor, který tě zajímá. Po výběru oboru se ti zobrazí, v kategorii letní semestr a zimní semestr, všechny místnosti s povinnými předměty (A) pro daný obor za celé studium. Volba je volná, takže si klidně můžeš vybrat všechny obory.",
                 "",
                 "(Role <role>Bc. Informatika</role> přidělí předměty jen z prvního ročníku. Poté je nutné vybrat specializaci.)",
                 "",
-                "**Na výber máme obory:**",
-                "⠀"
+                "**Na výber máme obory:**"
             ],
             "components": {
                 "dropdowns": [
@@ -48,11 +47,11 @@
         {
             "id": "964817512942419998",
             "content": [
+                "⠀",
                 "**Speciální role**",
                 "Chceš dostávat info o novinkách nebo pivních srazech? Po výběru role budeš dostávat upozornění na tagy této role.",
                 "",
-                "**Na výběr máme:**",
-                "⠀"
+                "**Na výběr máme:**"
             ],
             "components": {
                 "dropdowns": [
@@ -77,11 +76,11 @@
         {
             "id": "964817827225804871",
             "content": [
+                "⠀",
                 "**Programovací jazyky**",
                 "Roli <role>Student</role> také zpřístupní místnosti s výukou daného jazyka v kategorii programovací jazyky.",
                 "",
-                "**Na výběr máme:**",
-                "⠀"
+                "**Na výběr máme:**"
             ],
             "components": {
                 "dropdowns": [
@@ -111,14 +110,14 @@
         {
             "id": "964817841922666506",
             "content": [
+                "⠀",
                 "**Výběr předmětů**",
                 "Aby se ti otevřely i místností pro povinně volitelné a volitelné předměty, vyber si z těchto rolí ty předměty, k jejímž místnostem chceš mít přístup. Navolené předměty si také můžeš kdykoliv změnit.",
                 "",
                 "Některé předměty se stejným obsahem mají napříč studijními obory jiné názvy a zkratky. Vždy jsme z nich vybrali jednu a ostatní pod ní sjednotili. Při vyhledávání jsou jména všech zkratek pospolu.",
                 "Příklad: pp1 (papr1)",
                 "",
-                "Všechny předměty týkající se bakalářské práce / diplomové práce naleznete v kategorii **STUDIUM** v příslušných místnostech.",
-                "⠀"
+                "Všechny předměty týkající se bakalářské práce / diplomové práce naleznete v kategorii **STUDIUM** v příslušných místnostech."
             ],
             "components": {
                 "dropdowns": [
