@@ -1,20 +1,10 @@
-import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js"
 import { ButtonCommand } from "../../command"
+import { VerificationModal } from "../../modals/verification"
 
-export class VerificationFirewallButtonComamand extends ButtonCommand {
+
+export class VerificationButtonComamand extends ButtonCommand {
     name = "btnStuden"
-    modal = new ModalBuilder()
-        .setCustomId("verificationStudentModal")
-        .setTitle("Verifikace studenta")
-        .addComponents(
-            new ActionRowBuilder()
-                .addComponents(
-                    new TextInputBuilder()
-                        .setCustomId("verificationStudentUpolEmail")
-                        .setLabel("Zadejte Váš studentský email v rámci UPOL")
-                        .setStyle(TextInputStyle.Short),
-                ) as ActionRowBuilder<TextInputBuilder>
-        )
+    modal = VerificationModal
 
     async executable(): Promise<void> {
         if (this.hasRole("Student")) {

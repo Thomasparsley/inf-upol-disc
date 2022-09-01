@@ -2,19 +2,17 @@ require("dotenv").config({ path: "../.env" })
 
 import "./string.ext"
 
-import onInteractionCreate from "./events/onInteractionCreate"
-import onGuildMemberAdd from "./events/onGuildMemberAdd"
-import onReactionRemove from "./events/onReactionRemove"
-import onReactionAdd from "./events/onReactionAdd"
-import onReady from "./events/onReady"
-
-import { DatabaseSource } from "./databaseSource"
-import { Bot } from "./bot"
-
+import {
+    onInteractionCreate,
+    onGuildMemberAdd,
+    onReactionRemove,
+    onReactionAdd,
+    onReady,
+} from "./events";
 import {
     HostFirewallButtonComamand,
     DepartmentFirewallButtonComamand,
-    VerificationFirewallButtonComamand,
+    VerificationButtonComamand,
     PhdRoleManagerCommand,
     DepartmentRoleManagerCommand,
     AddRoleDropdownCommand,
@@ -22,12 +20,14 @@ import {
     EveryoneRequestCommand,
     QuoteRequestChatCommnad,
     AddRoleOnlyStudentDropdownCommand,
-    VerificationModalCommand
+    VerificationModalCommand,
+    VerificationCodeButtonComamand,
+    VerificationCodeModalCommand,
 } from "./commands"
 
+import { DatabaseSource } from "./databaseSource"
 import { Mailer } from "./mailer"
-import { VerificationCodeButtonComamand } from "./commands/buttons/verificationCode"
-import { VerificationCodeModalCommand } from "./commands/modals/verificationCode"
+import { Bot } from "./bot"
 
 
 const {
@@ -95,7 +95,7 @@ const {
             buttonCommands: [
                 HostFirewallButtonComamand,
                 DepartmentFirewallButtonComamand,
-                VerificationFirewallButtonComamand,
+                VerificationButtonComamand,
                 VerificationCodeButtonComamand,
             ],
             dropdownCommands: [

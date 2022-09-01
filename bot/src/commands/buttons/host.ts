@@ -14,8 +14,9 @@ export class HostFirewallButtonComamand extends ButtonCommand {
         }
 
         const roleHost = await this.guild().roles.fetch(this.getRoleID("Návštěva"))
-        if (!roleHost)
+        if (!roleHost) {
             return
+        }
 
         if (!this.hasRole("Návštěva")) {
             await this.addRole("Návštěva")

@@ -21,7 +21,9 @@ else:
 os.chmod(chromer_driver_path, 0o777)
 
 options = Options()
-options.headless = True
+options.add_argument("--headless")  # type: ignore
+options.add_argument("--no-sandbox")  # type: ignore
+options.add_argument("--disable-dev-shm-usage")  # type: ignore
 service = Service(str(chromer_driver_path))
 driver = webdriver.Chrome(  # type: ignore
     service=service,
