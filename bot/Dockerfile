@@ -5,9 +5,9 @@ RUN apk update
 
 RUN mkdir /app
 COPY ./bot /app
-WORKDIR /app
+WORKDIR /app/bot
 
-RUN npm i
+RUN npm install
 RUN npm run 'build'
 
 
