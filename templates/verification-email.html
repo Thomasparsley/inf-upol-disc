@@ -98,17 +98,13 @@
                 <p class="text mb">
                     Vaším posledním krokem pro ověření, že jste studentem katedry informatiky,
                     je zadání verifikační klíče do formuláře. Ten se zobrazí po kliknutí na
-                    tlačítko "TLAČÍTKO", které se nachází v odpovědi při zažádání o roli
+                    tlačítko "Mám verifikační klíč", které se nachází v odpovědi při zažádání o roli
                     <span class="role">@Student</span>.
                 </p>
             </div>
 
             <div class="code">
-                <div>
-                    {{#each code}}
-                    <span>{{this}}</span>
-                    {{/each}}
-                </div>
+                <div>{{#each code}}<span>{{this}}</span>{{/each}}</div>
             </div>
         </div>
 

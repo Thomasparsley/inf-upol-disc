@@ -4,4 +4,4 @@ Vaším posledním krokem pro ověření, že jste studentem katedry informatiky
 klíče do formuláře. Ten se zobrazí po kliknutí na tlačítko "TLAČÍTKO", které se nachází v odpovědi
 při zažádání o roli @Student.
 
-{{#each code}} {{this}} {{/each}}
+{{#each code}}{{this}}{{/each}}

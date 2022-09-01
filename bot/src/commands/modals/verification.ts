@@ -12,6 +12,7 @@ import {
     InvalidEmailFormatError,
     UnknownUpolEmailError,
 } from "../../errors";
+import { VerificationCodeButton } from "../buttons/verificationCode";
 
 
 export class VerificationModalCommand extends ModalCommand {
@@ -31,16 +32,13 @@ export class VerificationModalCommand extends ModalCommand {
         // vygenerování 6 místného klíče   
         const verificationCode = Math.floor(Math.random() * 900000) + 100000;
 
-        console.log(`Nové vygenerované heslo je: ${verificationCode}`)
-
-        /* const validation = new Validation()
-        validation.user = interaction.user.id
+        const validation = new Validation()
+        validation.user = this.interaction.user.id
         validation.key = verificationCode.toString()
         validation.createdAt = new Date()
         validation.expiresAt = new Date()
         validation.expiresAt.setHours(validation.expiresAt.getHours() + 1)
-
-        await validation.save() */
+        await validation.save()
 
         await this.mailer.send({
             subject: "Validační kód pro discord server katedry informatiky - UPOL",
@@ -48,6 +46,9 @@ export class VerificationModalCommand extends ModalCommand {
             text: makeRegisterText(verificationCode.toString().split("")),
             html: makeRegisterHTML(verificationCode.toString().split("")),
         });
-        await this.replySilent(VOC_VerificationCodeSended(email))
+        await this.replySilentWithButton(
+            VOC_VerificationCodeSended(email),
+            VerificationCodeButton,
+        )
     }
 }
