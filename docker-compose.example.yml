@@ -19,7 +19,7 @@ services:
       placement:
         max_replicas_per_node: 2
     restart: always
-      
+
   discord-bot-service:
     container_name: discord-bot
     image: ghcr.io/thomasparsley/inf-upol-disc/inf_upol_discord-bot:release
@@ -28,12 +28,12 @@ services:
       APPLICATION_ID: ""
       GUILD_ID: ""
       MAILER_PASS: ""
-      DATABASE_HOST: "database"
-      DATABASE_PORT: "5432"
-      DATABASE_USERNAME: "root"
-      DATABASE_PASSWORD: "root"
-      DATABASE_NAME: "bot"
-      MENZA_API: "http://menza-service:8000/"
+      DATABASE_HOST: ""
+      DATABASE_PORT: ""
+      DATABASE_USERNAME: ""
+      DATABASE_PASSWORD: ""
+      DATABASE_NAME: ""
+      MENZA_API: ""
     deploy:
       replicas: 1
       placement:
@@ -53,4 +53,3 @@ services:
       placement:
         max_replicas_per_node: 2
     restart: always
-
