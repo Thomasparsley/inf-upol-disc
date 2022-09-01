@@ -15,6 +15,8 @@ RUN npm run 'build'
 FROM node:16-alpine
 
 RUN apk update
+RUN apk add chromium
+RUN apk add chromium-chromedriver
 
 RUN mkdir /app
 RUN mkdir /app/bot
@@ -22,7 +24,7 @@ WORKDIR /app/bot
 
 COPY --from=build /app/bot/dist /app/bot
 COPY --from=build /app/bot/package.json /app/bot
-COPY ./templates /app
+COPY ./templates /app/templates
 
 RUN npm install --production
 

@@ -16,7 +16,7 @@ from svickova.enums import Canteen  # type: ignore
 if platform.system() == "Windows":
     chromer_driver_path = pathlib.Path(os.getcwd() + "/chromedriver_win32.exe")
 else:
-    chromer_driver_path = pathlib.Path(os.getcwd() + "/chromedriver_linux")
+    chromer_driver_path = pathlib.Path("/usr/bin/chromedriver")
 
 os.chmod(chromer_driver_path, 0o777)
 
