@@ -28,8 +28,8 @@ import {
 } from "./interfaces"
 import {
     OnGuildMemberAddAction,
-    onReactionAddAction,
-    onReactionRemoveAction,
+    OnReactionAddAction,
+    OnReactionRemoveAction,
 } from "./types"
 
 const REST_VERSION = "10"
@@ -47,9 +47,9 @@ export class Bot {
     }
     private onGuildMemberAdd: OnGuildMemberAddAction
         = async (args: OnGuildMemberAddArgs) => { }
-    private onReactionAdd: onReactionAddAction
+    private onReactionAdd: OnReactionAddAction
         = async (args: OnReactionAddArgs) => { }
-    private onReactionRemove: onReactionRemoveAction
+    private onReactionRemove: OnReactionRemoveAction
         = async (args: OnReactionRemoveArgs) => { }
     private async onInteractionCreate(args: OnInteractionCreateArgs): Promise<void> {
         throw new Error("Empty on interaction create event")

@@ -1,4 +1,4 @@
 import { Awaitable } from "discord.js"
 import { OnReactionRemoveArgs } from "../interfaces"
 
-export type onReactionRemoveAction = (args: OnReactionRemoveArgs) => Awaitable<void>
+export type OnReactionRemoveAction = (args: OnReactionRemoveArgs) => Awaitable<void>

@@ -4,10 +4,10 @@ FROM node:16-alpine AS build
 RUN apk update
 
 RUN mkdir /app
-COPY ./bot /app
-WORKDIR /app
+COPY ./bot /app/bot
+WORKDIR /app/bot
 
-RUN npm i
+RUN npm install
 RUN npm run 'build'
 
 
@@ -15,15 +15,17 @@ RUN npm run 'build'
 FROM node:16-alpine
 
 RUN apk update
+RUN apk add chromium
+RUN apk add chromium-chromedriver
 
 RUN mkdir /app
 RUN mkdir /app/bot
-WORKDIR /app
+WORKDIR /app/bot
 
 COPY --from=build /app/bot/dist /app/bot
 COPY --from=build /app/bot/package.json /app/bot
-COPY ./templates /app
+COPY ./templates /app/templates
 
 RUN npm install --production
 
-CMD [ "node", "./bot/index.js" ]
+CMD [ "node", "index.js" ]

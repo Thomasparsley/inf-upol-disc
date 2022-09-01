@@ -3,6 +3,8 @@ FROM python:3.10-alpine
 RUN apk update
 RUN apk add git
 RUN apk add build-base
+RUN apk add chromium
+RUN apk add chromium-chromedriver
 
 RUN mkdir /app
 WORKDIR /app

@@ -16,12 +16,14 @@ from svickova.enums import Canteen  # type: ignore
 if platform.system() == "Windows":
     chromer_driver_path = pathlib.Path(os.getcwd() + "/chromedriver_win32.exe")
 else:
-    chromer_driver_path = pathlib.Path(os.getcwd() + "/chromedriver_linux")
+    chromer_driver_path = pathlib.Path("/usr/bin/chromedriver")
 
 os.chmod(chromer_driver_path, 0o777)
 
 options = Options()
-options.headless = True
+options.add_argument("--headless")  # type: ignore
+options.add_argument("--no-sandbox")  # type: ignore
+options.add_argument("--disable-dev-shm-usage")  # type: ignore
 service = Service(str(chromer_driver_path))
 driver = webdriver.Chrome(  # type: ignore
     service=service,

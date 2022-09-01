@@ -1,0 +1,55 @@
+version: '3.9'
+
+services:
+  database:
+    container_name: bot-database
+    image: postgres:alpine
+    expose:
+      - "5432"
+    ports:
+      - 5432:5432
+    volumes:
+      - ./database/data:/var/lib/postgres/data
+    environment:
+      POSTGRES_DB: "bot"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 2
+    restart: always
+
+  discord-bot-service:
+    container_name: discord-bot
+    image: ghcr.io/thomasparsley/inf-upol-disc/inf_upol_discord-bot:release
+    environment:
+      TOKEN: ""
+      APPLICATION_ID: ""
+      GUILD_ID: ""
+      MAILER_PASS: ""
+      DATABASE_HOST: ""
+      DATABASE_PORT: ""
+      DATABASE_USERNAME: ""
+      DATABASE_PASSWORD: ""
+      DATABASE_NAME: ""
+      MENZA_API: ""
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 2
+    restart: always
+    depends_on:
+      - database
+      - menza-service
+
+  menza-service:
+    container_name: menza
+    image: ghcr.io/thomasparsley/inf-upol-disc/inf_upol_menza:release
+    expose:
+      - "8000"
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 2
+    restart: always

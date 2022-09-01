@@ -9,8 +9,8 @@ import {
 import {
     OnGuildMemberAddAction,
     OnInteractionCreateAction,
-    onReactionAddAction,
-    onReactionRemoveAction,
+    OnReactionAddAction,
+    OnReactionRemoveAction,
     OnReadyAction
 } from "../types"
 
@@ -20,8 +20,8 @@ export interface BotConfig {
     modalCommands?: ICommand<ModalCommand>[]
     dropdownCommands?: IDropdownCommand<DropdownCommand>[]
     onReady?: OnReadyAction
-    onReactionAdd?: onReactionAddAction
-    onReactionRemove?: onReactionRemoveAction
+    onReactionAdd?: OnReactionAddAction
+    onReactionRemove?: OnReactionRemoveAction
     onInteractionCreate?: OnInteractionCreateAction
     onGuildMemberAdd?: OnGuildMemberAddAction
 }
