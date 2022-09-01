@@ -28,10 +28,13 @@
                 "",
                 "**TECHNOLOGIE**",
                 " - Diskuzní místnosti týkajících daných technologií. Pokud máš nějaký technický dotaz nebo zajímavost, piš sem. Dotazy přímo ke konkrétnímu předmětům piš do místnosti pro daný předmět, který patří do kategoríí ZIMNÍ/LETNÍ SEMESTR nebo PROGRAMOVACÍ JAZYKY.",
+                "",
                 "**ZÁBAVA**",
                 " - Chceš si pokecat o gamingu, doporučit film, udělat si promo, nebo prostě jen zajít na pivo? Tato kategorie je pro tebe!",
+                "",
                 "**BOT**",
                 " - Kategorie pro našeho bota.",
+                "",
                 "**PROGRAMOVACÍ JAZYKY, ZIMNÍ SEMESTR, LETNÍ SEMESTR**",
                 " - Do těchto místností mají přístup pouze <role>Student</role>. Podrobné informace k těmto kategoriím najdeš v místnosti <channel>role</channel>."
             ]
@@ -74,8 +77,7 @@
                 "",
                 "Doufáme, že na serveru najdeš všechny potřebné informace a taky skvělou komunitu studentů. V případě jakýchkoliv dotazů, napiš do <channel>dotazy</channel>.",
                 "",
-                "",
-                "Základní příručka pro Discord:",
+                "**Základní příručka pro Discord:**",
                 "https://support.discord.com/hc/en-us/articles/360045138571-Beginner-s-Guide-to-Discord",
                 "Co to jsou vlákna a jak fungují?",
                 "https://support.discord.com/hc/en-us/articles/4403205878423-Threads-FAQ",
