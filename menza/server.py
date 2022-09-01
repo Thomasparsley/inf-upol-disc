@@ -16,7 +16,7 @@ from svickova.enums import Canteen  # type: ignore
 if platform.system() == "Windows":
     chromer_driver_path = pathlib.Path(os.getcwd() + "/chromedriver_win32.exe")
 else:
-    chromer_driver_path = pathlib.Path(os.getcwd() + "/chromedriver")
+    chromer_driver_path = pathlib.Path(os.getcwd() + "/chromedriver_linux")
 
 os.chmod(chromer_driver_path, 0o777)
 
@@ -29,6 +29,7 @@ driver = webdriver.Chrome(  # type: ignore
 )
 
 app = FastAPI()
+
 
 @app.get("/")
 async def index():
