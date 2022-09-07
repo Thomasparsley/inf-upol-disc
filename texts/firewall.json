@@ -6,7 +6,7 @@
             "content": [
                 "V této místnosti si ověříš svůj účet. Můžeš zažádat jednu z rolí <role>Student</role> ,<role>Návštěva</role> nebo <role>Katedra</role>.",
                 "",
-                "**Postup při žádosti o jednotlivé role:**",
+                "**Postup při žádosti o jednotlivé role:**"
             ]
         },
         {
@@ -54,7 +54,7 @@
                 "buttons": [
                     {
                         "id": "bntDepartment",
-                        "label": "Jsem učitel",
+                        "label": "Jsem zaměstnanec",
                         "style": "Danger"
                     }
                 ]
