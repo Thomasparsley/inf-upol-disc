@@ -31,8 +31,15 @@ export class VerificationCodeModalCommand extends ModalCommand {
         if (this.hasRole("Návštěva")) {
             await this.removeRole("Návštěva")
         }
-        await this.addRole("Student")
-        await this.replySilent("Úspěšně jste se oveřil!")
-        await validation.remove()
+
+        const addRole = this.addRole("Student")
+        const reply = this.replySilent("Úspěšně jste se oveřil!")
+        const removeValidation = validation.remove()
+
+        Promise.all([
+            addRole,
+            reply,
+            removeValidation,
+        ])
     }
 }

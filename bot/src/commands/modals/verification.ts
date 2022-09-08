@@ -39,16 +39,22 @@ export class VerificationModalCommand extends ModalCommand {
         validation.expiresAt = new Date()
         validation.expiresAt.setHours(validation.expiresAt.getHours() + 1)
 
-        await this.replySilentWithButton(
+        const reply = this.replySilentWithButton(
             VOC_VerificationCodeSended(email),
             VerificationCodeButton,
         )
-        await validation.save()
-        await this.mailer.send({
+        const saveValidation = validation.save()
+        const sendEmail = this.mailer.send({
             subject: "Validační kód pro discord server katedry informatiky - UPOL",
             to: email,
             text: makeRegisterText(verificationCode.toString().split("")),
             html: makeRegisterHTML(verificationCode.toString().split("")),
-        });
+        })
+
+        Promise.all([
+            reply,
+            saveValidation,
+            sendEmail,
+        ])
     }
 }

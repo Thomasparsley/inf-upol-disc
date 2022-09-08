@@ -1,3 +1,4 @@
+import { InteractionResponse } from "discord.js"
 import { ButtonCommand } from "../../command"
 
 export class HostFirewallButtonComamand extends ButtonCommand {
@@ -18,12 +19,19 @@ export class HostFirewallButtonComamand extends ButtonCommand {
             return
         }
 
+        let manageRole: Promise<void> | undefined = undefined
+        let reply: Promise<void | InteractionResponse<boolean>> | undefined = undefined
         if (!this.hasRole("Návštěva")) {
-            await this.addRole("Návštěva")
-            await this.replySilent(`Děkujeme, že máte zájem navštívit náš server! Role ${roleHost} Vám byla přidělena.`)
+            manageRole = this.addRole("Návštěva")
+            reply = this.replySilent(`Děkujeme, že máte zájem navštívit náš server! Role ${roleHost} Vám byla přidělena.`)
         } else {
-            await this.removeRole("Návštěva")
-            await this.replySilent(`Děkujeme, že jste navštívili náš server! Role ${roleHost} Vám byla odebrána.`)
+            manageRole = this.removeRole("Návštěva")
+            reply = this.replySilent(`Děkujeme, že jste navštívili náš server! Role ${roleHost} Vám byla odebrána.`)
         }
+
+        Promise.all([
+            manageRole,
+            reply,
+        ])
     }
 }
