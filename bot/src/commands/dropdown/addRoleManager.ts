@@ -16,7 +16,7 @@ export class AddRoleManagerDropdownCommand extends DropdownCommand {
         const roles = this.interaction.values
         for (const roleNameRaw of roles) {
             let roleName: string
-            if (this.flag && ["predmety_0n", "predmety_oz"].includes(this.flag)) {
+            if (this.flag && ["predmety_0n", "predmety_oz", "predmety_prg"].includes(this.flag)) {
                 roleName = roleNameRaw.split(" ")[0]
             } else {
                 roleName = roleNameRaw
