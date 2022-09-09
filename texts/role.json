@@ -13,7 +13,7 @@
             "content": [
                 "⠀",
                 "**Výběr oborů**",
-                "Nejprve si vyber obor, který tě zajímá. Po výběru oboru se ti zobrazí, v kategorii letní semestr a zimní semestr, všechny místnosti s povinnými předměty (A) pro daný obor za celé studium. Volba je volná, takže si klidně můžeš vybrat všechny obory.",
+                "Nejprve si vyber obor, který tě zajímá. Po výběru oboru se ti zobrazí, v kategorii **ZIMNÍ/LETNÍ SEMESTR** a **PROGRAMOVACÍ JAZYKY**, všechny místnosti s povinnými předměty (A) pro daný obor za celé studium. Volba je volná, takže si klidně můžeš vybrat všechny obory. Předměty povinně volitelné a volitelné si volíš až později.",
                 "",
                 "(Role <role>Bc. Informatika</role> přidělí předměty jen z prvního ročníku. Poté je nutné vybrat specializaci.)",
                 "",
@@ -51,7 +51,7 @@
                 "**Speciální role**",
                 "Chceš dostávat info o novinkách nebo pivních srazech? Po výběru role budeš dostávat upozornění na tagy této role.",
                 "",
-                "**Na výběr máme:**"
+                "**Na výběr máme role:**"
             ],
             "components": {
                 "dropdowns": [
@@ -78,9 +78,9 @@
             "content": [
                 "⠀",
                 "**Programovací jazyky**",
-                "Roli <role>Student</role> také zpřístupní místnosti s výukou daného jazyka v kategorii programovací jazyky.",
+                "Role sloužící pro nadšence daného jazyka. Každý na tvém profilu uvidí, jaké programovací jazyky tě zajímají. Po výběru role budeš dostávat upozornění na tagy této role.",
                 "",
-                "**Na výběr máme:**"
+                "**Na výběr máme z jazyků:**"
             ],
             "components": {
                 "dropdowns": [
@@ -112,12 +112,16 @@
             "content": [
                 "⠀",
                 "**Výběr předmětů**",
-                "Aby se ti otevřely i místností pro povinně volitelné a volitelné předměty, vyber si z těchto rolí ty předměty, k jejímž místnostem chceš mít přístup. Navolené předměty si také můžeš kdykoliv změnit.",
+                "Aby se ti otevřely i místností pro povinně volitelné a volitelné předměty, vyber si z těchto rolí ty předměty, k jejímž místnostem chceš mít přístup. Navolené předměty si také můžeš kdykoliv změnit.**Tento výběr slouží pouze studentům.**",
                 "",
                 "Některé předměty se stejným obsahem mají napříč studijními obory jiné názvy a zkratky. Vždy jsme z nich vybrali jednu a ostatní pod ní sjednotili. Při vyhledávání jsou jména všech zkratek pospolu.",
-                "Příklad: pp1 (papr1)",
+                "Příklad: **pp1 (papr1)**",
                 "",
-                "Všechny předměty týkající se bakalářské práce / diplomové práce naleznete v kategorii **STUDIUM** v příslušných místnostech."
+                "Všechny předměty týkající se bakalářské práce / diplomové práce naleznete v kategorii **STUDIUM** v příslušných místnostech.",
+                "",
+                "Můžeš vybírat podle abecedy, ale předměty ze skupiny **Programovací jazyky a programování** se nachází v posledním menu.",
+                "",
+                "**Na výběr máme z předmětů:**"
             ],
             "components": {
                 "dropdowns": [
@@ -180,6 +184,26 @@
                             "vytal",
                             "web",
                             "znm"
+                        ]
+                    },                    
+                    {
+                        "id": "dropdownAddRoleOnlyStudent",
+                        "flag": "predmety_prg",
+                        "placeholder": "Vyber si predmety PRG",
+                        "min": 1,
+                        "max": -1,
+                        "options": [
+                            "asm",
+                            "jc",
+                            "jcs1",
+                            "jcs2",
+                            "jcpp",
+                            "jj1",
+                            "jj2",
+                            "jp",
+                            "tmap",
+                            "web",
+                            "weba"
                         ]
                     }
                 ]
