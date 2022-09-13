@@ -144,6 +144,8 @@ export class Bot {
             try {
                 await this.onInteractionCreate(args)
             } catch (error) {
+                console.log(error)
+
                 if (interaction.isRepliable()) {
                     await interaction.reply({
                         content: `Error: ${error}`,

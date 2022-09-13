@@ -109,5 +109,11 @@ const {
         })
 
     await bot.registerChatInputGuildCommands(Array.from(bot.chatInputCommands.values()))
-    await bot.login()
+
+    try {
+        await bot.login()
+    } catch (error) {
+        console.error(error)
+        process.exit(1)
+    }
 })()

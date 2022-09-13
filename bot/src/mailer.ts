@@ -28,6 +28,8 @@ export class Mailer {
         this.ctx.verify((err, _) => {
             if (err)
                 throw err
+            else
+                console.log("Email connected")
         })
     }
 
