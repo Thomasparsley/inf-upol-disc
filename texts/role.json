@@ -139,18 +139,10 @@
                             "algo1 (algo)",
                             "algo2 (zads)",
                             "algo3 (alm3)",
-                            "asm",
                             "bmtkq",
                             "dastr",
                             "grafa",
                             "infos",
-                            "jc",
-                            "jcs1",
-                            "jcs2",
-                            "jcpp",
-                            "jp",
-                            "jj1",
-                            "jj2",
                             "kombi",
                             "mr",
                             "napvs"
@@ -182,10 +174,9 @@
                             "unixs",
                             "uroz (uro)",
                             "vytal",
-                            "web",
                             "znm"
                         ]
-                    },                    
+                    },
                     {
                         "id": "dropdownAddRoleOnlyStudent",
                         "flag": "predmety_prg",
