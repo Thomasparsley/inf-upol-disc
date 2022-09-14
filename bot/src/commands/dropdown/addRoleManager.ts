@@ -13,6 +13,8 @@ export class AddRoleManagerDropdownCommand extends DropdownCommand {
         const removedRoles: Role[] = []
         const removedRolesID: string[] = []
 
+        this.interaction.deferReply({ ephemeral: true })
+
         const roles = this.interaction.values
         for (const roleNameRaw of roles) {
             let roleName: string
@@ -58,13 +60,13 @@ export class AddRoleManagerDropdownCommand extends DropdownCommand {
         }) */
 
         if (addedRoles.length > 0 && removedRoles.length > 0) {
-            await this.replySilent(`Role ${addedRoles} Vám byly přideleny. Role ${removedRoles} Vám byly odebrány.`)
+            await this.followUpSilent(`Role [${addedRoles}] Vám byly přiděleny. Role [${removedRoles}] Vám byly odebrány.`)
         } else if (addedRoles.length > 0) {
-            await this.replySilent(`Role ${addedRoles} Vám byly přideleny.`)
+            await this.followUpSilent(`Role [${addedRoles}] Vám byly přiděleny.`)
         } else if (removedRoles.length > 0) {
-            await this.replySilent(`Role ${removedRoles} Vám byly odebrány`)
+            await this.followUpSilent(`Role [${removedRoles}] Vám byly odebrány`)
         } else {
-            await this.replySilent(`K žádným změnám nedošlo`)
+            await this.followUpSilent(`K žádným změnám nedošlo`)
         }
     }
 }
