@@ -86,6 +86,7 @@ export class MessageManagerCommand extends ChatInputCommand {
         if (!this.hasRole("Root") && !this.hasRole("Moderátor"))
             throw new UnauthorizedError()
 
+        await this.interaction.deferReply({ ephemeral: true })
         const subCommand = this.interaction.options.getSubcommand()
         switch (subCommand) {
             case cd.sub.add.name:
@@ -101,15 +102,14 @@ export class MessageManagerCommand extends ChatInputCommand {
                 break
 
             case cd.sub.load.name:
-                await this.replySilent("Příkaz load se vykonává")
                 await this.subCommandLoad()
-                return
+                break
 
             default:
                 throw new UnknownCommandError()
         }
 
-        await this.replySilent(VOC_ActionSuccessful)
+        await this.followUpSilent(VOC_ActionSuccessful)
     }
 
     async subCommandAdd(): Promise<void> {

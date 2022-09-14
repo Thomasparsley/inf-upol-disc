@@ -148,10 +148,16 @@ export class Bot {
 
                 try {
                     if (interaction.isRepliable()) {
-                        await interaction.reply({
+                        const responseData = {
                             content: `Error: ${error}`,
                             ephemeral: true,
-                        })
+                        }
+
+                        if (interaction.deferred) {
+                            await interaction.followUp(responseData)
+                        } else {
+                            await interaction.reply(responseData)
+                        }
                     }
                 } catch (error) {
                     console.log(error)
