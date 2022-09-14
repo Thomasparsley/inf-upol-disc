@@ -146,11 +146,15 @@ export class Bot {
             } catch (error) {
                 console.log(error)
 
-                if (interaction.isRepliable()) {
-                    await interaction.reply({
-                        content: `Error: ${error}`,
-                        ephemeral: true,
-                    })
+                try {
+                    if (interaction.isRepliable()) {
+                        await interaction.reply({
+                            content: `Error: ${error}`,
+                            ephemeral: true,
+                        })
+                    }
+                } catch (error) {
+                    console.log(error)
                 }
             }
         })

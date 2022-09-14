@@ -1,4 +1,4 @@
-import { Role } from "discord.js"
+import { ActionRowBuilder, Role } from "discord.js"
 import { DropdownCommand } from "../../command"
 import { UnauthorizedError } from "../../errors"
 import { RoleName } from "../../types"
@@ -50,12 +50,19 @@ export class AddRoleManagerDropdownCommand extends DropdownCommand {
             await this.removeRolesByID(removedRolesID)
         }
 
+        /* await this.interaction.update({
+            components: [
+                // @ts-ignore
+                new ActionRowBuilder().addComponents(this.interaction.component)
+            ]
+        }) */
+
         if (addedRoles.length > 0 && removedRoles.length > 0) {
-            await this.replySilent(`Role ${addedRoles} Vám byli přideleny. Role ${removedRoles} Vám byli odebrány.`)
+            await this.replySilent(`Role ${addedRoles} Vám byly přideleny. Role ${removedRoles} Vám byly odebrány.`)
         } else if (addedRoles.length > 0) {
-            await this.replySilent(`Role ${addedRoles} Vám byli přideleny.`)
+            await this.replySilent(`Role ${addedRoles} Vám byly přideleny.`)
         } else if (removedRoles.length > 0) {
-            await this.replySilent(`Role ${removedRoles} Vám byli odebrány`)
+            await this.replySilent(`Role ${removedRoles} Vám byly odebrány`)
         } else {
             await this.replySilent(`K žádným změnám nedošlo`)
         }

@@ -75,7 +75,7 @@ export class InteractionCommand<T extends Interaction> extends Command {
         }
     }
 
-    protected async sendReply(options: IReply) {
+    private async sendReply(options: IReply) {
         if (this.interaction.isRepliable()) {
             const rows: any[] = []
 
@@ -112,6 +112,23 @@ export class InteractionCommand<T extends Interaction> extends Command {
             silent: true,
             component: btn,
         })
+    }
+
+    private async sendFollowUp(content: string, silent: boolean) {
+        if (this.interaction.isRepliable()) {
+            return await this.interaction.followUp({
+                content,
+                ephemeral: silent,
+            })
+        }
+    }
+
+    protected async followUp(content: string) {
+        return await this.sendFollowUp(content, false)
+    }
+
+    protected async followUpSilent(content: string) {
+        return await this.sendFollowUp(content, true)
     }
 
     protected getRoleID(roleName: RoleName): string {
