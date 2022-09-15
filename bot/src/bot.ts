@@ -144,6 +144,7 @@ export class Bot {
             try {
                 await this.onInteractionCreate(args)
             } catch (error) {
+                console.log(new Date())
                 console.log(error)
 
                 try {
@@ -160,6 +161,7 @@ export class Bot {
                         }
                     }
                 } catch (error) {
+                    console.log(new Date())
                     console.log(error)
                 }
             }
@@ -176,7 +178,8 @@ export class Bot {
             try {
                 await this.onGuildMemberAdd(args)
             } catch (err) {
-                console.error(err)
+                console.log(new Date())
+                console.log(err)
             }
         })
     }
@@ -193,7 +196,8 @@ export class Bot {
             try {
                 await this.onReactionAdd(args)
             } catch (err) {
-                console.error(err)
+                console.log(new Date())
+                console.log(err)
             }
         })
     }
@@ -210,7 +214,8 @@ export class Bot {
             try {
                 await this.onReactionRemove(args)
             } catch (err) {
-                console.error(err)
+                console.log(new Date())
+                console.log(err)
             }
         })
     }
