@@ -2,11 +2,18 @@ import axios from "axios"
 import { CronJob } from "cron"
 import { Client } from "discord.js";
 
-import { MenzaDataResponse } from "../interfaces"
+import { MenzaDataResponse, MenzaMeal } from "../interfaces"
 
 const {
     MENZA_API,
 } = process.env;
+
+const categoriesTitles: { [key: string]: string } = {
+    "Polévky, saláty": "**Polévky**  :ramen:",
+    "Hotovky": "**Hotovky**  :curry:",
+    "Minutky": "**Minutky**  :hamburger:",
+    "Pizza": "**Pizza**  :pizza:",
+}
 
 export function menzaDailyMaker(client: Client) {
     return new CronJob(
@@ -25,9 +32,25 @@ export function menzaDailyMaker(client: Client) {
                 return
             }
 
-            let message = "**Menza 17. Listopadu**\n"
+            const mealsByCategories: { [key: string]: MenzaMeal[] } = {}
             for (const meal of dataResponse.menu) {
-                message += ` - ${meal.name}\n`
+                if (!(meal.category in mealsByCategories)) {
+                    mealsByCategories[meal.category] = []
+                }
+
+                mealsByCategories[meal.category].push(meal)
+            }
+
+            let message = ""
+            for (const category in mealsByCategories) {
+                message += `${categoriesTitles[category]}\n`
+
+                for (const meal of mealsByCategories[category]) {
+                    let mealName: string = meal.name.replace("PIZZA ", "")
+                    message += `> • ${mealName}\n`
+                }
+
+                message += '\n'
             }
 
             const menzaChannelID = "1008760191594016829"
