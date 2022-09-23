@@ -1,25 +1,32 @@
 import axios from "axios"
+
 import { ActionRowBuilder, SelectMenuBuilder, SlashCommandBuilder } from "@discordjs/builders"
 import { ButtonBuilder, TextBasedChannel } from "discord.js"
 
+
+import { TextFile, TextFileMessage } from "../interfaces"
+import { VOC_ActionSuccessful } from "../vocabulary"
+import { ChatInputCommand } from "../command"
+import { CD_Botmsg as cd } from "../cd"
 import {
+    isHttpUrlWithFileExt,
+    getButtonStyle,
+    replaceTags,
+    parseByTag,
+} from "../utils"
+import {
+    BotCanEditOnlySelfMessagesError,
+    InvalidTextBasedChannel,
     UnknownCommandError,
     UnauthorizedError,
     InvalidURLError,
-    BotCanEditOnlySelfMessagesError,
-    InvalidTextBasedChannel,
 } from "../errors"
-import { TextFile, TextFileMessage } from "../interfaces"
-import { CD_Botmsg as cd } from "../cd"
-import { isHttpUrlWithFileExt, replaceTags, parseByTag, getButtonStyle } from "../utils"
-import { VOC_ActionSuccessful } from "../vocabulary"
-import { ChatInputCommand } from "../command"
 
 
 const maxMessageLength = 2000
 const channelTagName = "channel"
-const roleTagName = "role"
 const mentionTagName = "mention"
+const roleTagName = "role"
 
 export class MessageManagerCommand extends ChatInputCommand {
     name = cd.name
@@ -83,7 +90,7 @@ export class MessageManagerCommand extends ChatInputCommand {
         })
 
     protected async executable(): Promise<void> {
-        if (!this.hasRole("Root") && !this.hasRole("Moderátor"))
+        if (!this.hasOneOfRoles(["Root", "Moderátor"]))
             throw new UnauthorizedError()
 
         await this.interaction.deferReply({ ephemeral: true })
