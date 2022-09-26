@@ -1,3 +1,4 @@
+import dateutil.tz
 from datetime import datetime
 
 from fastapi import FastAPI
@@ -12,7 +13,7 @@ app = FastAPI()
 
 @app.get("/")
 async def index():
-    today = datetime.now()
+    today = datetime.now(dateutil.tz.gettz("Prague"))
     menu = download_menu(Canteen.LISTOPAD_17, today)
 
     meals: list["Meal"] = []
