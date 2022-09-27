@@ -28,6 +28,7 @@ import {
 import { DatabaseSource } from "./databaseSource"
 import { Mailer } from "./mailer"
 import { Bot } from "./bot"
+import { PushDailyMenzaChatCommnad } from "./commands/pushDailyMenza";
 
 
 const {
@@ -91,6 +92,7 @@ const {
                 MessageManagerCommand,
                 EveryoneRequestCommand,
                 QuoteRequestChatCommnad,
+                PushDailyMenzaChatCommnad,
             ],
             buttonCommands: [
                 HostFirewallButtonComamand,

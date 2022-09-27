@@ -6,7 +6,7 @@ import { ChatInputCommand } from "../command"
 import { pushDailyMenza } from "../crons"
 
 
-export class PushDailyMenzaßChatCommnad extends ChatInputCommand {
+export class PushDailyMenzaChatCommnad extends ChatInputCommand {
     name = "pushDailyMenza"
     description = "Vynucené přidaní denního menu menza"
     builder = new SlashCommandBuilder()
