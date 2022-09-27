@@ -21,7 +21,7 @@ async def index():
         if meal.name in ["Obal na jídlo", "Tatarská omáčka (kečup)"]:
             continue
 
-        meals.append(meal.__dict__)
+        meals.append(meal.__dict__)  # type: ignore
 
     return {
         "menu": meals,

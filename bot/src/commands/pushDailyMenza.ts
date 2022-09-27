@@ -15,7 +15,10 @@ export class PushDailyMenzaChatCommnad extends ChatInputCommand {
         if (!this.hasOneOfRoles(["Root", "Moderátor"]))
             throw new UnauthorizedError()
 
+        await this.interaction.deferReply({ ephemeral: true })
+
         await pushDailyMenza(this.client)
-        await this.replySilent(VOC_RequestSended)
+
+        await this.followUpSilent(VOC_RequestSended)
     }
 }
