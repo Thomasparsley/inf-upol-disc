@@ -19,10 +19,14 @@ export class VerificationModalCommand extends ModalCommand {
     name = "verificationStudentModal"
 
     protected async executable(): Promise<void> {
-        const email = this.interaction.fields.getTextInputValue("verificationStudentUpolEmail")
+        let email: string = this.interaction.fields.getTextInputValue("verificationStudentUpolEmail")
+        if (email === null)
+            email = ""
+
+        email = email.trim()
 
         // validace emailu
-        if (email === null || !isValidateEmail(email))
+        if (!isValidateEmail(email))
             throw new InvalidEmailFormatError(email as string)
 
         // validace domény emailu    
