@@ -20,7 +20,7 @@ export async function onInteractionCreate(args: OnInteractionCreateArgs) {
         if (commandMaker)
             command = new commandMaker()
 
-    } else if (interaction.isSelectMenu()) {
+    } else if (interaction.isStringSelectMenu()) {
         const splited = interaction.customId.split("-")
         const customId = splited[0]
         const flag = splited[1]

@@ -9,6 +9,6 @@ export const onReady: OnReadyAction = async ({ client }) => {
 
     console.log(`Logged in as ${client.user.tag}!`)
 
-    const menzaDaily = menzaDailyMaker(client)
-    menzaDaily.start()
+    /* const menzaDaily = menzaDailyMaker(client)
+    menzaDaily.start() */
 }

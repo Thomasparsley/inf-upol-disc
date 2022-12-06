@@ -3,7 +3,6 @@ import {
     ButtonInteraction,
     ChatInputCommandInteraction,
     ModalSubmitInteraction,
-    SelectMenuInteraction,
     SlashCommandBuilder,
     SlashCommandSubcommandsOnlyBuilder,
     Interaction,
@@ -12,15 +11,22 @@ import {
     User,
     Client,
     Guild,
-    NonThreadGuildBasedChannel,
-    MessagePayload,
-    InteractionReplyOptions,
     ButtonBuilder,
     ActionRowBuilder,
+    GuildBasedChannel,
+    StringSelectMenuInteraction, // TODO: Update to latest discord.js
 } from "discord.js"
 
-import { InvalidChannel, InvalidGuild, UnauthorizedError, UnrepliableInteractionError } from "./errors"
-import { VOC_RoleAdded, VOC_RoleRemoved } from "./vocabulary"
+import {
+    InvalidChannel,
+    InvalidGuild,
+    UnauthorizedError,
+    UnrepliableInteractionError,
+} from "./errors"
+import {
+    VOC_RoleAdded,
+    VOC_RoleRemoved,
+} from "./vocabulary"
 import { RoleName } from "./types"
 import { RoleIds } from "./enums"
 import { Mailer } from "./mailer"
@@ -221,7 +227,7 @@ export class InteractionCommand<T extends Interaction> extends Command {
         return guild
     }
 
-    async fetchChannelFromGuild(id: string): Promise<NonThreadGuildBasedChannel> {
+    async fetchChannelFromGuild(id: string): Promise<GuildBasedChannel> {
         const channel = await this.guild().channels.fetch(id)
         if (!channel)
             throw new InvalidChannel()
@@ -291,7 +297,7 @@ export class ButtonCommand extends InteractionCommand<ButtonInteraction<CacheTyp
 
 export class ModalCommand extends InteractionCommand<ModalSubmitInteraction<CacheType>> { }
 
-export class DropdownCommand extends InteractionCommand<SelectMenuInteraction<CacheType>> {
+export class DropdownCommand extends InteractionCommand<StringSelectMenuInteraction<CacheType>> {
     constructor(public flag?: string) { super() }
 
     description: string = ""

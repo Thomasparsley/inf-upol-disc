@@ -2,6 +2,8 @@ import { ModalCommand } from "../../command";
 import { Validation } from "../../models";
 
 
+const VERIFICATION_CODE_LENGTH = 6
+
 export class VerificationCodeModalCommand extends ModalCommand {
     name = "verificationCodeStudentModal"
 
@@ -13,7 +15,7 @@ export class VerificationCodeModalCommand extends ModalCommand {
             await this.replySilent("Verifikační klíč nebyl zaslán")
             return
         }
-        if (code.length !== 6) {
+        if (code.length !== VERIFICATION_CODE_LENGTH) {
             await this.replySilent("Verifikační klíč musí mít právě 6 znaků")
             return
         }
