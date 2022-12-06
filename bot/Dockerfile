@@ -1,5 +1,5 @@
 # Build stage
-FROM node:16-alpine AS build
+FROM node:18-alpine AS build
 
 RUN apk update
 
@@ -8,11 +8,11 @@ COPY ./bot /app/bot
 WORKDIR /app/bot
 
 RUN npm install
-RUN npm run 'build'
+RUN npm run "build"
 
 
 # Run stagge
-FROM node:16-alpine
+FROM node:18-alpine
 
 RUN apk update
 RUN apk add chromium
