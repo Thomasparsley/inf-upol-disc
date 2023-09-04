@@ -13,7 +13,7 @@ export class DepartmentRoleManagerCommand extends RoleManagerCommand {
                 .setName(cd.options[0].name)
                 .setDescription(cd.options[0].description)
                 .setRequired(true)
-        })
+        }).toJSON()
 
     roleNameManage: RoleName = "Katedra"
     getUserFieldName: string = cd.options[0].name

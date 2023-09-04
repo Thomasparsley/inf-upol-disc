@@ -14,7 +14,7 @@ export class PhdRoleManagerCommand extends RoleManagerCommand {
                 .setName(cd.options[0].name)
                 .setDescription(cd.options[0].description)
                 .setRequired(true)
-        })
+        }).toJSON()
 
     roleNameManage: RoleName = "PhD."
     getUserFieldName: string = cd.options[0].name

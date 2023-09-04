@@ -87,7 +87,7 @@ export class MessageManagerCommand extends ChatInputCommand {
                         .setDescription(cd.sub.load.options.url.description)
                         .setRequired(true)
                 })
-        })
+        }).toJSON()
 
     protected async executable(): Promise<void> {
         if (!this.hasOneOfRoles(["Root", "Moderátor"]))

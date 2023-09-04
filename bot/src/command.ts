@@ -14,7 +14,8 @@ import {
     ButtonBuilder,
     ActionRowBuilder,
     GuildBasedChannel,
-    StringSelectMenuInteraction, // TODO: Update to latest discord.js
+    StringSelectMenuInteraction,
+    RESTPostAPIChatInputApplicationCommandsJSONBody // TODO: Update to latest discord.js
 } from "discord.js"
 
 import {
@@ -236,9 +237,7 @@ export class InteractionCommand<T extends Interaction> extends Command {
     }
 }
 
-type BuilderType = SlashCommandBuilder
-    | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">
-    | SlashCommandSubcommandsOnlyBuilder
+type BuilderType = RESTPostAPIChatInputApplicationCommandsJSONBody
 
 export class ChatInputCommand extends InteractionCommand<ChatInputCommandInteraction<CacheType>> {
     protected builder!: BuilderType

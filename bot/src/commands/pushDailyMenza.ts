@@ -9,7 +9,7 @@ import { pushDailyMenza } from "../crons"
 export class PushDailyMenzaChatCommnad extends ChatInputCommand {
     name = "pushdailymenza"
     description = "Vynucené přidaní denního menu menza"
-    builder = new SlashCommandBuilder()
+    builder = new SlashCommandBuilder().toJSON()
 
     async executable(): Promise<void> {
         if (!this.hasOneOfRoles(["Root", "Moderátor"]))

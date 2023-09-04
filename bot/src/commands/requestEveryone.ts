@@ -17,7 +17,7 @@ export class EveryoneRequestCommand extends ChatInputCommand {
                 .setName(cd.options[0].name)
                 .setDescription(cd.options[0].description)
                 .setRequired(true)
-        })
+        }).toJSON()
 
     async executable(): Promise<void> {
         if (!this.hasAtleastOneRole())
