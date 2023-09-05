@@ -14,7 +14,7 @@
         "axios": "1.2.1",
         "cron": "2.1.0",
         "discord-api-types": "0.37.21",
-        "discord.js": "^14.11.0",
+        "discord.js": "^14.13.0",
         "dotenv": "16.0.3",
         "handlebars": "4.7.7",
         "jsdom": "20.0.3",
@@ -22,7 +22,7 @@
         "pg": "8.8.0",
         "reflect-metadata": "0.1.13",
         "slugify": "1.6.5",
-        "typeorm": "0.3.11"
+        "typeorm": "^0.3.17"
     },
     "devDependencies": {
         "@types/cron": "2.0.0",
@@ -34,7 +34,7 @@
         "eslint-plugin-import": "2.26.0",
         "eslint-plugin-n": "15.6.0",
         "eslint-plugin-promise": "6.1.1",
-        "nodemon": "2.0.20",
+        "nodemon": "^3.0.1",
         "ts-node": "10.9.1",
         "typescript": "4.9.3"
     }
