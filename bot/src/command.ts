@@ -14,7 +14,8 @@ import {
     ButtonBuilder,
     ActionRowBuilder,
     GuildBasedChannel,
-    StringSelectMenuInteraction, // TODO: Update to latest discord.js
+    StringSelectMenuInteraction,
+    RESTPostAPIApplicationCommandsJSONBody, // TODO: Update to latest discord.js
 } from "discord.js"
 
 import {
@@ -236,18 +237,18 @@ export class InteractionCommand<T extends Interaction> extends Command {
     }
 }
 
-type BuilderType = SlashCommandBuilder
-    | Omit<SlashCommandBuilder, "addSubcommandGroup" | "addSubcommand">
-    | SlashCommandSubcommandsOnlyBuilder
+type BuilderType = {
+    toJSON(): RESTPostAPIApplicationCommandsJSONBody
+    setName(name: string): BuilderType
+    setDescription(description: string): BuilderType
+}
 
 export class ChatInputCommand extends InteractionCommand<ChatInputCommandInteraction<CacheType>> {
     protected builder!: BuilderType
 
     getBuilder(): BuilderType {
-        // @ts-ignore
-        this.builder.name = this.name
-        // @ts-ignore
-        this.builder.description = this.description
+        this.builder.setName(this.name)
+        this.builder.setDescription(this.description)
 
         return this.builder
     }
