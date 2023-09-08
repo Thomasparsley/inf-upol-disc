@@ -17,6 +17,7 @@ export class EveryoneRequestCommand extends ChatInputCommand {
                 .setName(cd.options[0].name)
                 .setDescription(cd.options[0].description)
                 .setRequired(true)
+                .setMaxLength(256)
         })
 
     async executable(): Promise<void> {
