@@ -217,7 +217,7 @@ export class InteractionCommand<T extends Interaction> extends Command {
     }
 
     protected hasAtleastOneRole(): boolean {
-        return this.permissionRolesCount((size: Number) => size > 0)
+        return this.permissionRolesCount((size: number) => size > 0)
     }
 
     protected guild(): Guild {
