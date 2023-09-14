@@ -41,7 +41,7 @@ export class Bot {
     buttonCommands = new Map<string, ICommand<ButtonCommand>>()
     modalCommands = new Map<string, ICommand<ModalCommand>>()
     dropdownCommands = new Map<string, IDropdownCommand<DropdownCommand>>()
-    reactionMessages = new Map<Message, Map<String, Role>>()
+    reactionMessages = new Map<Message, Map<String, Role>>() // TODO
     private async onReady(args: OnReadyArgs): Promise<void> {
         throw new Error("Event 'onReady' is not implementet")
     }
@@ -87,6 +87,7 @@ export class Bot {
         if (config.modalCommands) this.initModalCommands(config.modalCommands)
         if (config.dropdownCommands) this.initDropdownCommands(config.dropdownCommands)
 
+        // TODO
         /* if (config.reactionMessages) {
             this.initReactionMessages(config.reactionMessages);
         } */

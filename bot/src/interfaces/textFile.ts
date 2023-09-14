@@ -7,6 +7,7 @@ export interface TextFile {
 export interface TextFileMessage {
     id: string
     content: string[]
+    // TODO reactions
     components?: {
         dropdowns?: {
             id: string

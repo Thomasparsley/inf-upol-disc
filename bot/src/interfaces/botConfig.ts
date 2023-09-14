@@ -24,4 +24,7 @@ export interface BotConfig {
     onReactionRemove?: OnReactionRemoveAction
     onInteractionCreate?: OnInteractionCreateAction
     onGuildMemberAdd?: OnGuildMemberAddAction
+    // TODO
 }
+
+
