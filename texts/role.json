@@ -17,6 +17,14 @@
                 "",
                 "**Na výběr máme role:**"
             ],
+            "reactions": {
+                "Aktuality": ":zero:",
+                "Novinky": ":one:",
+                "Akce": ":two:",
+                "Pivní srazy": ":three:",
+                "Připomínky": ":four:",
+                "Háčkování": ":five:"
+            },
             "components": {
                 "dropdowns": [
                     {
@@ -46,6 +54,18 @@
                 "",
                 "**Na výběr máme z jazyků:**"
             ],
+            "reactions": {
+                "C": "0️⃣",
+                "C++": "1️⃣",
+                "Java": "2️⃣",
+                "Web": "3️⃣",
+                "Webové aplikace": "4️⃣",
+                "Python": "5️⃣",
+                "Golang": "6️⃣",
+                "Assembler": "7️⃣",
+                "Mobilní aplikace": "8️⃣",
+                "CommonLisp": "9️⃣"
+            },
             "components": {
                 "dropdowns": [
                     {

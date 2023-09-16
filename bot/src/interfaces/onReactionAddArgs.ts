@@ -1,9 +1,7 @@
-import { Client, MessageReaction, PartialMessageReaction, PartialUser, User } from "discord.js"
-import { DataSource } from "typeorm"
+import { MessageReaction, PartialMessageReaction, PartialUser, Snowflake, User } from "discord.js"
 
 export interface OnReactionAddArgs {
-    client: Client;
     reaction: MessageReaction | PartialMessageReaction;
     user: User | PartialUser;
-    db: DataSource;
+    reactionMessages: Map<Snowflake, Map<string, string>>;
 }
