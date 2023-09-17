@@ -295,6 +295,10 @@ export class Bot {
                 throw new Error("Invalid message")
             }
             
+            // Clean old reactions before adding new ones
+            await message.reactions.removeAll()
+            
+            // Adding new reactions based on binds specified in database
             const reactionBinds = new Map()
             messageReactionsBinds.forEach(async row => {
                 reactionBinds.set(row.emoji, row.role)

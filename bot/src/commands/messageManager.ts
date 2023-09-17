@@ -253,6 +253,9 @@ export class MessageManagerCommand extends ChatInputCommand {
             }
 
             await this.bot.addReactionMessage(rawMessage.id, channel.id, reactionMap)
+            
+            // Clean old reactions before adding new ones
+            await message.reactions.removeAll()
 
             reactionMap.forEach(async (_, emoji) => {
                 await message.react(emoji)
