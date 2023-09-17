@@ -1,94 +1,63 @@
 {
-    "channelID": "960452395312234545",
+    "channelID": "   ",
     "messages": [
         {
-            "id": "964816468346822666",
+            "id": "   ",
             "content": [
-                "**Výběr rolí**",
-                "V této místnosti si můžeš vybrat role. Role ti zpřístupní mnoho funkcí, umožní ti vstup do speciálních místností a zobrazí se ti na profilu, takže každý ví co tě zajímá. Pro výber role stačí zakliknout příslušné role v \"dropdown menu\", který je vždy pod výpisem možností."
+                "# Výběr rolí",
+                "V této místnosti si můžeš vybrat role, které tě zajímají. Role ti zpřístupní mnoho funkcí, umožní ti vstup do speciálních místností a zobrazí se ti na profilu. Pro přidání a odebrání role slouží vždy příslušný **emoji**, který je pod výpisem možností."
             ]
         },
         {
-            "id": "964817512942419998",
+            "id": "   ",
             "content": [
-                "⠀",
-                "**Speciální role**",
-                "Chceš dostávat info o novinkách nebo pivních srazech? Po výběru role budeš dostávat upozornění na tagy této role.",
-                "",
-                "**Na výběr máme role:**"
+                "## Speciální role",
+                "Chceš dostávat informace o novinkách nebo upozornění o pivních srazech? Po výběru role budeš dostávat upozornění na tagy této role.",
+                "### Na výběr máme:"
             ],
             "reactions": {
-                "Aktuality": ":zero:",
-                "Novinky": ":one:",
-                "Akce": ":two:",
-                "Pivní srazy": ":three:",
-                "Připomínky": ":four:",
-                "Háčkování": ":five:"
-            },
-            "components": {
-                "dropdowns": [
-                    {
-                        "id": "dropdownAddRole",
-                        "flag": "novinky",
-                        "placeholder": "Vyber si jaké novinky chceš odebírat",
-                        "min": 1,
-                        "max": -1,
-                        "options": [
-                            "Aktuality",
-                            "Novinky",
-                            "Akce",
-                            "Pivní srazy",
-                            "Připomínky",
-                            "Háčkování"
-                        ]
-                    }
-                ]
+                "Aktuality": ":newspaper:",
+                "Novinky": ":calendar_spiral",
+                "Akce": ":fire:",
+                "Pivní srazy": ":beers:",
+                "Připomínky": ":interrobang:",
+                "Háčkování": ":knot:"
             }
         },
         {
-            "id": "964817827225804871",
+            "id": "   ",
             "content": [
-                "⠀",
-                "**Programovací jazyky**",
-                "Role sloužící pro nadšence daného jazyka. Každý na tvém profilu uvidí, jaké programovací jazyky tě zajímají. Po výběru role budeš dostávat upozornění na tagy této role.",
-                "",
-                "**Na výběr máme z jazyků:**"
+                "## Zájmy",
+                "Role sloužící pro nadšence programovacího jazyka či technologie. Každý na tvém profilu uvidí, jaké máš zájmy. ",
+                "### Na výběr máme:"
             ],
             "reactions": {
                 "C": "0️⃣",
                 "C++": "1️⃣",
-                "Java": "2️⃣",
-                "Web": "3️⃣",
-                "Webové aplikace": "4️⃣",
-                "Python": "5️⃣",
-                "Golang": "6️⃣",
-                "Assembler": "7️⃣",
-                "Mobilní aplikace": "8️⃣",
+                "C#": "2️⃣",
+                "Java": "3️⃣",
+                "JavaScript": "4️⃣",
+                "Rust": "5️⃣",
+                "Python": "6️⃣",
+                "Golang": "7️⃣",
+                "Assembler": "8️⃣",
                 "CommonLisp": "9️⃣"
-            },
-            "components": {
-                "dropdowns": [
-                    {
-                        "id": "dropdownAddRole",
-                        "flag": "jazyky",
-                        "placeholder": "Vyber si jaké programovací jazyky tě zajímají",
-                        "min": 1,
-                        "max": -1,
-                        "options": [
-                            "C",
-                            "C#",
-                            "C++",
-                            "Java",
-                            "Web",
-                            "Webové aplikace",
-                            "Python",
-                            "Golang",
-                            "Assembler",
-                            "Mobilní aplikace",
-                            "CommonLisp"
-                        ]
-                    }
-                ]
+            }
+        },
+        {
+            "id": "   ",
+            "content": [],
+            "reactions": {
+                "Data science a AI": "0️⃣",
+                "Weby": "1️⃣",
+                "Mobilní aplikace": "2️⃣",
+                "Hardware": "3️⃣",
+                "Docker": "4️⃣",
+                "Sítě": "5️⃣",
+                "Databáze": "6️⃣",
+                "IoT": "7️⃣",
+                "Robotika": "8️⃣",
+                "Shell": "9️⃣"
             }
         }
     ]

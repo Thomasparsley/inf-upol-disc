@@ -245,8 +245,8 @@ export class MessageManagerCommand extends ChatInputCommand {
         }
 
         // Reactions 
+        const reactionMap = new Map<string, string>()
         if (rawMessage.reactions) {
-            const reactionMap = new Map<string, string>()
             
             for (const [key, value] of Object.entries(rawMessage.reactions)) {
                 reactionMap.set(value, key)
@@ -257,13 +257,18 @@ export class MessageManagerCommand extends ChatInputCommand {
             // Clean old reactions before adding new ones
             await message.reactions.removeAll()
 
-            reactionMap.forEach(async (_, emoji) => {
+            reactionMap.forEach(async (role, emoji) => {
                 await message.react(emoji)
             });
         }
         
         const unparsedContent = rawMessage.content.join("\n")
-        const content = this.handleMentions(unparsedContent)
+        let content = this.handleMentions(unparsedContent)
+
+        // Adds list of reaction and assigned roles
+        reactionMap.forEach((role, emoji) => {
+            content += `\n- ${emoji} - ${role}`
+        })
 
         if (rows.length > 0) {
             await message.edit({

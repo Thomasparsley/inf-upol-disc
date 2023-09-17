@@ -19,7 +19,7 @@ export class MessageReaction extends BaseEntity {
     @PrimaryColumn("varchar", { length: 64 })
     emoji!: string
 
-    @Column("varchar", { length: 32 })
+    @Column("varchar", { length: 64 })
     role!: string
 }
 /* eslint-enable */
