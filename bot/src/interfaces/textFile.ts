@@ -26,6 +26,10 @@ export interface TextFileMessage {
      */
     content: string[]
     /**
+     * Object of key-value pairs where each key is a role name and value is an emoji
+     */
+    reactions: object,
+    /**
      * Components of the message
      */
     components?: {

@@ -13,7 +13,7 @@ export const VerificationModal = new ModalBuilder()
             .addComponents(
                 new TextInputBuilder()
                     .setCustomId("verificationStudentUpolEmail")
-                    .setLabel("Zadejte Váš studentský email v rámci UPOL")
+                    .setLabel("Zadejte Váš studentský email v úplném tvaru.")
                     .setStyle(TextInputStyle.Short),
             ) as ActionRowBuilder<TextInputBuilder>
     )

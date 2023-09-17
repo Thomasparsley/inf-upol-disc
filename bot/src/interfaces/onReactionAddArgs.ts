@@ -1,14 +1,9 @@
-import { Client, MessageReaction, PartialMessageReaction, PartialUser, User } from "discord.js"
-import { DataSource } from "typeorm"
+import { MessageReaction, PartialMessageReaction, PartialUser, Snowflake, User } from "discord.js"
 
 /**
  * Event arguments for a new reaction being added by a user to a message
  */
 export interface OnReactionAddArgs {
-    /**
-     * Client that invoked this event
-     */
-    client: Client;
     /**
      * Reaction that was added by the user
      */
@@ -18,7 +13,7 @@ export interface OnReactionAddArgs {
      */
     user: User | PartialUser;
     /**
-     * DataSource instance used for accessing the database
+     * Map that converts a channel ID and an emoji to a role
      */
-    db: DataSource;
+    reactionMessages: Map<Snowflake, Map<string, string>>;
 }

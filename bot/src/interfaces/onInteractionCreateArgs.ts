@@ -2,6 +2,7 @@ import { CacheType, Client, Interaction } from "discord.js"
 import { DataSource } from "typeorm"
 import { ButtonCommand, ChatInputCommand, DropdownCommand, ICommand, IDropdownCommand, ModalCommand } from "../command"
 import { Mailer } from "../mailer"
+import { Bot } from "../bot"
 
 /**
  * Event arguments for a new interaction being created
@@ -45,4 +46,8 @@ export interface OnInteractionCreateArgs {
      * @returns Promise representing completion of the registration
      */
     commandRegistration: (commands: ICommand<ChatInputCommand>[]) => Promise<void>
+    /**
+     * Bot instance used by the client
+     */
+    bot: Bot
 }

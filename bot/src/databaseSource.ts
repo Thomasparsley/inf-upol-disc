@@ -5,7 +5,8 @@ import { DataSource } from "typeorm"
 import {
     Validation,
     Error,
-    User
+    User,
+    MessageReaction,
 } from "./models"
 
 const {
@@ -30,6 +31,7 @@ export const DatabaseSource = new DataSource({
         Validation,
         Error,
         User,
+        MessageReaction,
     ],
     synchronize: true,
     logging: false,

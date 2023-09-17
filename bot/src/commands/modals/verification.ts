@@ -3,13 +3,11 @@ import { ModalCommand } from "../../command";
 import { Validation } from "../../models";
 
 import {
-    isValidateEmail,
     isUpolEmail,
     makeRegisterText,
     makeRegisterHTML
 } from "../../utils";
 import {
-    InvalidEmailFormatError,
     UnknownUpolEmailError,
 } from "../../errors";
 import { VerificationCodeButton } from "../../buttons/verificationCode";
@@ -27,11 +25,7 @@ export class VerificationModalCommand extends ModalCommand {
 
         email = email.trim()
 
-        // Email validation
-        if (!isValidateEmail(email))
-            throw new InvalidEmailFormatError(email as string)
-
-        // Email domain validation
+        // Email domain validation  
         if (!isUpolEmail(email))
             throw new UnknownUpolEmailError(email)
 

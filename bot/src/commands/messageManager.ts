@@ -1,7 +1,7 @@
 import axios from "axios"
 
 import { ActionRowBuilder, SelectMenuBuilder, SlashCommandBuilder } from "@discordjs/builders"
-import { ButtonBuilder, TextBasedChannel } from "discord.js"
+import { ButtonBuilder, TextBasedChannel} from "discord.js"
 
 
 import { TextFile, TextFileMessage } from "../interfaces"
@@ -21,7 +21,6 @@ import {
     UnauthorizedError,
     InvalidURLError,
 } from "../errors"
-
 
 const maxMessageLength = 2000
 const channelTagName = "channel"
@@ -233,14 +232,15 @@ export class MessageManagerCommand extends ChatInputCommand {
             throw new InvalidTextBasedChannel()
 
         for (const rawMessage of data.messages)
-            await this.processOneMessage(rawMessage, channel,)
+            await this.processOneMessage(rawMessage, channel)
     }
 
     async processOneMessage(rawMessage: TextFileMessage, channel: TextBasedChannel): Promise<void> {
         const messageId = rawMessage.id
         const message = await channel.messages.fetch(messageId)
+
         if (!message)
-            throw "".toError()
+            throw `Zpráva s id ${messageId} nebyla nalezena v kanále s id ${channel.id}`.toError()
         if (message.author !== this.client.user)
             throw new BotCanEditOnlySelfMessagesError()
 
@@ -264,20 +264,41 @@ export class MessageManagerCommand extends ChatInputCommand {
             rows.push(row)
         }
 
+        // Reactions 
+        const reactionMap = new Map<string, string>()
+        if (rawMessage.reactions) {
+            
+            for (const [key, value] of Object.entries(rawMessage.reactions)) {
+                reactionMap.set(value, key)
+            }
+
+            await this.bot.addReactionMessage(rawMessage.id, channel.id, reactionMap)
+            
+            // Clean old reactions before adding new ones
+            await message.reactions.removeAll()
+
+            reactionMap.forEach(async (role, emoji) => {
+                await message.react(emoji)
+            });
+        }
+        
         const unparsedContent = rawMessage.content.join("\n")
-        const content = this.handleMentions(unparsedContent)
+        let content = this.handleMentions(unparsedContent)
+
+        // Adds list of reaction and assigned roles
+        reactionMap.forEach((role, emoji) => {
+            content += `\n- ${emoji} - ${role}`
+        })
 
         if (rows.length > 0) {
-
             await message.edit({
                 content: content,
                 // @ts-ignore
                 components: rows
             })
-            return
+        } else {
+            await message.edit({ content: content })
         }
-
-        await message.edit({ content: content })
     }
 
     createButtonComponent(raw: { id: string; label: string; style: string; }) {

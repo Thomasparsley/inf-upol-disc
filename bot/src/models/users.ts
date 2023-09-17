@@ -22,7 +22,7 @@ export class User extends BaseEntity {
      * Email of this user
      */
     @Column("varchar", { length: 320 })
-    email!: number
+    email!: string
 
     /**
      * When was this user inserted into the database

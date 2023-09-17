@@ -26,6 +26,6 @@ COPY --from=build /app/bot/dist /app/bot
 COPY --from=build /app/bot/package.json /app/bot
 COPY ./templates /app/templates
 
-RUN npm install --production
+RUN npm install --omit=dev
 
 CMD [ "node", "index.js" ]

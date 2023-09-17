@@ -17,7 +17,9 @@ import {
     StringSelectMenuInteraction,
     RESTPostAPIApplicationCommandsJSONBody, // TODO: Update to latest discord.js
 } from "discord.js"
-
+import {
+    Bot
+} from "./bot"
 import {
     InvalidChannel,
     InvalidGuild,
@@ -92,15 +94,21 @@ class Command {
      * Mailer that should be used for this command
      */
     mailer!: Mailer
+    /**
+     * Bot instance that should be used for this command
+     */
+    bot!: Bot
 
     /**
      * Executes the command
      * @param client Discord client which should be used when processing this command
      * @param mailer Mailer instance which should be used when processing this command
+     * @param bot Bot instance which should be used when processing this command
      */
-    async execute(client: Client, mailer: Mailer): Promise<void> {
+    async execute(client: Client, mailer: Mailer, bot: Bot): Promise<void> {
         this.client = client
         this.mailer = mailer
+        this.bot = bot
 
         await this.executable()
     }
@@ -131,10 +139,11 @@ export class InteractionCommand<T extends Interaction> extends Command {
      * @param interaction Interaction which invoked this command
      */
     // @ts-ignore
-    async execute(client: Client, mailer: Mailer, interaction: T): Promise<void> {
+    async execute(client: Client, mailer: Mailer, bot: Bot, interaction: T): Promise<void> {
         this.client = client
         this.mailer = mailer
         this.interaction = interaction
+        this.bot = bot
 
         try {
             await this.executable()
