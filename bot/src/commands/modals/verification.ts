@@ -14,7 +14,9 @@ import {
 } from "../../errors";
 import { VerificationCodeButton } from "../../buttons/verificationCode";
 
-
+/**
+ * Modal command used for verifying email address of UPOL students
+ */
 export class VerificationModalCommand extends ModalCommand {
     name = "verificationStudentModal"
 
@@ -25,15 +27,15 @@ export class VerificationModalCommand extends ModalCommand {
 
         email = email.trim()
 
-        // validace emailu
+        // Email validation
         if (!isValidateEmail(email))
             throw new InvalidEmailFormatError(email as string)
 
-        // validace domény emailu    
+        // Email domain validation
         if (!isUpolEmail(email))
             throw new UnknownUpolEmailError(email)
 
-        // vygenerování 6 místného klíče   
+        // Generating a 6-character key
         const verificationCode = Math.floor(Math.random() * 900000) + 100000;
 
         const validation = new Validation()

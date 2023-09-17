@@ -16,6 +16,9 @@ const {
     DATABASE_NAME,
 } = process.env
 
+/**
+ * Represents the database used in the application
+ */
 export const DatabaseSource = new DataSource({
     type: "postgres",
     host: DATABASE_HOST,

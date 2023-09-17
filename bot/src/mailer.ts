@@ -2,9 +2,20 @@ import { createTransport, Transporter } from "nodemailer"
 import SMTPTransport from "nodemailer/lib/smtp-transport"
 import { Message } from "./interfaces"
 
+/**
+ * Class that works as an SMTP client
+ */
 export class Mailer {
     private readonly ctx: Transporter<SMTPTransport.SentMessageInfo>
 
+    /**
+     * Creates a new instance of the mailer class
+     * @param host SMTP host of this mail client
+     * @param port Port of the SMTP host
+     * @param from Address from which the mails should be sent
+     * @param username Username for the SMTP client
+     * @param password Password for the SMTP client
+     */
     constructor(
         private readonly host: string,
         private readonly port: number,
@@ -33,6 +44,11 @@ export class Mailer {
         })
     }
 
+    /**
+     * Sends the given message
+     * @param message The message should be sent
+     * @returns Promise representing the action
+     */
     async send(message: Message): Promise<SMTPTransport.SentMessageInfo> {
         return await this.ctx.sendMail({
             from: this.from,

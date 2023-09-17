@@ -4,6 +4,12 @@ import { OnInteractionCreateArgs } from "../interfaces"
 import { UnknownCommandError } from "../errors"
 import { InteractionCommand } from "../command"
 
+/**
+ * Function that runs when a new interaction is created
+ * 
+ * This can be a new chat command, dropdown selection, modal confirmation, etc.
+ * @param args Argument representing the event of new interaction being created
+ */
 export async function onInteractionCreate(args: OnInteractionCreateArgs) {
     const { client, interaction, mailer, commands, buttons, modals, dropdown } = args
     let command: InteractionCommand<Interaction<CacheType>> | undefined

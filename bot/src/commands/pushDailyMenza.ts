@@ -5,7 +5,9 @@ import { UnauthorizedError } from "../errors"
 import { ChatInputCommand } from "../command"
 import { pushDailyMenza } from "../crons"
 
-
+/**
+ * Chat command used for manually pushing the daily menu of menza
+ */
 export class PushDailyMenzaChatCommnad extends ChatInputCommand {
     name = "pushdailymenza"
     description = "Vynucené přidaní denního menu menza"

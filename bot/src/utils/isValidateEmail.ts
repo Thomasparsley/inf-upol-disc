@@ -1,3 +1,8 @@
+/**
+ * Helper function that checks whether a given string is a valid email address
+ * @param email String which will be checked as to whether it is valid
+ * @returns True, if the given string is a valid email address, else false
+ */
 export function isValidateEmail(email: string): boolean {
     return email
         .toLowerCase()

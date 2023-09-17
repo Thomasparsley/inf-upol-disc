@@ -1,3 +1,6 @@
+/**
+ * Map that returns a color for the given role
+ */
 export const RoleColors = {
     "Katedra": "#E67E22",
     "PhD.": "#F1C40F",
