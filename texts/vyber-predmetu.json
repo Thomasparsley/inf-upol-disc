@@ -1,141 +1,130 @@
 {
-    "channelID": "1019489224719872010",
+    "channelID": "   ",
     "messages": [
         {
-            "id": "1019489596108701746",
+            "id": "   ",
             "content": [
-                "**Výběr předmětů**",
-                "V této místnosti si zvolíš obor a předměty, které studuješ. Tyto volby ti následně zobrazí nové místnosti, které se vztahují ke konkrétnímu přemětu. Pro výber role stačí zakliknout příslušné role v \"dropdown menu\", který je vždy pod výpisem možností."
+                "# Výběr oborů a předmětů",
+                "V této místnosti si zvolíš obor a předměty, které studuješ. Tyto volby ti následně zobrazí nové místnosti, které se vztahují ke konkrétnímu předmětu. Výběr oborů a předmětů je zpřístupněn pouze studentům. To znamená, že učitelé do těchto místností nemají přístup. Pro přidání a odebrání role slouží vždy příslušný **emoji**, který je pod výpisem možností."
             ]
         },
         {
-            "id": "1019489623099060246",
+            "id": "   ",
             "content": [
-                "⠀",
-                "**Výběr oborů**",
-                "Nejprve si vyber obor, který tě zajímá. Po výběru oboru se ti zobrazí, v kategorii **ZIMNÍ/LETNÍ SEMESTR** a **PROGRAMOVACÍ JAZYKY**, všechny místnosti s povinnými předměty (A) pro daný obor za celé studium. Volba je volná, takže si klidně můžeš vybrat všechny obory. Předměty povinně volitelné a volitelné si volíš až později.",
+                "## Výběr oborů",
+                "Nejprve si vyber jeden či více oborů, které tě zajímají. Po výběru oborů se ti zobrazí, v kategoriích **ZIMNÍ/LETNÍ SEMESTR** a **PROGRAMOVACÍ JAZYKY**, všechny místnosti s povinnými předměty **(A)** pro daný obor za celé studium. Volba je volná, takže si klidně můžeš vybrat všechny obory. Předměty povinně volitelné a volitelné si volíš až později.",
                 "",
                 "(Role <role>Bc. Informatika</role> přidělí předměty jen z prvního ročníku. Poté je nutné vybrat specializaci.)",
-                "",
-                "**Na výber máme obory:**"
+                "### Na výber máme bakalářské obory:"
             ],
-            "components": {
-                "dropdowns": [
-                    {
-                        "id": "dropdownAddRoleOnlyStudent",
-                        "flag": "obor",
-                        "placeholder": "Vyber si obory",
-                        "min": 1,
-                        "max": 1,
-                        "options": [
-                            "Bc. Informatika",
-                            "Bc. IT",
-                            "Bc. Informatika pro vzdělávání",
-                            "Bc. Programování a vývoj sw",
-                            "Bc. Obecná informatika",
-                            "Bc. Bioinformatika",
-                            "Bc. IT KOMBI",
-                            "Mgr. Obecná informatika",
-                            "Mgr. Počítačové systémy a technologie",
-                            "Mgr. Vývoj software",
-                            "Mgr. Umělá inteligence",
-                            "Mgr. Učitelství informatiky pro střední školy"
-                        ]
-                    }
-                ]
+            "reactions": {
+                "Bc. Informatika": "0️⃣",
+                "Bc. IT": "1️⃣",
+                "Bc. Informatika pro vzdělávání": "2️⃣",
+                "Bc. Programování a vývoj sw": "3️⃣",
+                "Bc. Obecná informatika": "4️⃣",
+                "Bc. Bioinformatika": "5️⃣",
+                "Bc. IT KOMBI": "6️⃣"
             }
         },
         {
-            "id": "1019489738962505829",
+            "id": "   ",
             "content": [
-                "⠀",
-                "**Výběr předmětů**",
-                "Aby se ti otevřely i místností pro povinně volitelné a volitelné předměty, vyber si z těchto rolí ty předměty, k jejímž místnostem chceš mít přístup. Navolené předměty si také můžeš kdykoliv změnit.**Tento výběr slouží pouze studentům.**",
-                "",
-                "Některé předměty se stejným obsahem mají napříč studijními obory jiné názvy a zkratky. Vždy jsme z nich vybrali jednu a ostatní pod ní sjednotili. Při vyhledávání jsou jména všech zkratek pospolu.",
-                "Příklad: **pp1 (papr1)**",
-                "",
-                "Kanál pro diskuzi závěrečných prací naleznete v kategorii **STUDIUM**.",
-                "",
-                "Můžeš vybírat podle abecedy, ale předměty ze skupiny **Programovací jazyky a programování** se nachází v posledním menu.",
-                "",
-                "**Na výběr máme z předmětů:**"
+                "### Na výber máme magisterské obory:"
             ],
-            "components": {
-                "dropdowns": [
-                    {
-                        "id": "dropdownAddRoleOnlyStudent",
-                        "flag": "predmety_0n",
-                        "placeholder": "Vyber si predmety (0 - N)",
-                        "min": 1,
-                        "max": -1,
-                        "options": [
-                            "3dt",
-                            "aiii1",
-                            "aiii2",
-                            "akti",
-                            "algo1 (algo)",
-                            "algo2 (zads)",
-                            "algo3 (alm3)",
-                            "bmtkq",
-                            "dastr",
-                            "grafa",
-                            "infos",
-                            "kombi",
-                            "mr",
-                            "napvs"
-                        ]
-                    },
-                    {
-                        "id": "dropdownAddRoleOnlyStudent",
-                        "flag": "predmety_oz",
-                        "placeholder": "Vyber si predmety (O - Z)",
-                        "min": 1,
-                        "max": -1,
-                        "options": [
-                            "os1",
-                            "os2",
-                            "pmv",
-                            "pogr (pg)",
-                            "pois",
-                            "pos1 (pos)",
-                            "pos2",
-                            "pp1 (papr1)",
-                            "pp2 (papr2)",
-                            "pp3 (papr3)",
-                            "pp4",
-                            "prast",
-                            "soft",
-                            "sprda",
-                            "texza",
-                            "tempa",
-                            "unixs",
-                            "uroz (uro)",
-                            "vytal",
-                            "znm"
-                        ]
-                    },
-                    {
-                        "id": "dropdownAddRoleOnlyStudent",
-                        "flag": "predmety_prg",
-                        "placeholder": "Vyber si predmety PRG",
-                        "min": 1,
-                        "max": -1,
-                        "options": [
-                            "asm",
-                            "jc",
-                            "jcs1",
-                            "jcs2",
-                            "jcpp",
-                            "jj1",
-                            "jj2",
-                            "jp",
-                            "tmap",
-                            "web",
-                            "weba"
-                        ]
-                    }
-                ]
+            "reactions": {
+                "Mgr. Obecná informatika": "0️⃣",
+                "Mgr. Umělá inteligence": "1️⃣",
+                "Mgr. Vývoj software": "2️⃣",
+                "Mgr. Počítačové systémy a technologie": "3️⃣",
+                "Mgr. Bioinformatika": "4️⃣",
+                "Mgr. Učitelství informatiky pro střední školy": "5️⃣"
+            }
+        },
+        {
+            "id": "   ",
+            "content": [
+                "## Výběr předmětů",
+                "Aby ti byly zpřístupněny i místností pro povinně volitelné a volitelné předměty, vyber si z těchto rolí ty předměty, k jejímž místnostem chceš mít přístup. Navolené předměty si také můžeš kdykoliv změnit. Kanál pro diskuzi závěrečných prací naleznete v kategorii **STUDIUM**.",
+                "",
+                "Některé předměty se stejným obsahem mají napříč studijními obory jiné názvy a zkratky. Vždy jsme je sjednotili pod jednu roli.",
+                "Příklad: **pp1 (papr1)**",
+                "**Na výběr máme z předmětů:**"
+            ]
+        },
+        {
+            "id": "   ",
+            "content": [],
+            "reactions": {
+                "3dt": "0️⃣",
+                "aiii1": "1️⃣",
+                "aiii2": "2️⃣",
+                "akti": "3️⃣",
+                "algo1 (algo)": "4️⃣",
+                "algo2 (zads)": "5️⃣",
+                "algo3 (alm3)": "6️⃣",
+                "bmtkq": "7️⃣",
+                "dastr": "8️⃣",
+                "grafa": "9️⃣"
+            }
+        },    
+        {
+            "id": "   ",
+            "content": [],
+            "reactions": {
+                "infos": "0️⃣",
+                "kombi": "1️⃣",
+                "mr": "2️⃣",
+                "napvs": "3️⃣",
+                "os1": "4️⃣",
+                "os2": "5️⃣",
+                "pmv": "6️⃣",
+                "pogr (pg)": "7️⃣",
+                "pois": "8️⃣",
+                "pos1 (pos)": "9️⃣"
+            }
+        },
+        {
+            "id": "   ",
+            "content": [],
+            "reactions": {
+                "pos2": "0️⃣",
+                "pp1 (papr1)": "1️⃣",
+                "pp2 (papr2)": "2️⃣",
+                "pp3 (papr3)": "3️⃣",
+                "pp4": "4️⃣",
+                "prast": "5️⃣",
+                "soft": "6️⃣",
+                "sprda": "7️⃣",
+                "texza": "8️⃣",
+                "tempa": "9️⃣"
+            }
+        },
+        {
+            "id": "   ",
+            "content": [],
+            "reactions": {
+                "unixs": "0️⃣",
+                "uroz (uro)": "1️⃣",
+                "vytal": "2️⃣",
+                "znm": "3️⃣",
+                "asm": "4️⃣",
+                "jc": "5️⃣",
+                "jcs1": "6️⃣",
+                "jcs2": "7️⃣",
+                "jcpp": "8️⃣",
+                "jj1": "9️⃣"
+            }
+        },
+        {
+            "id": "   ",
+            "content": [],
+            "reactions": {
+                "jj2": "0️⃣",
+                "jp": "1️⃣",
+                "tmap": "2️⃣",
+                "web": "3️⃣",
+                "weba": "4️⃣"
             }
         }
     ]

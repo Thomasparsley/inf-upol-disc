@@ -36,15 +36,9 @@ export class InvalidGuild extends Error {
     }
 }
 
-export class InvalidEmailFormatError extends Error {
-    constructor(email: string) {
-        super(`Email není ve správném tvaru ${email}.`)
-    }
-}
-
 export class UnknownUpolEmailError extends Error {
     constructor(email: string) {
-        super(`${email} napatří do domény Univerzity Palackého. Registrace je jen pro emaily typu \`uživatel@upol.cz\`.`)
+        super(`\`${email}\` napatří do domény Univerzity Palackého. Registrace je jen pro emaily typu \`jmeno.prijmeniXX@upol.cz\`.`)
     }
 }
 

@@ -13,7 +13,7 @@ export class User extends BaseEntity {
     id!: number
 
     @Column("varchar", { length: 320 })
-    email!: number
+    email!: string
 
     @CreateDateColumn()
     createdAt!: Date
