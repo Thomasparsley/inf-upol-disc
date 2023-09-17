@@ -363,7 +363,7 @@ export class Bot {
 
     /**
      * Adds a new reaction message to the bot config
-     * @param messageId Reaction message id
+     * @param messageId Reaction message ID
      * @param reactions Binds that should be added for the message
      */
     public async addReactionMessage(messageId: string, channelId: string, reactions: Map<string, string>) {

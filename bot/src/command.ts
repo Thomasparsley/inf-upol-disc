@@ -240,9 +240,9 @@ export class InteractionCommand<T extends Interaction> extends Command {
     }
 
     /**
-     * Gets the role id for the given role name
-     * @param roleName Name of the role for which the id should be retrieved
-     * @returns Id of the specified role
+     * Gets the role ID for the given role name
+     * @param roleName Name of the role for which the ID should be retrieved
+     * @returns ID of the specified role
      */
     protected getRoleID(roleName: RoleName): string {
         return RoleIds[roleName]
@@ -274,9 +274,9 @@ export class InteractionCommand<T extends Interaction> extends Command {
     }
 
     /**
-     * Checks if the member that invoked the command has the specified role id in it's cache
-     * @param id Id which should be checked
-     * @returns True, if the membe has the specified id in cache, else false
+     * Checks if the member that invoked the command has the specified role ID in it's cache
+     * @param id ID which should be checked
+     * @returns True, if the membe has the specified ID in cache, else false
      */
     protected hasRoleByID(id: string): boolean {
         return this.getMemberRoleManager().cache.has(id)

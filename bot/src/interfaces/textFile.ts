@@ -18,7 +18,7 @@ export interface TextFile {
  */
 export interface TextFileMessage {
     /**
-     * Id of the message
+     * ID of the message
      */
     id: string
     /**
@@ -38,7 +38,7 @@ export interface TextFileMessage {
          */
         dropdowns?: {
             /**
-             * Id of the dropdown
+             * ID of the dropdown
              */
             id: string
             /**
@@ -67,7 +67,7 @@ export interface TextFileMessage {
          */
         buttons?: {
             /**
-             * Id of the button
+             * ID of the button
              */
             id: string
             /**
