@@ -7,6 +7,9 @@ import {
     Client,
     Role,
     Partials,
+    Snowflake,
+    Emoji,
+    GuildTextBasedChannel,
 } from "discord.js"
 
 import {
@@ -31,6 +34,9 @@ import {
     OnReactionAddAction,
     OnReactionRemoveAction,
 } from "./types"
+import {
+    MessageReaction
+} from "./models"
 
 const REST_VERSION = "10"
 
@@ -41,7 +47,7 @@ export class Bot {
     buttonCommands = new Map<string, ICommand<ButtonCommand>>()
     modalCommands = new Map<string, ICommand<ModalCommand>>()
     dropdownCommands = new Map<string, IDropdownCommand<DropdownCommand>>()
-    reactionMessages = new Map<Message, Map<String, Role>>()
+    reactionMessages = new Map<Snowflake, Map<string, string>>()
     private async onReady(args: OnReadyArgs): Promise<void> {
         throw new Error("Event 'onReady' is not implementet")
     }
@@ -87,9 +93,9 @@ export class Bot {
         if (config.modalCommands) this.initModalCommands(config.modalCommands)
         if (config.dropdownCommands) this.initDropdownCommands(config.dropdownCommands)
 
-        /* if (config.reactionMessages) {
-            this.initReactionMessages(config.reactionMessages);
-        } */
+        this.loadReactionMessages().then(value => {
+            this.reactionMessages = value
+        })
 
         this.initEvents(config)
         this.init()
@@ -137,6 +143,7 @@ export class Bot {
                 modals: this.modalCommands,
                 dropdown: this.dropdownCommands,
                 db: this.db,
+                bot: this,
                 mailer: this.mailer,
                 commandRegistration: this.registerChatInputGuildCommands,
             }
@@ -187,10 +194,9 @@ export class Bot {
     private initOnReactionAdd() {
         this.client.on("messageReactionAdd", async (messageReaction, user) => {
             const args: OnReactionAddArgs = {
-                client: this.client,
                 reaction: messageReaction,
                 user: user,
-                db: this.db,
+                reactionMessages: this.reactionMessages,
             }
 
             try {
@@ -246,6 +252,86 @@ export class Bot {
             const cmd = new command()
             this.dropdownCommands.set(cmd.name, command)
         })
+    }
+
+    /**
+     * Loads reaction messages from the database
+     * @returns Promise that resolves to reaction messages
+     */
+    private async loadReactionMessages(): Promise<Map<Snowflake, Map<string, string>>> {
+        const ReactionMessages = new Map<Snowflake, Map<string, string>>();
+
+        const allReactions = await MessageReaction.find({
+            select: {
+                messageId: true,
+                channelId: true
+            }
+        });
+
+        // Gets mask of boolean values
+        const uniqueMask = allReactions
+            .map(item => item.messageId)
+            .map((value, index, array) => array.indexOf(value) === index);
+
+        // Gets all unique MessageReactions 
+        const uniqueMessage = allReactions.filter((_, index) => uniqueMask[index]);
+
+        uniqueMessage.forEach(async ({messageId, channelId}) => {
+            const messageReactionsBinds = await MessageReaction.find({
+                select: {
+                    emoji: true,
+                    role: true,
+                },
+                where: {
+                    messageId: messageId
+                }
+            });
+
+            const guild = await this.client.guilds.fetch(this.guildId)
+            const channel = (await guild.channels.fetch(channelId)!) as GuildTextBasedChannel
+            const message = await channel.messages.fetch(messageId)
+
+            if(message === null){
+                throw new Error("Invalid message")
+            }
+            
+            // Clean old reactions before adding new ones
+            await message.reactions.removeAll()
+            
+            // Adding new reactions based on binds specified in database
+            const reactionBinds = new Map()
+            messageReactionsBinds.forEach(async row => {
+                reactionBinds.set(row.emoji, row.role)
+                await message.react(row.emoji)
+            });
+
+            ReactionMessages.set(messageId, reactionBinds)
+        });
+
+        return ReactionMessages
+    }
+
+    /**
+     * Adds a new reaction message to the bot config
+     * @param messageId Reaction message id
+     * @param reactions Binds that should be added for the message
+     */
+    public async addReactionMessage(messageId: string, channelId: string, reactions: Map<string, string>) {
+        // Updating new reactions binds
+        this.reactionMessages.set(messageId, reactions)
+
+        // Removing reactions binds
+        await MessageReaction.delete({ messageId: messageId })
+
+        // Adding new reaction binds
+        reactions.forEach(async (role, emoji) => {
+            const messageReaction = new MessageReaction()
+            messageReaction.messageId = messageId
+            messageReaction.emoji = emoji
+            messageReaction.role = role
+            messageReaction.channelId = channelId
+            await messageReaction.save();
+        });
     }
 
     public async login() {

@@ -5,7 +5,7 @@ import { UnknownCommandError } from "../errors"
 import { InteractionCommand } from "../command"
 
 export async function onInteractionCreate(args: OnInteractionCreateArgs) {
-    const { client, interaction, mailer, commands, buttons, modals, dropdown } = args
+    const { client, interaction, mailer, bot, commands, buttons, modals, dropdown } = args
     let command: InteractionCommand<Interaction<CacheType>> | undefined
 
     if (interaction.isButton()) {
@@ -40,5 +40,5 @@ export async function onInteractionCreate(args: OnInteractionCreateArgs) {
         throw new UnknownCommandError()
     }
 
-    await command.execute(client, mailer, interaction)
+    await command.execute(client, mailer, bot, interaction)
 }
