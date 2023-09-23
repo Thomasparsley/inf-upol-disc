@@ -1,5 +1,6 @@
 import { Guild, Role } from "discord.js"
 
+// TODO: Verify whether this function is used and potentially remove it
 export function getBinds(input: string, guild: Guild): Map<String, Role> | null {
     const binds = input.split(",")
     const mapBinds = new Map<String, Role>()

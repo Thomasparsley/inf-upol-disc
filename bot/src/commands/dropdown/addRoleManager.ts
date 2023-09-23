@@ -3,8 +3,15 @@ import { DropdownCommand } from "../../command"
 import { UnauthorizedError } from "../../errors"
 import { RoleName } from "../../types"
 
-
+/**
+ * Base class used for role management dropdowns
+ */
 export class AddRoleManagerDropdownCommand extends DropdownCommand {
+    /**
+     * Specifies, which roles are allowed to use this command
+     * 
+     * If this array is empty, anyone can use it
+     */
     allowedRoles!: RoleName[]
 
     async executable(): Promise<void> {
@@ -13,6 +20,7 @@ export class AddRoleManagerDropdownCommand extends DropdownCommand {
         const removedRoles: Role[] = []
         const removedRolesID: string[] = []
 
+        //Defer interaction as it might take a while
         this.interaction.deferReply({ ephemeral: true })
 
         const roles = this.interaction.values
@@ -52,12 +60,14 @@ export class AddRoleManagerDropdownCommand extends DropdownCommand {
             await this.removeRolesByID(removedRolesID)
         }
 
-        /* await this.interaction.update({
+        /* 
+        await this.interaction.update({
             components: [
                 // @ts-ignore
                 new ActionRowBuilder().addComponents(this.interaction.component)
             ]
-        }) */
+        })
+        */
 
         if (addedRoles.length > 0 && removedRoles.length > 0) {
             await this.followUpSilent(`Role [${addedRoles}] Vám byly přiděleny. Role [${removedRoles}] Vám byly odebrány.`)

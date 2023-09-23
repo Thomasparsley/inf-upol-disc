@@ -4,6 +4,9 @@ import { Validation } from "../../models";
 
 const VERIFICATION_CODE_LENGTH = 6
 
+/**
+ * Modal command that is invoked when a user uses the verification code modal
+ */
 export class VerificationCodeModalCommand extends ModalCommand {
     name = "verificationCodeStudentModal"
 
