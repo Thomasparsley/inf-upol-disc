@@ -53,7 +53,7 @@ export const CD_QuoteRequest = {
     options: [
         {
             name: "quote",
-            description: "Formát: \"Text citátu. - Jméno učitele \""
+            description: "Formát: \"Text citátu.\" - Jméno učitele "
         },
     ]
 }
