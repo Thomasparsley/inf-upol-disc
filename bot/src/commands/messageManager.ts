@@ -27,6 +27,9 @@ const channelTagName = "channel"
 const mentionTagName = "mention"
 const roleTagName = "role"
 
+/**
+ * Chat command used for managing messages sent by the bot
+ */
 export class MessageManagerCommand extends ChatInputCommand {
     name = cd.name
     description = cd.description
@@ -118,6 +121,10 @@ export class MessageManagerCommand extends ChatInputCommand {
         await this.followUpSilent(VOC_ActionSuccessful)
     }
 
+    /**
+     * Adds a new bot message
+     * @returns Promise representing completion of the addition
+     */
     async subCommandAdd(): Promise<void> {
         const channel = this.interaction.channel
         const text = this.interaction.options
@@ -131,6 +138,10 @@ export class MessageManagerCommand extends ChatInputCommand {
         throw "botmessage#1".toError()
     }
 
+    /**
+     * Edits the bot's message
+     * @returns Promise representing completion of the edit action
+     */
     async subCommandEdit(): Promise<void> {
         const channel = this.interaction.channel
         const messageID = this.interaction.options
@@ -155,6 +166,10 @@ export class MessageManagerCommand extends ChatInputCommand {
         throw new Error("botmessage#3")
     }
 
+    /**
+     * Loads message from a file
+     * @returns Promise representing completion of the fetching action
+     */
     async subCommandFetch(): Promise<void> {
         const channel = this.interaction.channel
         const messageID = this.interaction.options
@@ -191,6 +206,11 @@ export class MessageManagerCommand extends ChatInputCommand {
         message.edit(messageContent)
     }
 
+    /**
+     * Loads all the messages in the specified file
+     * 
+     * Also loads components unlike {@link subCommandFetch}
+     */
     async subCommandLoad(): Promise<void> {
         const urlForFile = this.interaction.options
             .getString(cd.sub.load.options.url.name)

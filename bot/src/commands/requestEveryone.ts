@@ -8,6 +8,9 @@ import { ChatInputCommand } from "../command"
 
 const RequestChannelID = "961981948740386826"
 
+/**
+ * Chat command used for requesting an everyone message
+ */
 export class EveryoneRequestCommand extends ChatInputCommand {
     name = cd.name
     description = cd.description

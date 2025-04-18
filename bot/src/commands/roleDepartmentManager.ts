@@ -4,6 +4,9 @@ import { CD_Katedra as cd } from "../cd"
 import { RoleName } from "../types"
 import { RoleManagerCommand } from "./roleManager"
 
+/**
+ * Chat command used for managing the department role
+ */
 export class DepartmentRoleManagerCommand extends RoleManagerCommand {
     name = cd.name
     description = cd.description

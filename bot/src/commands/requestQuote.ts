@@ -8,6 +8,9 @@ import { ChatInputCommand } from "../command"
 
 const RequestChannelID = "1009076301019238540"
 
+/**
+ * Chat command used for requesting a quote to be created
+ */
 export class QuoteRequestChatCommnad extends ChatInputCommand {
     name = cd.name
     description = cd.description

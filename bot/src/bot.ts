@@ -40,6 +40,9 @@ import {
 
 const REST_VERSION = "10"
 
+/**
+ * Main class of the application. Represents the Discord bot and all its related functionality
+ */
 export class Bot {
     client: Client
     rest: REST
@@ -62,6 +65,15 @@ export class Bot {
     }
     private isLogedIn: boolean = false
 
+    /**
+     * Creates a new instance of the bot class
+     * @param applicationId ID of the Discord application
+     * @param guildId Guild ID of the server which the bot should use
+     * @param token Discord token the bot should use
+     * @param mailer Instance of mailer used for sending emails
+     * @param db Database source used for storing data the bot uses
+     * @param config Configuration of the bot
+     */
     constructor(
         private readonly applicationId: string,
         private readonly guildId: string,
@@ -101,6 +113,10 @@ export class Bot {
         this.init()
     }
 
+    /**
+     * Specifies the actual function implementations that should be run when the specific events trigger
+     * @param config Instance of BotConfig which contains the action implementations
+     */
     private initEvents(config: BotConfig) {
         if (config.onReady)
             this.onReady = config.onReady
@@ -114,6 +130,9 @@ export class Bot {
             this.onInteractionCreate = config.onInteractionCreate
     }
 
+    /**
+     * Responsible for initialising all actions the bot uses
+     */
     private init() {
         this.initOnReady()
         this.initOnInteractionCreate()
@@ -122,6 +141,9 @@ export class Bot {
         this.initOnReactionRemove()
     }
 
+    /**
+     * Initialises the onReady action
+     */
     private initOnReady() {
         this.client.on("ready", async () => {
             const args: OnReadyArgs = {
@@ -133,6 +155,9 @@ export class Bot {
         })
     }
 
+    /**
+     * Initialises the onInteractionCreate action
+     */
     private initOnInteractionCreate() {
         this.client.on("interactionCreate", async (interaction) => {
             const args: OnInteractionCreateArgs = {
@@ -175,6 +200,9 @@ export class Bot {
         })
     }
 
+    /**
+     * Initialises the onGuildMemberAdd action
+     */
     private initOnGuildMemberAdd() {
         this.client.on("guildMemberAdd", async (member) => {
             const args: OnGuildMemberAddArgs = {
@@ -191,6 +219,9 @@ export class Bot {
         })
     }
 
+    /**
+     * Initialises the onReactionAdd action
+     */
     private initOnReactionAdd() {
         this.client.on("messageReactionAdd", async (messageReaction, user) => {
             const args: OnReactionAddArgs = {
@@ -208,6 +239,9 @@ export class Bot {
         })
     }
 
+    /**
+     * Initialises the onReactionRemove action
+     */
     private initOnReactionRemove() {
         this.client.on("messageReactionRemove", async (messageReaction, user) => {
             const args: OnReactionRemoveArgs = {
@@ -226,6 +260,10 @@ export class Bot {
         })
     }
 
+    /**
+     * Initialises the chat commands of the bot
+     * @param commands Commands that should be registered
+     */
     private initChatInputCommands(commands: ICommand<ChatInputCommand>[]) {
         commands.forEach((command) => {
             const cmd = new command()
@@ -233,6 +271,10 @@ export class Bot {
         })
     }
 
+    /**
+     * Initialises the button commands of the bot
+     * @param commands Commands that should be registered
+     */
     private initButtonCommands(commands: ICommand<ButtonCommand>[]) {
         commands.forEach((command) => {
             const cmd = new command()
@@ -240,6 +282,10 @@ export class Bot {
         })
     }
 
+    /**
+     * Initialises the modal commands of the bot
+     * @param commands Commands that should be registered
+     */
     private initModalCommands(commands: ICommand<ModalCommand>[]) {
         commands.forEach((command) => {
             const cmd = new command()
@@ -247,6 +293,10 @@ export class Bot {
         })
     }
 
+    /**
+     * Initialises the dropdown commands of the bot
+     * @param commands Commands that should be registered
+     */
     private initDropdownCommands(commands: IDropdownCommand<DropdownCommand>[]) {
         commands.forEach((command) => {
             const cmd = new command()
@@ -313,7 +363,7 @@ export class Bot {
 
     /**
      * Adds a new reaction message to the bot config
-     * @param messageId Reaction message id
+     * @param messageId Reaction message ID
      * @param reactions Binds that should be added for the message
      */
     public async addReactionMessage(messageId: string, channelId: string, reactions: Map<string, string>) {
@@ -334,6 +384,10 @@ export class Bot {
         });
     }
 
+    /**
+     * Attempts to login to Discord using the bot's token
+     * @returns Promise representing the login action
+     */
     public async login() {
         if (this.isLogedIn)
             return
@@ -342,6 +396,10 @@ export class Bot {
         this.isLogedIn = true
     }
 
+    /**
+     * Registers the chat commands of the bot in Discord
+     * @param commands Commands that should be registered
+     */
     private async registerChatInputCommands(commands: ICommand<ChatInputCommand>[], path: any) {
         const slashCommands = commands.map((command) => {
             const cmd = new command()
@@ -355,11 +413,19 @@ export class Bot {
         }
     }
 
+    /**
+     * Registers the given commands as guild commands
+     * @param commands Commands that should be registered
+     */
     public async registerChatInputGuildCommands(commands: ICommand<ChatInputCommand>[]) {
         const path = Routes.applicationGuildCommands(this.applicationId, this.guildId)
         this.registerChatInputCommands(commands, path)
     }
 
+    /**
+     * Registers the given commands as global commands
+     * @param commands Commands that should be registered
+     */
     public async registerChatInputGlobalCommands(commands: ICommand<ChatInputCommand>[]) {
         const path = Routes.applicationCommands(this.applicationId)
         this.registerChatInputCommands(commands, path)

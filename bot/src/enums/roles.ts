@@ -4,6 +4,9 @@ type RoleIdMap = {
     [role in RoleName]: string;
 }
 
+/**
+ * Map that converts a given {@link RoleName} to an internal Discord ID
+ */
 export const RoleIds: RoleIdMap = {
     "Root": "960452395312234537",
     "Moderátor": "960478652494118952",

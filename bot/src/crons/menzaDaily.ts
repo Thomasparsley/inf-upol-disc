@@ -15,6 +15,11 @@ const categoriesTitles: { [key: string]: string } = {
     "Pizza": "**Pizza**  :pizza:",
 }
 
+/**
+ * Function which pushes daily menza to the menza Discord channel
+ * @param client Discord client that shuold be used to send the daily menza message
+ * @returns Promise representing completion of the function
+ */
 export async function pushDailyMenza(client: Client) {
     let dataResponse: MenzaDataResponse | undefined = undefined
     try {
@@ -62,6 +67,11 @@ export async function pushDailyMenza(client: Client) {
     }
 }
 
+/**
+ * Creates a new CronJob that will automatically push daily menza
+ * @param client Discord client used in the {@link pushDailyMenza} function
+ * @returns CronJob instance that runs the daily menza function
+ */
 export function menzaDailyMaker(client: Client) {
     return new CronJob(
         "0 0 5 * * MON-FRI",

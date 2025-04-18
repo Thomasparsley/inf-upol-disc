@@ -1,5 +1,8 @@
 import { ButtonCommand } from "../../command"
 
+/**
+ * Button command ran when a user tries to acquire the Katedra role
+ */
 export class DepartmentFirewallButtonComamand extends ButtonCommand {
     name = "bntDepartment"
 
@@ -17,6 +20,7 @@ export class DepartmentFirewallButtonComamand extends ButtonCommand {
             return
         }
 
+        //Fetches a user with the "Katedra" role and sorts them by users where "Root" users are first, then "Katedra" users
         await this.guild().members.fetch({ withPresences: true })
         const users = (await this.guild().roles.fetch())
             .filter((role) => [this.getRoleID("Katedra"), this.getRoleID("Root")].includes(role.id))

@@ -1,6 +1,9 @@
 import { InteractionResponse } from "discord.js"
 import { ButtonCommand } from "../../command"
 
+/**
+ * Button command ran when a user tries to acquire the Návštěva role
+ */
 export class HostFirewallButtonComamand extends ButtonCommand {
     name = "btnHost"
 

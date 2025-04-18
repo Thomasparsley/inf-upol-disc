@@ -1,5 +1,10 @@
 import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 
+/**
+ * Modal used for verifying a student
+ * 
+ * Takes an email address as an argument
+ */
 export const VerificationModal = new ModalBuilder()
     .setCustomId("verificationStudentModal")
     .setTitle("Verifikace studenta")
